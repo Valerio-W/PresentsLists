@@ -1,6 +1,10 @@
 package be.walbert.Javabeans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import be.walbert.DAO.AbstractDAOFactory_API;
+import be.walbert.DAO.DAO;
 
 public class Users_API implements Serializable {
 
@@ -11,9 +15,20 @@ public class Users_API implements Serializable {
     private String password;
     private String email;
 	
+	private static final AbstractDAOFactory_API adf =  AbstractDAOFactory_API.getFactory();
+	private static final DAO<Users_API> UsersDAO = adf.getUserDAO_API();
+	
+	
 	/*Constructors*/
 	public Users_API() {}
 
+	public Users_API(int id, String pseudo, String password, String email) {
+		this.id = id;
+		this.pseudo = pseudo;
+		this.password = password;
+		this.email = email;
+	}
+	
 	/*Getters/Setters*/
 	public int getId() {
 		return id;
@@ -48,5 +63,10 @@ public class Users_API implements Serializable {
 	}
 	
 	/*Methods*/
-	
+	public ArrayList<Users_API> printAll() {
+	    ArrayList<Users_API> users = UsersDAO.findAll();
+   
+	    return users;
+	}
+
 }
