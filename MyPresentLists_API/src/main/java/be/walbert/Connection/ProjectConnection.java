@@ -6,8 +6,6 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import be.walbert.Connection.ProjectConnection;
-
 public class ProjectConnection {
 	private static Connection instance = null;
 	
@@ -20,7 +18,7 @@ public class ProjectConnection {
 			String chaineConnexion = "jdbc:oracle:thin:@//"+ip+":"+port+"/"+service_name;
 			String username = "student03_03";
 			String password = "changeme";
-			 
+	            
 			instance = DriverManager.getConnection(
 					chaineConnexion,
 					username,
