@@ -15,10 +15,29 @@
   	<servlet-class>be.walbert.servlets.HomePage</servlet-class>
   </servlet>
   
+  <servlet>
+  	<servlet-name>Login</servlet-name>
+  	<servlet-class>be.walbert.servlets.Login</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>Signin</servlet-name>
+  	<servlet-class>be.walbert.servlets.Signin</servlet-class>
+  </servlet>
+  
+  
   <servlet-mapping>
   	<servlet-name>HomePage</servlet-name>
   	<url-pattern>/HomePage</url-pattern>
   </servlet-mapping>
-
+  
+  <servlet-mapping>
+  	<servlet-name>Login</servlet-name>
+  	<url-pattern>/Login</url-pattern>
+  </servlet-mapping>
+ <servlet-mapping>
+  	<servlet-name>Signin</servlet-name>
+  	<url-pattern>/Signin</url-pattern>
+  </servlet-mapping>
    
 </web-app>
