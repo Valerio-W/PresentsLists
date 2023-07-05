@@ -30,8 +30,8 @@
             <div class="container">
                 <div class="masthead-subheading">Welcome To My Presents List's Application!</div>
                 <div class="masthead-heading text-uppercase">It's Nice To Meet You</div>
-                <a class="btn btn-primary btn-xl text-uppercase">Log In</a>
-                <a class="btn btn-primary btn-xl text-uppercase">Sign In</a>                
+                <a class="btn btn-primary btn-xl text-uppercase" href="Login">Log In</a>
+                <a class="btn btn-primary btn-xl text-uppercase" href="Signin">Sign In</a>                
             </div>
         </header>
         <!-- Footer-->
