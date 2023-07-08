@@ -74,6 +74,10 @@ public class Users_API implements Serializable {
 		UsersDAO_API userdao = (UsersDAO_API) adf.getUserDAO_API();
 		return userdao.GetUser(pseudo, password);
 	}
+
+	public boolean create() {
+		return UsersDAO.create(this);
+	}
 	
 
 }
