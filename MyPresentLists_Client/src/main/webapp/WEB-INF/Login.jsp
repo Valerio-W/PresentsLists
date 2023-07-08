@@ -18,9 +18,9 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="./css/styles.css" rel="stylesheet" />
     </head>
-	<body>
+	<body class="Pages">
 	<h1>Welcome on the LogIn Page !</h1>
-	 <form id="loginForm" action="Login" method="POST">
+	 <form class="Form" action="Login" method="POST">
 	 	<div class="row align-items-stretch mb-5">
         	<div class="col-md-6">
            		<div class="form-group">
@@ -34,7 +34,7 @@
         	</div>                        
         </div>
         <!-- Submit Button-->
-       	<button id="submitButton" type="submit">Log In</button> 
+       	<button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">Log In</button> 
      </form>
 </body>
 </html>
