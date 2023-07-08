@@ -22,7 +22,20 @@ public class UsersDAO_API extends DAO<Users_API>  {
 
 	@Override
 	public boolean create(Users_API obj) {
-		return false;
+		try {
+			CallableStatement callableStatement = connect.prepareCall("{call Insert_User(?,?,?)}");
+		        		        
+		    callableStatement.setString(1, obj.getPseudo());
+		    callableStatement.setString(2, obj.getPassword());
+		    callableStatement.setString(3, obj.getEmail());
+	        
+		    callableStatement.execute();
+		    
+	        return true;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 
 	@Override
