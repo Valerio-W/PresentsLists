@@ -46,18 +46,20 @@ public class Signin extends HttpServlet {
 	  
 	  Users u = new Users(0, pseudo, password, email);
 
-	  if(request.getParameter("submit") != null) {
-		if(pseudo != null && password != null && u.Signin()) {
-			getServletContext().getRequestDispatcher("/WEB-INF/Home.jsp").forward(request, response);
+	  if (request.getParameter("submit") == null) {
+		    if (pseudo != null && password != null && email != null && u.Signin()) {
+		        request.getSession().setAttribute("confirmAccount", "Great, your account has just been created");
+		        response.sendRedirect(request.getContextPath() + "/HomePage");
+		        return;
+		    } else {
+		        getServletContext().getRequestDispatcher("/WEB-INF/Errors.jsp").forward(request, response);
+		        return;
+		    }
 		}
-		else {
-			getServletContext().getRequestDispatcher("/WEB-INF/Errors.jsp").forward(request, response);
+
+		if (errors.size() > 0) {
+		    request.setAttribute("errors", errors);
+		    getServletContext().getRequestDispatcher("/WEB-INF/Signin.jsp").forward(request, response);
 		}
-	  }
-	  
-	  if(errors.size() > 0) {
-		request.setAttribute("errors", errors);
-		getServletContext().getRequestDispatcher("/WEB-INF/Signin.jsp").forward(request, response);
-	  }
 	}
 }

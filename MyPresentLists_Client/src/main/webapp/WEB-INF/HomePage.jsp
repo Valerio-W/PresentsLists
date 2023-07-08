@@ -34,6 +34,14 @@
                 <a class="btn btn-primary btn-xl text-uppercase" href="Signin">Sign In</a>                
             </div>
         </header>
+       <%
+		  String confirmAccount = (String) request.getSession().getAttribute("confirmAccount");
+		  if (confirmAccount != null) {
+		    out.println("<div class=\"ConfirmationMessage\">" + confirmAccount + "</div>");
+		    request.getSession().removeAttribute("confirmAccount");
+		  }
+		%>
+
         <!-- Footer-->
         <footer class="footer py-4">
             <div class="container">
