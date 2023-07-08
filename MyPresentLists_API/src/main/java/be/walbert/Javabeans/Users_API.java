@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
+import be.walbert.DAO.UsersDAO_API;
 
 public class Users_API implements Serializable {
 
@@ -68,5 +69,11 @@ public class Users_API implements Serializable {
    
 	    return users;
 	}
+
+	public static Users_API login (String pseudo, String password) {
+		UsersDAO_API userdao = (UsersDAO_API) adf.getUserDAO_API();
+		return userdao.GetUser(pseudo, password);
+	}
+	
 
 }
