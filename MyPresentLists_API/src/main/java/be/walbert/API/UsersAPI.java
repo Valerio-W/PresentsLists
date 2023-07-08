@@ -1,5 +1,6 @@
 package be.walbert.API;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -13,6 +14,36 @@ import be.walbert.Javabeans.Users_API;
 @Path("/users")
 public class UsersAPI {
 
+	@Path("/create")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createUsers(@FormParam("pseudo") String pseudo, @FormParam("password") String password,
+			@FormParam("email") String email) {
+
+		if(pseudo == null || password == null || email == null) {
+			return Response
+					.status(Status.BAD_REQUEST)
+					.build();
+		}
+		
+		Users_API user = new Users_API(0,pseudo, password, email);
+		
+		boolean success = user.create();
+		if(!success) {
+			
+			return Response
+					.status(Status.SERVICE_UNAVAILABLE)
+					.build();
+		}
+		else {
+			return Response
+					.status(Status.CREATED)
+					.header("Location", "/MyPresentLists_API/api/users/" + user.getId())
+					.build();
+		}
+		
+	}
+	
 	@Path("/login")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
