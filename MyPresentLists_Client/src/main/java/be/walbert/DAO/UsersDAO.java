@@ -1,6 +1,5 @@
 package be.walbert.DAO;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.ws.rs.core.MediaType;
@@ -19,7 +18,24 @@ public class UsersDAO extends DAO<Users>{
 	
 	@Override
 	public boolean create(Users obj) {
-		// TODO Auto-generated method stub
+		MultivaluedMap<String, String> paramsPost = new MultivaluedMapImpl();
+		paramsPost.add("pseudo", obj.getPseudo());
+		paramsPost.add("password", obj.getPassword());
+		paramsPost.add("email", obj.getEmail());
+
+		try {
+			 ClientResponse res = this.ressource
+	 	                .path("users/create")
+	 	                .accept(MediaType.APPLICATION_JSON)
+	 	                .post(ClientResponse.class, paramsPost);
+			
+			if (res.getStatus() == 201) {
+				return true;
+			}
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			return false;
+		}
 		return false;
 	}
 
@@ -60,10 +76,8 @@ public class UsersDAO extends DAO<Users>{
  	                .path("users/login")
  	                .accept(MediaType.APPLICATION_JSON)
  	                .post(ClientResponse.class, paramsPost);
- 			 
- 			int responseCode = res.getStatus();	//Get HTTP response code
 			
- 			if (responseCode == 200) {	
+ 			if (res.getStatus() == 200) {	//Get HTTP response code
  				String response = res.getEntity(String.class); //The response body is extracted as a String using getEntity(String.class)
 				JSONObject json = new JSONObject(response);
 				int id_users = json.getInt("id");

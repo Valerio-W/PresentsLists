@@ -68,4 +68,9 @@ public class Users implements Serializable{
 		UsersDAO userDAO = new UsersDAO();
 		return userDAO.GetUser(pseudo, password);
 	}
+
+	public boolean Signin() {
+		return userDAO.create(this);
+		
+	}
 }
