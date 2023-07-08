@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import be.walbert.javabeans.Users;
+
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -35,7 +37,16 @@ public class Login extends HttpServlet {
 		 String pseudo = request.getParameter("pseudo");
 	     String password = request.getParameter("password");
 	      
+	    Users u = Users.login(pseudo, password);
 	    
+	    if(u==null) {
+			response.getWriter().append("user non trouvé ").append(request.getContextPath());
+
+	    }
+	    else {
+			response.getWriter().append("user trouvé ").append(request.getContextPath());
+
+	    }
 	}
 
 }

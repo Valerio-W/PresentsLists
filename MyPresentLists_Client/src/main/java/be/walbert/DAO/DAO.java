@@ -17,18 +17,22 @@ public abstract class DAO<T> {
 	protected Connection connect = null;
 	protected Client client;
 	protected static final String baseUrl = "http://localhost:8080/MyPresentLists_API/api";
-	protected WebResource resource;
+	protected WebResource ressource;
 	protected ObjectMapper mapper;
 
     public DAO() {
 		ClientConfig config = new DefaultClientConfig();
 		client = Client.create(config);
-		resource = client.resource(getBaseURI());
+		ressource = client.resource(getBaseURI());
 		mapper = new ObjectMapper();
     }
     
 	private static URI getBaseURI() {
 		return UriBuilder.fromUri(baseUrl).build();
+	}
+
+	protected WebResource getRessource() {
+	    return ressource;
 	}
 
     public abstract boolean create(T obj);
