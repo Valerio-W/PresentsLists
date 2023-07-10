@@ -40,7 +40,8 @@ public class Login extends HttpServlet {
 	    Users u = Users.login(pseudo, password);
 	    
 	    if(u==null) {
-			response.getWriter().append("user non trouvé ").append(request.getContextPath());
+	        request.getSession().setAttribute("userNotFound", "Sorry, no account found.");
+	        response.sendRedirect(request.getContextPath() + "/Login");
 
 	    }
 	    else {

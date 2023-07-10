@@ -110,17 +110,16 @@ body {
 .ErrorMessage {
     color: #931d1d;
     font-weight: bold;
-    margin-bottom: 10px;
     background-color: rgb(242 182 182);
     border-radius: 4px;
     width: 26%;
     padding: 5px;
     border: 2px solid #9d7d7d;
+     margin: 10px;
 }
 .ConfirmationMessage {
     color: #0a7213;
     font-weight: bold;
-    /* margin-bottom: 10px; */
     background-color: rgb(178 234 172);
     border-radius: 4px;
     width: 26%;

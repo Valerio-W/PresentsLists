@@ -36,5 +36,12 @@
         <!-- Submit Button-->
        	<button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">Log In</button> 
      </form>
+     <%
+		  String userNotFound = (String) request.getSession().getAttribute("userNotFound");
+		  if (userNotFound != null) {
+		    out.println("<div class=\"ErrorMessage\">" + userNotFound + "</div>");
+		    request.getSession().removeAttribute("userNotFound");
+		  }
+	 %>
 </body>
 </html>
