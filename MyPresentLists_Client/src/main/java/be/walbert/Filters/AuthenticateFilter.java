@@ -30,6 +30,5 @@ public class AuthenticateFilter extends HttpFilter implements Filter {
         else {
         	res.sendRedirect(loginURI);
         }
-       
     }
 }
