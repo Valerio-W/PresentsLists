@@ -6,11 +6,15 @@
     <welcome-file>HomePage</welcome-file>
   </welcome-file-list>
   
-   <error-page>
+  <error-page>
    	<error-code>404</error-code>
 	<location>/WEB-INF/Error.jsp</location>
-   </error-page>
+  </error-page>
    
+  <session-config>
+  	<session-timeout>60</session-timeout>
+  </session-config>
+  
   <servlet>
   	<servlet-name>HomePage</servlet-name>
   	<servlet-class>be.walbert.servlets.HomePage</servlet-class>
@@ -26,6 +30,11 @@
   	<servlet-class>be.walbert.servlets.Signin</servlet-class>
   </servlet>
   
+   <servlet>
+  	<servlet-name>UserPage</servlet-name>
+  	<servlet-class>be.walbert.servlets.UserPage</servlet-class>
+  </servlet>
+  
   
   <servlet-mapping>
   	<servlet-name>HomePage</servlet-name>
@@ -39,6 +48,10 @@
  <servlet-mapping>
   	<servlet-name>Signin</servlet-name>
   	<url-pattern>/Signin</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+  	<servlet-name>UserPage</servlet-name>
+  	<url-pattern>/UserPage</url-pattern>
   </servlet-mapping>
    
 </web-app>
