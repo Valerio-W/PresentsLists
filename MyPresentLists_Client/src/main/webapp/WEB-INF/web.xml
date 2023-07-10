@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
   <display-name>MyPresentLists_Client</display-name>
+  
+   <!-- FILTERS DECLARATIONS -->
+	<filter>
+		<filter-name>AuthenticateFilter</filter-name>
+		<filter-class>be.walbert.Filters.AuthenticateFilter</filter-class>
+	</filter>
 
+  <!-- FILTERS MAPPINGS -->
+  <filter-mapping>
+  	<filter-name>AuthenticateFilter</filter-name>
+  	<servlet-name>UserPage</servlet-name>
+  </filter-mapping>
+  
+    <!-- WELCOME PAGE -->
   <welcome-file-list>
     <welcome-file>HomePage</welcome-file>
   </welcome-file-list>
   
+    <!-- ERROR(S) PAGE(S) -->
   <error-page>
    	<error-code>404</error-code>
 	<location>/WEB-INF/Error.jsp</location>
   </error-page>
-   
+  
+   <!-- SESSION CONFIG -->
   <session-config>
   	<session-timeout>60</session-timeout>
   </session-config>
   
+     <!-- SERVLETS DECLARATIONS -->
   <servlet>
   	<servlet-name>HomePage</servlet-name>
   	<servlet-class>be.walbert.servlets.HomePage</servlet-class>
@@ -35,7 +51,7 @@
   	<servlet-class>be.walbert.servlets.UserPage</servlet-class>
   </servlet>
   
-  
+  <!-- SERVLETS MAPPINGS -->
   <servlet-mapping>
   	<servlet-name>HomePage</servlet-name>
   	<url-pattern>/HomePage</url-pattern>
