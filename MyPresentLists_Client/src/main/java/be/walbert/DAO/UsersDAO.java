@@ -93,5 +93,28 @@ public class UsersDAO extends DAO<Users>{
 			System.out.println(e.getMessage());
 			return null;
 		}
-	}	
+	}
+	
+	public boolean checkAccount(Users u) {
+	    MultivaluedMap<String, String> paramsPost = new MultivaluedMapImpl();
+	    paramsPost.add("pseudo", u.getPseudo());
+	    paramsPost.add("email", u.getEmail());
+
+	    try {
+	        ClientResponse res = this.ressource
+	            .path("users/checkEmail")
+	            .accept(MediaType.APPLICATION_JSON)
+	            .post(ClientResponse.class, paramsPost);
+
+	        if (res.getStatus() == 200) {
+	            return true; // Pseudo or email already taken
+	        } else {
+	            return false; // Pseudo or email available
+	        }
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	        return false;
+	    }
+	}
+
 }

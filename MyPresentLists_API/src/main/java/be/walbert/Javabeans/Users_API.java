@@ -78,6 +78,11 @@ public class Users_API implements Serializable {
 	public boolean create() {
 		return UsersDAO.create(this);
 	}
+
+	public boolean checkAccount() {
+		UsersDAO_API userdao = (UsersDAO_API) adf.getUserDAO_API();
+		return userdao.checkAccount(this);
+	}
 	
 
 }

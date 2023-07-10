@@ -114,4 +114,28 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	    }
 		return null;
 	}
+
+	public boolean checkAccount(Users_API users_API) {
+		try {
+
+			CallableStatement callableStatement = connect.prepareCall("{call Check_Email(?,?,?)}");
+		       			
+		    callableStatement.setString(1, users_API.getPseudo());
+		    callableStatement.setString(2, users_API.getEmail());
+		    callableStatement.registerOutParameter(3, Types.NUMERIC);
+
+		    callableStatement.execute();
+
+		    int result = callableStatement.getInt(3);
+
+		    if (result == 1) {//If pseudo or email already taken
+		    	return true;
+		      } else {
+		    	return false;
+		      }
+		    } catch (SQLException e) {
+		      e.printStackTrace();
+		    }
+		return false;
+	}
 }

@@ -73,4 +73,8 @@ public class Users implements Serializable{
 		return userDAO.create(this);
 		
 	}
+
+	public boolean checkAccount() {
+		return ((UsersDAO) userDAO).checkAccount(this);
+	}
 }

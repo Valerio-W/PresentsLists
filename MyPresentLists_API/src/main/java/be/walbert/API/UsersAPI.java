@@ -44,6 +44,27 @@ public class UsersAPI {
 		
 	}
 	
+	@Path("/checkEmail")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response checkEmail(@FormParam("pseudo") String pseudo, @FormParam("email") String email) {
+		
+		if (pseudo == null || email==null) {
+            return Response.status(Status.BAD_REQUEST)
+                    .build();
+        }
+
+        Users_API u = new Users_API(0,pseudo,"",email);
+
+        if (u.checkAccount()) {
+            return Response.status(Status.UNAUTHORIZED)
+                    .build();
+        }
+        else {
+            return Response.status(Status.OK).entity(u).build();
+        }
+	}
+	
 	@Path("/login")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
