@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import be.walbert.javabeans.Users;
 
@@ -37,16 +38,16 @@ public class Login extends HttpServlet {
 		 String pseudo = request.getParameter("pseudo");
 	     String password = request.getParameter("password");
 	      
-	    Users u = Users.login(pseudo, password);
+	    Users user = Users.login(pseudo, password);
 	    
-	    if(u==null) {
+	    if(user==null) {
 	        request.getSession().setAttribute("userNotFound", "Sorry, no account found.");
 	        response.sendRedirect(request.getContextPath() + "/Login");
 
 	    }
 	    else {
-			response.getWriter().append("user trouvé ").append(request.getContextPath());
-
+	    	request.getSession().setAttribute("user", user);
+	        response.sendRedirect(request.getContextPath() + "/UserPage");
 	    }
 	}
 
