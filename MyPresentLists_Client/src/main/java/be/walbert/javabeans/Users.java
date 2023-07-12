@@ -17,6 +17,7 @@ public class Users implements Serializable{
 	private String password;
 	private String email;
 	private ArrayList<Presents_List> lists;
+	private ArrayList<Message> messages;
 	
 	/*Constructors*/
 	public Users() {
@@ -29,12 +30,14 @@ public class Users implements Serializable{
 		this.password = password;
 		this.email = email;
 		lists = new ArrayList<>();
+		messages = new ArrayList<>();
 	}
+	
 	public Users(String pseudo, String password) {
 		this.pseudo = pseudo;
 		this.password = password;
 		lists = new ArrayList<>();
-
+		messages = new ArrayList<>();
 	}
 	
 	/*Getters/Setters*/
@@ -78,9 +81,23 @@ public class Users implements Serializable{
 		this.lists = lists;
 	}
 
+	public ArrayList<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(ArrayList<Message> messages) {
+		this.messages = messages;
+	}
+
 	/*Methods*/
 	public void addList(Presents_List newList) {
 		lists.add(newList);
+	}
+	public void addMessage(Message newMessage) {
+		messages.add(newMessage);
+	}
+	public void removeMessage(Message newMessage) {
+		messages.add(newMessage);
 	}
 	
 	public static Users login (String pseudo, String password) {
