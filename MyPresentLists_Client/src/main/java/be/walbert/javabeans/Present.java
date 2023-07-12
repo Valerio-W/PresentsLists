@@ -1,6 +1,7 @@
 package be.walbert.javabeans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Present implements Serializable{
 
@@ -15,10 +16,11 @@ public class Present implements Serializable{
 	private String link;
 	private String image;
 	private Presents_List list;
+	private ArrayList<Multiple_Payment> payments;
 	
 	/*Constructors*/
 	public Present() {
-		super();
+		payments= new ArrayList<>();
 	}
 
 	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
@@ -32,6 +34,7 @@ public class Present implements Serializable{
 		this.link = link;
 		this.image = image;
 		this.list = list;
+		payments = new ArrayList<>();
 	}
 
 	/*Getters/Setters*/
@@ -106,7 +109,20 @@ public class Present implements Serializable{
 	public void setList(Presents_List list) {
 		this.list = list;
 	}
-	
+
+	public ArrayList<Multiple_Payment> getPayments() {
+		return payments;
+	}
+
+	public void setPayments(ArrayList<Multiple_Payment> payments) {
+		this.payments = payments;
+	}
 	
 	/*Methods*/
+	public void addPayment(Multiple_Payment newpayment) {
+		payments.add(newpayment);
+	}
+	public void removePayment(Multiple_Payment newpayment) {
+		payments.remove(newpayment);
+	}
 }
