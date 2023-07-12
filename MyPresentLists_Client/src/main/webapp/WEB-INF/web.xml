@@ -12,6 +12,7 @@
   <filter-mapping>
   	<filter-name>AuthenticateFilter</filter-name>
   	<servlet-name>UserPage</servlet-name>
+  	<servlet-name>CreatePresents_List</servlet-name>
   </filter-mapping>
   
     <!-- WELCOME PAGE -->
@@ -51,6 +52,12 @@
   	<servlet-class>be.walbert.servlets.UserPage</servlet-class>
   </servlet>
   
+  <servlet>
+  	<servlet-name>CreatePresents_List</servlet-name>
+  	<servlet-class>be.walbert.servlets.CreatePresents_List</servlet-class>
+  </servlet>
+  
+  
   <!-- SERVLETS MAPPINGS -->
   <servlet-mapping>
   	<servlet-name>HomePage</servlet-name>
@@ -65,9 +72,12 @@
   	<servlet-name>Signin</servlet-name>
   	<url-pattern>/Signin</url-pattern>
   </servlet-mapping>
-    <servlet-mapping>
+  <servlet-mapping>
   	<servlet-name>UserPage</servlet-name>
   	<url-pattern>/UserPage</url-pattern>
   </servlet-mapping>
-   
+  <servlet-mapping>
+  	<servlet-name>CreatePresents_List</servlet-name>
+  	<url-pattern>/CreatePresents_List</url-pattern>
+  </servlet-mapping>
 </web-app>
