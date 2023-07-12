@@ -14,19 +14,23 @@ public class Presents_List implements Serializable{
 	private boolean state;
 	private Users owner;
 	private ArrayList<Users> guests;
+	private ArrayList<Present> presents;
 	
 	/*Constructors*/
 	public Presents_List() {
 		guests = new ArrayList<>();
+		presents = new ArrayList<>();
 	}	
 	
-	public Presents_List(int id_list, LocalDate limit_date, String occasion, boolean state, Users owner) {
-		super();
+	public Presents_List(int id_list, LocalDate limit_date, String occasion, boolean state, Users owner, Present present) {
 		this.id_list = id_list;
 		this.occasion= occasion;
 		this.limit_date = limit_date;
 		this.state = state;
 		this.owner = owner;
+		guests = new ArrayList<>();
+		presents = new ArrayList<>();
+		presents.add(present);
 	}
 
 	/*Getters/Setters*/
@@ -79,9 +83,23 @@ public class Presents_List implements Serializable{
 		this.guests = guests;
 	}
 	
+	public ArrayList<Present> getPresents() {
+		return presents;
+	}
+
+	public void setPresents(ArrayList<Present> presents) {
+		this.presents = presents;
+	}
+
 	/*Methods*/
 	public void addGuest(Users newGuest) {
 		guests.add(newGuest);
+	}
+	public void addPresent(Present newpresent) {
+		presents.add(newpresent);
+	}
+	public void removePresent(Present newpresent) {
+		presents.remove(newpresent);
 	}
 
 }
