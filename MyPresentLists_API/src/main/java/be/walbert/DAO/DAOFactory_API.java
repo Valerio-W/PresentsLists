@@ -14,4 +14,10 @@ public class DAOFactory_API extends AbstractDAOFactory_API{
 		
 		return new UsersDAO_API(conn);
 	}
+	
+	@Override
+	public DAO<Presents_ListDAO_API> getPresents_ListDAO_API() {
+		
+		return new Presents_ListDAO_API(conn);
+	}
 }
