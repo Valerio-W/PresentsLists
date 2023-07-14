@@ -2,6 +2,7 @@ package be.walbert.servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -31,9 +32,6 @@ public class CreatePresents_List extends HttpServlet {
 		String limit_dateStr = request.getParameter("limit_date");
 	    LocalDate limit_date = LocalDate.parse(limit_dateStr);
 	    String occasion = request.getParameter("occasion");
-	     
-	    Users u = (Users) request.getSession().getAttribute("user");
-	    Presents_List new_list = new Presents_List(0,limit_date,occasion,true,u);
 	
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
@@ -42,22 +40,55 @@ public class CreatePresents_List extends HttpServlet {
 		String image = request.getParameter("image");
 		String link = request.getParameter("link");
 
-		Present present = new Present();
-		if (image != "" && link != "") {
-		    present = new Present(0,name, description, average_price, priority, "ordered", link,image, new_list);
-		} else if (image != "") {
-		    present = new Present(0,name, description, average_price, priority, "ordered", new_list,image);
-		} else if (link != "") {
-		    present = new Present(0,name, description, average_price, priority, "ordered", image, new_list);
-		} else {
-		    present = new Present(0,name, description, average_price, priority, "ordered", new_list);
-		}
-		new_list.addPresent(present);
-		if(new_list.createPresents_List()) {
-		    response.getWriter().append("liste ajoutée").append(request.getContextPath());   
-		}
-	    response.getWriter().append("liste non ajoutée").append(request.getContextPath());   
 
+        //Set the list of errors
+        ArrayList<String> errors = new ArrayList<String>();
+        
+        //Check if a field is null or empty
+        if (limit_dateStr == null || occasion == null || name == null || description == null ||
+        		limit_dateStr.isEmpty() || occasion.isEmpty()
+                || name.isEmpty() || description.isEmpty()) {
+            errors.add("A field is null or empty.");
+        } else {
+        	if(limit_date.isBefore(LocalDate.now().plusWeeks(1))) {
+                errors.add("The limit_date must be in at least 1 week ");
+        	}
+            if (average_price<=0) {//Check the average_price
+                errors.add("The average price must be greater than 0 ");
+            }
+            if (priority<=0) {//Check priority
+                errors.add("Priority must be greater than 0");
+            }
+        }
 
+        if (errors.isEmpty()) {//If errors is empty (no errors)
+        	Users u = (Users) request.getSession().getAttribute("user");	//Get the current User
+    		Presents_List new_list = new Presents_List(0,limit_date,occasion,true,u); //Create Presents_List with data of form
+        	Present present = new Present();// Create Present objet (without data)
+    		if (image != "" && link != "") {
+    		    present = new Present(0,name, description, average_price, priority, "ordered", link,image, new_list);
+    		} else if (image != "") {
+    		    present = new Present(0,name, description, average_price, priority, "ordered", new_list,image);
+    		} else if (link != "") {
+    		    present = new Present(0,name, description, average_price, priority, "ordered", image, new_list);
+    		} else {
+    		    present = new Present(0,name, description, average_price, priority, "ordered", new_list);
+    		}
+    		//Add present to the Presents_List object
+    		new_list.addPresent(present);
+    		if(new_list.createPresents_List()) {
+                request.getSession().setAttribute("confirm_New_Presents_List", "Great, your new list has just been created");
+                response.sendRedirect(request.getContextPath() + "/UserPage");
+    		}
+    		else {
+    			getServletContext().getRequestDispatcher("/WEB-INF/Errors.jsp").forward(request, response);
+			    return;
+    		}
+    	    response.getWriter().append("liste non ajoutée").append(request.getContextPath());   
+        }
+        else {
+        	request.setAttribute("errors", errors);
+            request.getRequestDispatcher("/WEB-INF/CreatePresents_List.jsp").forward(request, response);
+        }		
 	}
 }
