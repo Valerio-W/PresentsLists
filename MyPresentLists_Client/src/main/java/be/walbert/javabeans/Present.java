@@ -3,6 +3,8 @@ package be.walbert.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 public class Present implements Serializable{
 
 	/*Attributs*/
@@ -15,6 +17,7 @@ public class Present implements Serializable{
 	private String state;
 	private String link;
 	private String image;
+	@JsonBackReference
 	private Presents_List list;
 	private ArrayList<Multiple_Payment> payments;
 	
@@ -37,6 +40,44 @@ public class Present implements Serializable{
 		payments = new ArrayList<>();
 	}
 
+	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
+		Presents_List list) {
+		this.id_present = id_present;
+		this.name = name;
+		this.description = description;
+		this.average_prince = average_prince;
+		this.priority = priority;
+		this.state = state;
+		this.list = list;
+		payments = new ArrayList<>();
+	}
+	
+	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
+		 Presents_List list, String image) {
+		this.id_present = id_present;
+		this.name = name;
+		this.description = description;
+		this.average_prince = average_prince;
+		this.priority = priority;
+		this.state = state;
+		this.image = image;
+		this.list = list;
+		payments = new ArrayList<>();
+	}
+	
+	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
+			String link, Presents_List list) {
+		this.id_present = id_present;
+		this.name = name;
+		this.description = description;
+		this.average_prince = average_prince;
+		this.priority = priority;
+		this.state = state;
+		this.link = link;
+		this.list = list;
+		payments = new ArrayList<>();
+	}
+	
 	/*Getters/Setters*/
 	public int getId_present() {
 		return id_present;
@@ -125,4 +166,13 @@ public class Present implements Serializable{
 	public void removePayment(Multiple_Payment newpayment) {
 		payments.remove(newpayment);
 	}
+
+	@Override
+	public String toString() {
+		return "Present [id_present=" + id_present + ", name=" + name + ", description=" + description
+				+ ", average_prince=" + average_prince + ", priority=" + priority + ", state=" + state + ", link="
+				+ link + ", image=" + image + ", list=" + list + ", payments=" + payments + "]";
+	}
+	
+	
 }
