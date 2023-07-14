@@ -4,16 +4,23 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import be.walbert.DAO.DAO;
+import be.walbert.DAO.Presents_ListDAO;
+
 public class Presents_List implements Serializable{
 
 	/*Attributs*/
 	private static final long serialVersionUID = 396839806525868199L;
+	private static final DAO<Presents_List> presents_listDAO = new Presents_ListDAO();
 	private int id_list;
 	private LocalDate limit_date;
 	private String occasion;
 	private boolean state;
 	private Users owner;
 	private ArrayList<Users> guests;
+	@JsonManagedReference	//To avoid a circular reference problem when serializing these object to JSON.
 	private ArrayList<Present> presents;
 	
 	/*Constructors*/
@@ -22,7 +29,7 @@ public class Presents_List implements Serializable{
 		presents = new ArrayList<>();
 	}	
 	
-	public Presents_List(int id_list, LocalDate limit_date, String occasion, boolean state, Users owner, Present present) {
+	public Presents_List(int id_list, LocalDate limit_date, String occasion, boolean state, Users owner) {
 		this.id_list = id_list;
 		this.occasion= occasion;
 		this.limit_date = limit_date;
@@ -30,7 +37,6 @@ public class Presents_List implements Serializable{
 		this.owner = owner;
 		guests = new ArrayList<>();
 		presents = new ArrayList<>();
-		presents.add(present);
 	}
 
 	/*Getters/Setters*/
@@ -102,4 +108,7 @@ public class Presents_List implements Serializable{
 		presents.remove(newpresent);
 	}
 
+	public boolean createPresents_List() {
+		return presents_listDAO.create(this);
+	}
 }
