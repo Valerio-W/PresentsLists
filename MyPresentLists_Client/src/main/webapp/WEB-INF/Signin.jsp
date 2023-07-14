@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group mb-md-0">
 	                <!-- Password input-->
-	                <input name="password" class="form-control" id="password" type="tel" placeholder="Your Password *" required="required" />
+	                <input name="password" class="form-control" id="password" type="password" placeholder="Your Password *" required="required" />
              	</div>  
              	<div class="form-group mb-md-0">
 	                <!-- Password input-->
