@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@page import="java.util.ArrayList" %>
+    
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -72,5 +74,19 @@
         <!-- Submit Button-->
 		<button class="btn btn-primary btn-xl text-uppercase" id="submit" name="submit" type="submit">Create</button>
      </form>
+      <%-- Show error message --%>
+		<%
+			ArrayList<String> errors = (ArrayList<String>)request.getAttribute("errors");
+		%>
+		<div id="Errors">
+			<ul>
+				<% if(errors != null){
+					for(String error : errors){
+						out.println("<li class=\"ErrorMessage\">" + error + "</li>");
+					}
+				}
+				%>
+			</ul>
+		</div>
 	</body>
 </html>
