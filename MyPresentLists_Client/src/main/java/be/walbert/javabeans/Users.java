@@ -3,6 +3,8 @@ package be.walbert.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import be.walbert.DAO.DAO;
 import be.walbert.DAO.UsersDAO;
 
@@ -11,7 +13,7 @@ public class Users implements Serializable{
 	/*Attributs*/
 	private static final long serialVersionUID = 8882105652315396517L;
 	private static final DAO<Users> userDAO = new UsersDAO();
-
+	@JsonProperty("id_users") //specify the name of a property during JSON serialization/deserialization
 	private int id_users;
 	private String pseudo;
 	private String password;
