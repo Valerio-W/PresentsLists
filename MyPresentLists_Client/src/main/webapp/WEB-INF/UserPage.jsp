@@ -25,11 +25,16 @@
 		%>
 		<h1>Welcome on your page <%=u.getPseudo() %></h1>
 		<a href="CreatePresents_List">Create Presents List</a>
-		<%
-		  String confirm_New_Presents_List = (String) request.getSession().getAttribute("confirm_New_Presents_List");
-		  if (confirm_New_Presents_List != null) {
-		    out.println("<div class=\"ConfirmationMessage\">" + confirm_New_Presents_List + "</div>");
+		<% 
+		  if ((String) request.getSession().getAttribute("confirm_New_Presents_List") != null) {
+		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirm_New_Presents_List") + "</div>");
 		    request.getSession().removeAttribute("confirm_New_Presents_List");
+		  }
+		%>
+		<%
+		  if ((String) request.getSession().getAttribute("alreadyConnected") != null) {
+		    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("alreadyConnected") + "</div>");
+		    request.getSession().removeAttribute("alreadyConnected");
 		  }
 		%>
 	</body>
