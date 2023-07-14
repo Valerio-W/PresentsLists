@@ -70,7 +70,7 @@
         	</div>                       
         </div>
         <!-- Submit Button-->
-       	<button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">Create</button> 
+		<button class="btn btn-primary btn-xl text-uppercase" id="submit" name="submit" type="submit">Create</button>
      </form>
 	</body>
 </html>
