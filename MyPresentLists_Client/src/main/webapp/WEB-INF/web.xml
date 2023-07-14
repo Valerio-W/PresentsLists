@@ -7,12 +7,21 @@
 		<filter-name>AuthenticateFilter</filter-name>
 		<filter-class>be.walbert.Filters.AuthenticateFilter</filter-class>
 	</filter>
-
+	<filter>
+		<filter-name>AlreadyAuthenticateFilter</filter-name>
+		<filter-class>be.walbert.Filters.AlreadyAuthenticateFilter</filter-class>
+	</filter>
   <!-- FILTERS MAPPINGS -->
   <filter-mapping>
   	<filter-name>AuthenticateFilter</filter-name>
   	<servlet-name>UserPage</servlet-name>
   	<servlet-name>CreatePresents_List</servlet-name>
+  </filter-mapping>
+  <filter-mapping>
+  	<filter-name>AlreadyAuthenticateFilter</filter-name>
+  	<servlet-name>HomePage</servlet-name>
+  	<servlet-name>Login</servlet-name>
+  	<servlet-name>Signin</servlet-name>
   </filter-mapping>
   
     <!-- WELCOME PAGE -->
