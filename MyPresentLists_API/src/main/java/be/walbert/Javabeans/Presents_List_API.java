@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import be.walbert.DAO.AbstractDAOFactory_API;
+import be.walbert.DAO.DAO;
+
 public class Presents_List_API implements Serializable{
 
 	/*Attributs*/
@@ -15,6 +18,8 @@ public class Presents_List_API implements Serializable{
 	private Users_API owner;
 	private ArrayList<Users_API> guests;
 	private ArrayList<Present_API> presents;
+	private static final AbstractDAOFactory_API adf =  AbstractDAOFactory_API.getFactory();
+	private static final DAO<Presents_List_API> Presents_List_DAO = adf.getPresents_ListDAO_API();
 	
 	/*Constructors*/
 	public Presents_List_API() {
@@ -22,7 +27,7 @@ public class Presents_List_API implements Serializable{
 		presents = new ArrayList<>();
 	}	
 	
-	public Presents_List_API(int id_list, LocalDate limit_date, String occasion, boolean state, Users_API owner, Present_API present) {
+	public Presents_List_API(int id_list, LocalDate limit_date, String occasion, boolean state, Users_API owner) {
 		this.id_list = id_list;
 		this.occasion= occasion;
 		this.limit_date = limit_date;
@@ -30,7 +35,6 @@ public class Presents_List_API implements Serializable{
 		this.owner = owner;
 		guests = new ArrayList<>();
 		presents = new ArrayList<>();
-		presents.add(present);
 	}
 
 	/*Getters/Setters*/
@@ -100,6 +104,10 @@ public class Presents_List_API implements Serializable{
 	}
 	public void removePresent(Present_API newpresent) {
 		presents.remove(newpresent);
+	}
+	
+	public boolean create() {
+		return Presents_List_DAO.create(this);
 	}
 
 }
