@@ -25,6 +25,7 @@
 		%>
 		<h1>Welcome on your page <%=u.getPseudo() %></h1>
 		<a href="CreatePresents_List">Create Presents List</a>
+		<a href="Get_Presents_List">My Presents Lists</a>
 		<% 
 		  if ((String) request.getSession().getAttribute("confirm_New_Presents_List") != null) {
 		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirm_New_Presents_List") + "</div>");
