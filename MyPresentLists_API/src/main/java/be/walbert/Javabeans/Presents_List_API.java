@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
 
@@ -15,6 +17,7 @@ public class Presents_List_API implements Serializable{
 	private LocalDate limit_date;
 	private String occasion;
 	private boolean state;
+	@JsonBackReference
 	private Users_API owner;
 	private ArrayList<Users_API> guests;
 	private ArrayList<Present_API> presents;

@@ -80,7 +80,7 @@ public class UsersDAO extends DAO<Users>{
  			if (res.getStatus() == 200) {	//Get HTTP response code
  				String response = res.getEntity(String.class); //The response body is extracted as a String using getEntity(String.class)
 				JSONObject json = new JSONObject(response);
-				int id_users = json.getInt("id");
+				int id_users = json.getInt("id_users");
 				String email = json.getString("email");
 				user = new Users(id_users, pseudo, password, email);
  				return user;
