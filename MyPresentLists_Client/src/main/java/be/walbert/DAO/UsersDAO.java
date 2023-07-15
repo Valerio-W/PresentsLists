@@ -1,15 +1,19 @@
 package be.walbert.DAO;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
+import be.walbert.javabeans.Presents_List;
 import be.walbert.javabeans.Users;
 
 public class UsersDAO extends DAO<Users>{
@@ -83,6 +87,31 @@ public class UsersDAO extends DAO<Users>{
 				int id_users = json.getInt("id_users");
 				String email = json.getString("email");
 				user = new Users(id_users, pseudo, password, email);
+
+				JSONArray listsArray = json.getJSONArray("lists");
+				ArrayList<Presents_List> lists = new ArrayList<>();
+				for (int i = 0; i < listsArray.length(); i++) {
+				    JSONObject listObj = listsArray.getJSONObject(i);
+				    //Extracting attribute values ​​from the "list" and creating a Presents_List object
+				    int id_list = listObj.getInt("id_list");
+				    JSONObject object_limit_date = listObj.getJSONObject("limit_date");
+
+				    int year = object_limit_date.getInt("year");
+				    String monthString = object_limit_date.getString("month");
+
+				    // Convert month to int
+				    int month = Month.valueOf(monthString.toUpperCase()).getValue();
+				    int dayOfMonth = object_limit_date.getInt("dayOfMonth");
+
+				    LocalDate limit_date = LocalDate.of(year, month, dayOfMonth);
+			        String occasion = listObj.getString("occasion");
+				    boolean state = listObj.getBoolean("state");
+				    
+				    //Creating the Presents_List object and adding it to "lists"
+				    Presents_List presentsList = new Presents_List(id_list, limit_date, occasion, state, user);
+				    lists.add(presentsList);
+				}
+				user.setLists(lists);
  				return user;
 			}
  			else {
