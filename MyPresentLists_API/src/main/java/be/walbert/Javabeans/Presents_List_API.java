@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_list")
 public class Presents_List_API implements Serializable{
 
 	/*Attributs*/
@@ -17,10 +19,9 @@ public class Presents_List_API implements Serializable{
 	private LocalDate limit_date;
 	private String occasion;
 	private boolean state;
-	@JsonBackReference
-	private Users_API owner;
 	private ArrayList<Users_API> guests;
 	private ArrayList<Present_API> presents;
+	private Users_API owner;
 	private static final AbstractDAOFactory_API adf =  AbstractDAOFactory_API.getFactory();
 	private static final DAO<Presents_List_API> Presents_List_DAO = adf.getPresents_ListDAO_API();
 	

@@ -3,13 +3,16 @@ package be.walbert.Javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
 import be.walbert.DAO.UsersDAO_API;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_users")
 public class Users_API implements Serializable {
 
 	/*Attributs*/
@@ -19,7 +22,6 @@ public class Users_API implements Serializable {
 	private String pseudo;
 	private String password;
 	private String email;
-	@JsonManagedReference
 	private ArrayList<Presents_List_API> lists;
 	private ArrayList<Message_API> messages;
 	private ArrayList<Multiple_Payment_API> payments;
