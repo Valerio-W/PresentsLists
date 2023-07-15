@@ -4,11 +4,16 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.walbert.DAO.DAO;
 import be.walbert.DAO.Presents_ListDAO;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_list")
 public class Presents_List implements Serializable{
 
 	/*Attributs*/
@@ -20,7 +25,7 @@ public class Presents_List implements Serializable{
 	private boolean state;
 	private Users owner;
 	private ArrayList<Users> guests;
-	@JsonManagedReference	//To avoid a circular reference problem when serializing these object to JSON.
+	 //To avoid a circular reference problem when serializing these object to JSON.
 	private ArrayList<Present> presents;
 	
 	/*Constructors*/

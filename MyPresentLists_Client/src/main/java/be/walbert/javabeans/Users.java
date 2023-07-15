@@ -3,11 +3,15 @@ package be.walbert.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.walbert.DAO.DAO;
 import be.walbert.DAO.UsersDAO;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_users")
 public class Users implements Serializable{
 	
 	/*Attributs*/
