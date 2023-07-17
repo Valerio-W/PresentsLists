@@ -116,4 +116,8 @@ public class Presents_List implements Serializable{
 	public boolean createPresents_List() {
 		return presents_listDAO.create(this);
 	}
+	
+	public Presents_List find() {
+		return presents_listDAO.find(this.getId_list());
+	}
 }
