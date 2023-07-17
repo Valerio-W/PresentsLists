@@ -62,7 +62,7 @@ public class UsersDAO extends DAO<Users>{
 	}
 
 	@Override
-	public ArrayList<Users> findAll(Object obj) {
+	public ArrayList<Users> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

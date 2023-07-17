@@ -31,7 +31,7 @@ public class PresentDAO extends DAO<Present>{
 	}
 
 	@Override
-	public ArrayList<Present> findAll(Object obj) {
+	public ArrayList<Present> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

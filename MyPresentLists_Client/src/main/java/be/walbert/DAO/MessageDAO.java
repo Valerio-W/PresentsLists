@@ -31,7 +31,7 @@ public class MessageDAO extends DAO<Message>{
 	}
 
 	@Override
-	public ArrayList<Message> findAll(Object obj) {
+	public ArrayList<Message> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

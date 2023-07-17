@@ -31,7 +31,7 @@ public class Mutliple_PaymentDAO extends DAO<Multiple_Payment>{
 	}
 
 	@Override
-	public ArrayList<Multiple_Payment> findAll(Object obj) {
+	public ArrayList<Multiple_Payment> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
