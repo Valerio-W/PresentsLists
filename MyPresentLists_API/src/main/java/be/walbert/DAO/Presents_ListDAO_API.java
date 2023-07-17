@@ -6,9 +6,12 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import be.walbert.Javabeans.Presents_List_API;
+import be.walbert.Javabeans.Users_API;
+import oracle.jdbc.OracleTypes;
 
 public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 
@@ -29,8 +32,6 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 		    
 		    callableStatement.execute();
 		    
-		    //int id_list = callableStatement.getInt(5); 
-
 	        return true;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -40,7 +41,30 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 
 	@Override
 	public Presents_List_API find(int id) {
-		// TODO Auto-generated method stub
+		try {
+			CallableStatement callableStatement = connect.prepareCall("{call Find_List(?, ?)}");
+	        callableStatement.setInt(1, id);
+	        callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+	        callableStatement.execute();
+
+	        ResultSet resultSet = (ResultSet) callableStatement.getObject(2);
+	        
+	        if (resultSet.next()) {
+	            int id_list = resultSet.getInt("ID_LIST");
+	            LocalDate limit_date = resultSet.getDate("LIMIT_DATE").toLocalDate();
+	            String occasion = resultSet.getString("OCCASION");
+	            boolean state = resultSet.getInt("STATE") == 1;
+	            int id_users = resultSet.getInt("ID_USERS");
+	            
+	            UsersDAO_API userDAO = new UsersDAO_API(connect);
+	            Users_API user = userDAO.find(id_users);
+
+	            Presents_List_API presentsList = new Presents_List_API(id_list, limit_date, occasion, state, user);
+	            return presentsList;
+	        }
+		} catch (Exception e) {
+	        e.printStackTrace();
+ 		}
 		return null;
 	}
 

@@ -44,7 +44,28 @@ public class UsersDAO_API extends DAO<Users_API>  {
 
 	@Override
 	public Users_API find(int id) {
-		return null;
+		 try {
+			 	CallableStatement callableStatement = connect.prepareCall("{call Find_User(?, ?)}");
+	            callableStatement.setInt(1, id);
+	            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+	            callableStatement.execute();
+
+	            ResultSet resultSet = (ResultSet) callableStatement.getObject(2);
+
+	            if (resultSet.next()) {
+	                int id_users = resultSet.getInt("ID_USERS");
+	                String pseudo = resultSet.getString("PSEUDO");
+	                String password = resultSet.getString("PASSWORD");
+	                String email = resultSet.getString("EMAIL");
+
+	                Users_API user = new Users_API(id_users, pseudo, password, email);
+	                return user;
+	            }
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+		return null; 
 	}
 
 	@Override
