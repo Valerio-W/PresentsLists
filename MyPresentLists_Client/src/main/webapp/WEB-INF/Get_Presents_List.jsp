@@ -42,7 +42,11 @@
 			        <td><%= list.getId_list() %></td>
 			        <td><%= list.getLimit_date() %></td>
 			        <td><%= list.getOccasion() %></td>
-			        <td><%= list.isState() %></td>
+			        <%if(list.isState())
+			        	out.println("<td>Active</td>");
+			        else
+			        	out.println("<td>Expired</td>");
+			        	%>
 			    </tr>
 			<% } %>
             </tbody>
