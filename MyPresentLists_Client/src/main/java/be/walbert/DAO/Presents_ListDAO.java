@@ -1,15 +1,20 @@
 package be.walbert.DAO;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import be.walbert.javabeans.Presents_List;
+import be.walbert.javabeans.Users;
 
 public class Presents_ListDAO extends DAO <Presents_List>{
 
@@ -54,8 +59,40 @@ public class Presents_ListDAO extends DAO <Presents_List>{
 
 	@Override
 	public Presents_List find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	    try {
+	        ClientResponse res = this.ressource
+	            .path("presents_list/" + id)
+	            .accept(MediaType.APPLICATION_JSON)
+	            .get(ClientResponse.class);
+
+	        if (res.getStatus() == 200) {
+	        	String response = res.getEntity(String.class); //The response body is extracted as a String using getEntity(String.class)
+				JSONObject json = new JSONObject(response);
+				JSONObject object_limit_date = json.getJSONObject("limit_date");
+
+			    int year = object_limit_date.getInt("year");
+			    String monthString = object_limit_date.getString("month");
+			    // Convert month to int
+			    int month = Month.valueOf(monthString.toUpperCase()).getValue();
+			    int dayOfMonth = object_limit_date.getInt("dayOfMonth");
+			    LocalDate limit_date = LocalDate.of(year, month, dayOfMonth);
+		        String occasion = json.getString("occasion");
+		        boolean state = json.getBoolean("state");
+		        
+		        JSONObject object_user = json.getJSONObject("owner");
+			    int id_users = object_user.getInt("id_users");
+			    String pseudo = object_user.getString("pseudo");
+			    String password = object_user.getString("password");
+			    String email = object_user.getString("email");
+			    Users user = new Users(id_users,pseudo,password, email);
+			  
+	            Presents_List presentsList = new Presents_List(id, limit_date, occasion, state, user);
+	            return presentsList;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
 
 	@Override
