@@ -4,10 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.walbert.DAO.DAO;
@@ -120,4 +117,25 @@ public class Presents_List implements Serializable{
 	public Presents_List find() {
 		return presents_listDAO.find(this.getId_list());
 	}
+	
+	public boolean update_PresentsList() {
+		this.set_Expired();
+		return presents_listDAO.update(this);
+
+	}
+	public void set_Expired() {
+	    LocalDate today = LocalDate.now();
+	    
+	    if (limit_date.isBefore(today)) {
+	        this.setState(false);
+	    }
+	    
+	}
+
+	public static ArrayList<Presents_List> findAllLists() {
+	    Presents_ListDAO presentsListDAO = new Presents_ListDAO();
+	    return presentsListDAO.findAll();  
+	}
+
+
 }
