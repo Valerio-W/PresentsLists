@@ -17,6 +17,8 @@
   	<servlet-name>UserPage</servlet-name>
   	<servlet-name>CreatePresents_List</servlet-name>
   	<servlet-name>Get_Presents_List</servlet-name>
+  	<servlet-name>Get_Details_of_PresentsList</servlet-name>
+  	
   </filter-mapping>
   <filter-mapping>
   	<filter-name>AlreadyAuthenticateFilter</filter-name>
@@ -72,6 +74,11 @@
   	<servlet-class>be.walbert.servlets.Get_Presents_List</servlet-class>
   </servlet>
   
+  <servlet>
+  	<servlet-name>Get_Details_of_PresentsList</servlet-name>
+  	<servlet-class>be.walbert.servlets.Get_Details_of_PresentsList</servlet-class>
+  </servlet>
+    
   <!-- SERVLETS MAPPINGS -->
   <servlet-mapping>
   	<servlet-name>HomePage</servlet-name>
@@ -96,6 +103,10 @@
   </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>Get_Presents_List</servlet-name>
-  	<url-pattern>/Get_Presents_List</url-pattern>
+  	<url-pattern>/Get_Presents_List</url-pattern> 
+  </servlet-mapping>
+   <servlet-mapping>
+  	<servlet-name>Get_Details_of_PresentsList</servlet-name>
+  	<url-pattern>/Get_Details_of_PresentsList</url-pattern>
   </servlet-mapping>
 </web-app>

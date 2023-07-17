@@ -20,7 +20,7 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="./css/styles.css" rel="stylesheet" />
     </head>
-	<body>
+	<body class="Pages">
 		<%
     ArrayList<Presents_List> presentsLists = (ArrayList<Presents_List>) request.getAttribute("presentsLists");
 %>
@@ -47,6 +47,7 @@
 			        else
 			        	out.println("<td>Expired</td>");
 			        	%>
+			    	<td><a href="Get_Details_of_PresentsList?id=<%= list.getId_list() %>">Consult</a></td>
 			    </tr>
 			<% } %>
             </tbody>
