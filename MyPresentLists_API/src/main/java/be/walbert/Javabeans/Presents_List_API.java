@@ -119,4 +119,11 @@ public class Presents_List_API implements Serializable{
 		return Presents_List_DAO.find(id_list);
 	}
 
+	public static ArrayList<Presents_List_API> findAll() {
+	    return Presents_List_DAO.findAll();
+	}
+	public boolean update() {
+	    return Presents_List_DAO.update(this);
+	}
+
 }
