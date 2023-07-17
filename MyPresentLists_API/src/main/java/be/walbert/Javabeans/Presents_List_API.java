@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
+import be.walbert.DAO.Presents_ListDAO_API;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_list")
 public class Presents_List_API implements Serializable{
 
@@ -112,6 +113,10 @@ public class Presents_List_API implements Serializable{
 	
 	public boolean create() {
 		return Presents_List_DAO.create(this);
+	}
+
+	public static Presents_List_API find(int id_list) {
+		return Presents_List_DAO.find(id_list);
 	}
 
 }

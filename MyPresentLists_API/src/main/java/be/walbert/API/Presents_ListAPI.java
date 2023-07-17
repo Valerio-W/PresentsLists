@@ -1,25 +1,18 @@
 package be.walbert.API;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.Year;
-import java.time.ZoneId;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONObject;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
@@ -64,5 +57,24 @@ public class Presents_ListAPI {
 	    } catch (Exception ex) {
 	        return Response.status(Status.BAD_REQUEST).build();
 	    }
+	}
+	
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response find_Presents_List(@PathParam("id") int id_list) {
+		Presents_List_API presents_list = new Presents_List_API();
+		try {
+			presents_list = Presents_List_API.find(id_list);
+
+			if (presents_list == null) {
+				return Response.status(Status.SERVICE_UNAVAILABLE).build();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(Status.OK).entity(presents_list).build();
 	}
 }
