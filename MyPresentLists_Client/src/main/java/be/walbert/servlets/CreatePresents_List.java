@@ -48,6 +48,19 @@ public class CreatePresents_List extends HttpServlet {
 		InputStream imageStream = imagePart.getInputStream();
 		byte[] image = imageStream.readAllBytes();
 
+		// Close the image stream
+		imageStream.close();
+
+		// Add a delay before deleting the file
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Delete temp file
+		imagePart.delete();
+		
         //Set the list of errors
         ArrayList<String> errors = new ArrayList<String>();
         
@@ -77,10 +90,6 @@ public class CreatePresents_List extends HttpServlet {
     		//Add present to the Presents_List object
     		new_list.addPresent(present);
     		if(new_list.createPresents_List()) {
-    			//Create a temp file from image file
-    			File tempFile = File.createTempFile("temp", null);
-    			//Delete the temp file to avoid error message in the console
-    			tempFile.delete();
                 request.getSession().setAttribute("confirm_New_Presents_List", "Great, your new list has just been created");
                 response.sendRedirect(request.getContextPath() + "/UserPage");
     		}
