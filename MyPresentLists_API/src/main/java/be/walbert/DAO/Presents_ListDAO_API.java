@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
+import be.walbert.Javabeans.Present_API;
 import oracle.jdbc.OracleTypes;
 
 public class Presents_ListDAO_API extends DAO<Presents_List_API>{
@@ -35,8 +36,16 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 		    callableStatement.registerOutParameter(5, Types.INTEGER); 
 		    
 		    callableStatement.execute();
+		    Present_API first_present = obj.getPresents().get(0);
+		    first_present.getList().setId_list(callableStatement.getInt(5));
+		    PresentDAO_API presentDAO= new PresentDAO_API(connect);
 		    
-	        return true;
+		    //When a new presents_list is created a first present is added too
+		    if( presentDAO.create(obj.getPresents().get(0))) {
+		        return true;
+		    }
+		    return false;
+		    
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;

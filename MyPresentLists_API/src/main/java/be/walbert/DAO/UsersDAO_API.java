@@ -155,7 +155,6 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	            return user;
 	        }
 	        rs.close();
-	        callableStatement_Users.close();
 	    } catch (SQLException e) {
 	        System.out.println("oracle error");
 	    }
