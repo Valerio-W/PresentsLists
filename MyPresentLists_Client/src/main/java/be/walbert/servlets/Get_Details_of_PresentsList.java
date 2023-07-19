@@ -24,7 +24,6 @@ public class Get_Details_of_PresentsList extends HttpServlet {
 	        presents_list = presents_list.find();
 	        
 	        if(presents_list != null) {
-	        	
 	        	 request.setAttribute("presents_list", presents_list);
 	             getServletContext().getRequestDispatcher("/WEB-INF/Get_Details_of_PresentsList.jsp").forward(request, response);
 	         }

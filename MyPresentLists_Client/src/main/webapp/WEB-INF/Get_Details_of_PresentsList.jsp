@@ -3,6 +3,7 @@
     <%@page import="java.util.ArrayList" %>
     <%@page import="be.walbert.javabeans.*" %>
 	<%@page import="be.walbert.javabeans.Presents_List" %>
+	<%@page import="java.util.Base64" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,10 +41,33 @@
 		</ul>
 		
 		<h2>Presents:</h2>
-		<ul>
+		<table>
+		    <thead>
+		    	<tr>
+		        	<th>Name</th>
+		            <th>Description</th>
+		            <th>Average Price</th>
+		            <th>Priority</th>
+		            <th>State</th>
+		            <th>Link</th>
+		            <th>Image</th>
+		        </tr>
+		    </thead>
 		    <% for (Present present : presents_list.getPresents()) { %>
-				<li><%= present.getName() %> - <%= present.getAverage_prince() %> €</li>
+		         <tr>
+		            <td><%= present.getName() %></td>
+		            <td><%= present.getDescription() %></td>
+		            <td><%= present.getAverage_price() %> €</td>
+		            <td><%= present.getPriority() %></td>
+		            <td><%= present.getState() %></td>
+		            <td><%= present.getLink() %></td>
+		            <td>
+                    <% if (present.getImage() != null) { %>
+                        <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(present.getImage()) %>" alt="Present Image" />
+                    <% } %>
+                </td>
+		         </tr>
 		    <% } %>
-		</ul>
+		</table>
 	</body>
 </html>
