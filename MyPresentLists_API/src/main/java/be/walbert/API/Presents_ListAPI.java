@@ -3,6 +3,7 @@ package be.walbert.API;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,8 +15,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import be.walbert.Javabeans.Present_API;
 import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
 
@@ -49,10 +52,30 @@ public class Presents_ListAPI {
 	    	    
 	    	    Presents_List_API presents_list = new Presents_List_API(0, limitDate, occasion, state, user);
 	    	    
-	        if (!presents_list.create()) {
-	            return Response.status(Status.SERVICE_UNAVAILABLE).build();
-	        } else {
-	            return Response.status(Status.CREATED)
+	    	    
+	    	    Present_API first_present = new Present_API();
+	    	    JSONArray presentsArray = jsonObject.getJSONArray("presents");
+
+	    	    for (int i = 0; i < presentsArray.length(); i++) {
+	    	        JSONObject presentObject = presentsArray.getJSONObject(i);
+
+	    	        String name = presentObject.getString("name");
+	    	        String description = presentObject.getString("description");
+	    	        double average_price = presentObject.getDouble("average_prince");
+	    	        int priority = presentObject.getInt("priority");
+	    	        String statePresent = presentObject.getString("state");
+	    	    	String link = presentObject.getString("link"); 
+	    	    	String imageBase64 = presentObject.getString("image");
+	    	    	byte[] image = Base64.getDecoder().decode(imageBase64);
+
+
+		    	    first_present = new Present_API(0, name, description, average_price, priority, statePresent, link, image, presents_list);
+	    	    }
+	    	    presents_list.addPresent(first_present);
+	    	    if (!presents_list.create()) {
+	    	    	return Response.status(Status.SERVICE_UNAVAILABLE).build();
+	    	    } else {
+	    	    	return Response.status(Status.CREATED)
 	                    .header("Location", "/MyPresentLists_API/api/presents_list/" + presents_list.getId_list())
 	                    .build();
 	        }
