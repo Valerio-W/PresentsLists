@@ -3,6 +3,7 @@ package be.walbert.DAO;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
+import be.walbert.javabeans.Present;
 import be.walbert.javabeans.Presents_List;
 import be.walbert.javabeans.Users;
 
@@ -101,6 +103,31 @@ public class Presents_ListDAO extends DAO <Presents_List>{
 			    Users user = new Users(id_users,pseudo,password, email);
 			  
 	            Presents_List presentsList = new Presents_List(id, limit_date, occasion, state, user);
+	            
+	            JSONArray presentsArray = json.getJSONArray("presents");
+
+	            for (int i = 0; i < presentsArray.length(); i++) {
+	                JSONObject presentObject = presentsArray.getJSONObject(i);
+
+	                int presentId = presentObject.getInt("id_present");
+	                String name = presentObject.getString("name");
+	                String description = presentObject.getString("description");
+	                double averagePrice = presentObject.getDouble("average_price");
+	                int priority = presentObject.getInt("priority");
+	                String statePresent = presentObject.getString("state");
+	                String link = null;
+	                if (!presentObject.isNull("link")) {
+	                    link = presentObject.getString("link");
+	                }
+	                byte[] image= null;
+	                if (!presentObject.isNull("image")) {
+	                	image = Base64.getDecoder().decode(presentObject.getString("image"));
+	                }
+
+	                Present present = new Present(presentId, name, description, averagePrice, priority, statePresent, link, image,presentsList);
+	                presentsList.addPresent(present);
+	            }
+
 	            return presentsList;
 	        }
 	    } catch (Exception e) {
