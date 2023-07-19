@@ -25,7 +25,7 @@
 	</head>
 	<body class="Pages">
 		<h1>Create a new Presents List !</h1>
-		<form class="Form" action="CreatePresents_List" method="POST">
+		<form class="Form" action="CreatePresents_List" method="POST" enctype="multipart/form-data"><!-- to allow the sending of files. -->
 	 	<div class="row align-items-stretch mb-5">
         	<div class="col-md-6">
         	<h3>New List</h3>
