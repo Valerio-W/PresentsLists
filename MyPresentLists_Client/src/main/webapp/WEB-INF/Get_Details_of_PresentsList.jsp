@@ -32,7 +32,7 @@
 		<p>Occasion: <%= presents_list.getOccasion() %></p>
 		<p>Status: <%= presents_list.isState() %></p>
 		<p>Owner: <%= presents_list.getOwner().getPseudo() %></p>
-		
+		<a href="CreatePresent">Add present</a>
 		<h2>Guests:</h2>
 		<ul>
 		    <% for (Users guest : presents_list.getGuests()) { %>
