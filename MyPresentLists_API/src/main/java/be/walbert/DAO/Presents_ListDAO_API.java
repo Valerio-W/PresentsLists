@@ -1,7 +1,9 @@
 package be.walbert.DAO;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Array;
+import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -56,11 +58,17 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	public Presents_List_API find(int id) {
 		try {
 			CallableStatement callableStatement = connect.prepareCall("{call Find_List(?, ?)}");
+			CallableStatement presents_callableStatement = connect.prepareCall("{call GetGiftsByListId(?, ?)}");
+			presents_callableStatement.setInt(1, id);
+			presents_callableStatement.registerOutParameter(2, Types.ARRAY, "PRESENT_TABLE");
+
 	        callableStatement.setInt(1, id);
 	        callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
 	        callableStatement.execute();
+			presents_callableStatement.execute();
 
 	        ResultSet resultSet = (ResultSet) callableStatement.getObject(2);
+
 	        
 	        if (resultSet.next()) {
 	            int id_list = resultSet.getInt("ID_LIST");
@@ -73,6 +81,32 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	            Users_API user = userDAO.find(id_users);
 
 	            Presents_List_API presentsList = new Presents_List_API(id_list, limit_date, occasion, state, user);
+	            
+	            Array array = presents_callableStatement.getArray(2);
+		        Object[] dataArray = (Object[]) array.getArray();
+		        
+		        for (Object data : dataArray) {
+		            Struct struct = (Struct) data;
+		            Object[] attributes = struct.getAttributes();
+		            
+	                BigDecimal presentId_decimal = (BigDecimal)attributes[0];
+	                int presentId = presentId_decimal.intValue();
+	                String name = (String)attributes[1];
+	                String description = (String)attributes[2];
+	                BigDecimal average_price_decimal = (BigDecimal)attributes[3];
+	                int average_price = average_price_decimal.intValue();
+	                BigDecimal priority_decimal = (BigDecimal)attributes[4];
+	                int priority = priority_decimal.intValue();
+	                String presentState = (String)attributes[5];
+	                String link = (String)attributes[6];
+	                Blob imageBlob = (Blob) attributes[7];
+	                InputStream inputStream = imageBlob.getBinaryStream();
+	                byte[] image = inputStream.readAllBytes();
+
+	                Present_API present = new Present_API(presentId, name, description, average_price, priority, presentState, link, image, presentsList);
+	                presentsList.addPresent(present);
+	            }
+	            
 	            return presentsList;
 	        }
 		} catch (Exception e) {
