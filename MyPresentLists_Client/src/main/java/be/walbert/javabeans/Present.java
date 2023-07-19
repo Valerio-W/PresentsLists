@@ -15,7 +15,7 @@ public class Present implements Serializable{
 	private int id_present;
 	private String name;
 	private String description;
-	private double average_prince;
+	private double average_price;
 	private int priority;
 	private String state;
 	private String link;
@@ -30,12 +30,12 @@ public class Present implements Serializable{
 		payments= new ArrayList<>();
 	}
 
-	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
+	public Present(int id_present, String name, String description, double average_price, int priority, String state,
 			String link, byte[] image, Presents_List list) {
 		this.id_present = id_present;
 		this.name = name;
 		this.description = description;
-		this.average_prince = average_prince;
+		this.average_price = average_price;
 		this.priority = priority;
 		this.state = state;
 		this.link = link;
@@ -44,24 +44,24 @@ public class Present implements Serializable{
 		payments = new ArrayList<>();
 	}
 
-	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
+	public Present(int id_present, String name, String description, double average_price, int priority, String state,
 		Presents_List list) {
 		this.id_present = id_present;
 		this.name = name;
 		this.description = description;
-		this.average_prince = average_prince;
+		this.average_price = average_price;
 		this.priority = priority;
 		this.state = state;
 		this.list = list;
 		payments = new ArrayList<>();
 	}
 	
-	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
+	public Present(int id_present, String name, String description, double average_price, int priority, String state,
 		 Presents_List list, byte[]  image) {
 		this.id_present = id_present;
 		this.name = name;
 		this.description = description;
-		this.average_prince = average_prince;
+		this.average_price = average_price;
 		this.priority = priority;
 		this.state = state;
 		this.image = image;
@@ -69,12 +69,12 @@ public class Present implements Serializable{
 		payments = new ArrayList<>();
 	}
 	
-	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
+	public Present(int id_present, String name, String description, double average_price, int priority, String state,
 			String link, Presents_List list) {
 		this.id_present = id_present;
 		this.name = name;
 		this.description = description;
-		this.average_prince = average_prince;
+		this.average_price = average_price;
 		this.priority = priority;
 		this.state = state;
 		this.link = link;
@@ -107,12 +107,12 @@ public class Present implements Serializable{
 		this.description = description;
 	}
 
-	public double getAverage_prince() {
-		return average_prince;
+	public double getAverage_price() {
+		return average_price;
 	}
 
-	public void setAverage_prince(double average_prince) {
-		this.average_prince = average_prince;
+	public void setAverage_price(double average_price) {
+		this.average_price = average_price;
 	}
 
 	public int getPriority() {
@@ -174,7 +174,7 @@ public class Present implements Serializable{
 	@Override
 	public String toString() {
 		return "Present [id_present=" + id_present + ", name=" + name + ", description=" + description
-				+ ", average_prince=" + average_prince + ", priority=" + priority + ", state=" + state + ", link="
+				+ ", average_prince=" + average_price + ", priority=" + priority + ", state=" + state + ", link="
 				+ link + ", image=" + image + ", list=" + list + ", payments=" + payments + "]";
 	}
 	public boolean createPresent() {

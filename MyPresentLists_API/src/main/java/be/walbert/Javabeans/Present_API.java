@@ -13,7 +13,7 @@ public class Present_API implements Serializable{
 	private int id_present;
 	private String name;
 	private String description;
-	private double average_prince;
+	private double average_price;
 	private int priority;
 	private String state;
 	private String link;
@@ -28,12 +28,12 @@ public class Present_API implements Serializable{
 		payments= new ArrayList<>();
 	}
 
-	public Present_API(int id_present, String name, String description, double average_prince, int priority, String state,
+	public Present_API(int id_present, String name, String description, double average_price, int priority, String state,
 			String link, byte[] image, Presents_List_API list) {
 		this.id_present = id_present;
 		this.name = name;
 		this.description = description;
-		this.average_prince = average_prince;
+		this.average_price = average_price;
 		this.priority = priority;
 		this.state = state;
 		this.link = link;
@@ -67,12 +67,12 @@ public class Present_API implements Serializable{
 		this.description = description;
 	}
 
-	public double getAverage_prince() {
-		return average_prince;
+	public double getAverage_price() {
+		return average_price;
 	}
 
-	public void setAverage_prince(double average_prince) {
-		this.average_prince = average_prince;
+	public void setAverage_price(double average_price) {
+		this.average_price = average_price;
 	}
 
 	public int getPriority() {
