@@ -58,9 +58,9 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	public Presents_List_API find(int id) {
 		try {
 			CallableStatement callableStatement = connect.prepareCall("{call Find_List(?, ?)}");
-			CallableStatement presents_callableStatement = connect.prepareCall("{call GetGiftsByListId(?, ?)}");
+			CallableStatement presents_callableStatement = connect.prepareCall("{call GetPresentsByListId(?, ?)}");
 			presents_callableStatement.setInt(1, id);
-			presents_callableStatement.registerOutParameter(2, Types.ARRAY, "PRESENT_TABLE");
+			presents_callableStatement.registerOutParameter(2, Types.ARRAY, "PRESENTSTABLE");
 
 	        callableStatement.setInt(1, id);
 	        callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
@@ -98,11 +98,16 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	                BigDecimal priority_decimal = (BigDecimal)attributes[4];
 	                int priority = priority_decimal.intValue();
 	                String presentState = (String)attributes[5];
-	                String link = (String)attributes[6];
+	                String link=null;
+	                if((String)attributes[6]!=null) {
+	                	 link = (String)attributes[6];
+	                }
 	                Blob imageBlob = (Blob) attributes[7];
-	                InputStream inputStream = imageBlob.getBinaryStream();
-	                byte[] image = inputStream.readAllBytes();
-
+	                byte[] image = null;
+	                if(imageBlob != null) {
+	                	InputStream inputStream = imageBlob.getBinaryStream();
+		                image = inputStream.readAllBytes();
+	                }
 	                Present_API present = new Present_API(presentId, name, description, average_price, priority, presentState, link, image, presentsList);
 	                presentsList.addPresent(present);
 	            }

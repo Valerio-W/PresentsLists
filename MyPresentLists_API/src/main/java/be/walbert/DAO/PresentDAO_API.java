@@ -28,7 +28,7 @@ public class PresentDAO_API extends DAO<Present_API> {
 	        cstmt.setDouble(4, obj.getAverage_price());
 	        cstmt.setInt(5, obj.getPriority());
 	        cstmt.setString(6, obj.getState());
-	        cstmt.setString(7, ""); // can be null
+	        cstmt.setString(7, obj.getLink()); // can be null
 	        ByteArrayInputStream inputStream = new ByteArrayInputStream(obj.getImage());
 	        cstmt.setBlob(8, inputStream);
 	        cstmt.setInt(9, obj.getList().getId_list());
