@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import be.walbert.DAO.DAO;
+import be.walbert.DAO.PresentDAO;
+
 public class Present implements Serializable{
 
 	/*Attributs*/
@@ -16,10 +19,11 @@ public class Present implements Serializable{
 	private int priority;
 	private String state;
 	private String link;
-	private String image;
+	private byte[] image;
 	@JsonBackReference
 	private Presents_List list;
 	private ArrayList<Multiple_Payment> payments;
+	private static final DAO<Present> present_DAO = new PresentDAO();
 	
 	/*Constructors*/
 	public Present() {
@@ -27,7 +31,7 @@ public class Present implements Serializable{
 	}
 
 	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
-			String link, String image, Presents_List list) {
+			String link, byte[] image, Presents_List list) {
 		this.id_present = id_present;
 		this.name = name;
 		this.description = description;
@@ -53,7 +57,7 @@ public class Present implements Serializable{
 	}
 	
 	public Present(int id_present, String name, String description, double average_prince, int priority, String state,
-		 Presents_List list, String image) {
+		 Presents_List list, byte[]  image) {
 		this.id_present = id_present;
 		this.name = name;
 		this.description = description;
@@ -135,11 +139,11 @@ public class Present implements Serializable{
 		this.link = link;
 	}
 
-	public String getImage() {
+	public byte[] getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(byte[]  image) {
 		this.image = image;
 	}
 
@@ -173,6 +177,8 @@ public class Present implements Serializable{
 				+ ", average_prince=" + average_prince + ", priority=" + priority + ", state=" + state + ", link="
 				+ link + ", image=" + image + ", list=" + list + ", payments=" + payments + "]";
 	}
-	
+	public boolean createPresent() {
+		return present_DAO.create(this);
+	}
 	
 }

@@ -3,6 +3,9 @@ package be.walbert.Javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import be.walbert.DAO.AbstractDAOFactory_API;
+import be.walbert.DAO.DAO;
+
 public class Present_API implements Serializable{
 
 	/*Attributs*/
@@ -14,9 +17,11 @@ public class Present_API implements Serializable{
 	private int priority;
 	private String state;
 	private String link;
-	private String image;
+	private byte[] image;
 	private Presents_List_API list;
 	private ArrayList<Multiple_Payment_API> payments;
+	private static final AbstractDAOFactory_API adf =  AbstractDAOFactory_API.getFactory();
+	private static final DAO<Present_API> Present_DAO = adf.getPresentDAO_API();
 	
 	/*Constructors*/
 	public Present_API() {
@@ -24,7 +29,7 @@ public class Present_API implements Serializable{
 	}
 
 	public Present_API(int id_present, String name, String description, double average_prince, int priority, String state,
-			String link, String image, Presents_List_API list) {
+			String link, byte[] image, Presents_List_API list) {
 		this.id_present = id_present;
 		this.name = name;
 		this.description = description;
@@ -94,11 +99,11 @@ public class Present_API implements Serializable{
 		this.link = link;
 	}
 
-	public String getImage() {
+	public byte[] getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(byte[] image) {
 		this.image = image;
 	}
 
@@ -124,5 +129,9 @@ public class Present_API implements Serializable{
 	}
 	public void removePayment(Multiple_Payment_API newpayment) {
 		payments.remove(newpayment);
+	}
+	
+	public boolean create() {
+		return Present_DAO.create(this);
 	}
 }
