@@ -1,20 +1,25 @@
 package be.walbert.servlets;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import be.walbert.javabeans.Present;
 import be.walbert.javabeans.Presents_List;
 import be.walbert.javabeans.Users;
 
+@MultipartConfig
 public class CreatePresents_List extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -37,9 +42,11 @@ public class CreatePresents_List extends HttpServlet {
 		String description = request.getParameter("description");
 		double average_price = Double.parseDouble(request.getParameter("average_price"));
 		int priority = Integer.parseInt(request.getParameter("priority"));
-		String image = request.getParameter("image");
 		String link = request.getParameter("link");
-
+		// Get image file
+		Part imagePart = request.getPart("image");
+		InputStream imageStream = imagePart.getInputStream();
+		byte[] image = imageStream.readAllBytes();
 
         //Set the list of errors
         ArrayList<String> errors = new ArrayList<String>();
@@ -65,18 +72,15 @@ public class CreatePresents_List extends HttpServlet {
         	Users u = (Users) request.getSession().getAttribute("user");	//Get the current User
     		Presents_List new_list = new Presents_List(0,limit_date,occasion,true,u); //Create Presents_List with data of form
         	Present present = new Present();// Create Present objet (without data)
-    		if (image != "" && link != "") {
-    		    present = new Present(0,name, description, average_price, priority, "ordered", link,image, new_list);
-    		} else if (image != "") {
-    		    present = new Present(0,name, description, average_price, priority, "ordered", new_list,image);
-    		} else if (link != "") {
-    		    present = new Present(0,name, description, average_price, priority, "ordered", image, new_list);
-    		} else {
-    		    present = new Present(0,name, description, average_price, priority, "ordered", new_list);
-    		}
+     		present = new Present(0,name, description, average_price, priority, "ordered", link,image, new_list);
+    		 
     		//Add present to the Presents_List object
     		new_list.addPresent(present);
     		if(new_list.createPresents_List()) {
+    			//Create a temp file from image file
+    			File tempFile = File.createTempFile("temp", null);
+    			//Delete the temp file to avoid error message in the console
+    			tempFile.delete();
                 request.getSession().setAttribute("confirm_New_Presents_List", "Great, your new list has just been created");
                 response.sendRedirect(request.getContextPath() + "/UserPage");
     		}
