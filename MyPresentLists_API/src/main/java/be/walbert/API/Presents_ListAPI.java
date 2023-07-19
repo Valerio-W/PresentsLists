@@ -61,7 +61,7 @@ public class Presents_ListAPI {
 
 	    	        String name = presentObject.getString("name");
 	    	        String description = presentObject.getString("description");
-	    	        double average_price = presentObject.getDouble("average_prince");
+	    	        double average_price = presentObject.getDouble("average_price");
 	    	        int priority = presentObject.getInt("priority");
 	    	        String statePresent = presentObject.getString("state");
 	    	    	String link = presentObject.getString("link"); 
