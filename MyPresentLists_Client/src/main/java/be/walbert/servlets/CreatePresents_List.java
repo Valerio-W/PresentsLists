@@ -79,6 +79,9 @@ public class CreatePresents_List extends HttpServlet {
             if (priority<=0) {//Check priority
                 errors.add("Priority must be greater than 0");
             }
+            if(description.length()>100) {
+                errors.add("Description must not exceed 100 characters");
+            }
         }
 
         if (errors.isEmpty()) {//If errors is empty (no errors)
