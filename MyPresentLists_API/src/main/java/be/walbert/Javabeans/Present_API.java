@@ -3,9 +3,13 @@ package be.walbert.Javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_present")
 public class Present_API implements Serializable{
 
 	/*Attributs*/
