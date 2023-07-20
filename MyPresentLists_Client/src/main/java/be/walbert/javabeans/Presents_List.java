@@ -3,6 +3,9 @@ package be.walbert.javabeans;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -108,6 +111,28 @@ public class Presents_List implements Serializable{
 	}
 	public void removePresent(Present newpresent) {
 		presents.remove(newpresent);
+	}
+	
+	//Sort the present list according to the priority of the Present objects
+	public void sortPresents_By_Priority() {
+	    int n = presents.size();
+	    boolean swapped;
+	    
+	    do {
+	        swapped = false;
+	        for (int i = 0; i < n - 1; i++) {
+	            Present present1 = presents.get(i);
+	            Present present2 = presents.get(i + 1);
+
+	            if (present1.getPriority() > present2.getPriority()) {
+	                // Swap the two presents if the priority of present1 is greater than the priority of present2
+	                presents.set(i, present2);
+	                presents.set(i + 1, present1);
+	                swapped = true;
+	            }
+	        }
+	        n--;
+	    } while (swapped);
 	}
 
 	public boolean createPresents_List() {
