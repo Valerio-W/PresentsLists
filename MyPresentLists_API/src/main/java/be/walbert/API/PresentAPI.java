@@ -35,7 +35,7 @@ public class PresentAPI {
 	    	    String description = jsonObject.getString("description");
 	    	    double average_price = jsonObject.getDouble("average_price");
 	    	    int priority = jsonObject.getInt("priority");
-	    	    String state = jsonObject.getString("name");
+	    	    String state = jsonObject.getString("state");
 	    	    String link = jsonObject.getString("link");
 	    	    String imageBase64 = jsonObject.getString("image");
     	    	byte[] image = Base64.getDecoder().decode(imageBase64);
