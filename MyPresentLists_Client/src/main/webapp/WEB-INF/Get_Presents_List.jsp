@@ -56,6 +56,11 @@
         <h2>Sorry, you don't have a presents list yet</h2>
     <% } %>
 </div>
-
+ 		<% 
+     	if ((String) request.getSession().getAttribute("confirm_New_Present") != null) {
+		  out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirm_New_Present") + "</div>");
+		  request.getSession().removeAttribute("confirm_New_Present");
+		}
+		%>
 	</body>
 </html>
