@@ -19,19 +19,30 @@ public class PresentDAO_API extends DAO<Present_API> {
 	@Override
 	public boolean create(Present_API obj) {
 	    try { 
+	        CallableStatement cstmt = connect.prepareCall("{call InsertPresent(?, ?, ?, ?, ?, ?, ?, ?)}");
 
-	        CallableStatement cstmt = connect.prepareCall("{ call Insert_Present(?, ?, ?, ?, ?, ?, ?, ?, ?) }");
+	        cstmt.setString(1, obj.getName());
+	        cstmt.setString(2, obj.getDescription());
+	        cstmt.setDouble(3, obj.getAverage_price());
+	        cstmt.setInt(4, obj.getPriority());
+	        cstmt.setString(5, obj.getState());
 
-	        cstmt.setInt(1, obj.getId_present());
-	        cstmt.setString(2, obj.getName());
-	        cstmt.setString(3, obj.getDescription());
-	        cstmt.setDouble(4, obj.getAverage_price());
-	        cstmt.setInt(5, obj.getPriority());
-	        cstmt.setString(6, obj.getState());
-	        cstmt.setString(7, obj.getLink()); // can be null
-	        ByteArrayInputStream inputStream = new ByteArrayInputStream(obj.getImage());
-	        cstmt.setBlob(8, inputStream);
-	        cstmt.setInt(9, obj.getList().getId_list());
+	        // Handle the case when link is absent
+	        if (obj.getLink() != null && !obj.getLink().isEmpty()) {
+	            cstmt.setString(6, obj.getLink());
+	        } else {
+	            cstmt.setNull(6, java.sql.Types.VARCHAR);
+	        }
+
+	        // Handle the case when image is absent
+	        if (obj.getImage() != null) {
+	            ByteArrayInputStream inputStream = new ByteArrayInputStream(obj.getImage());
+	            cstmt.setBlob(7, inputStream);
+	        } else {
+	            cstmt.setNull(7, java.sql.Types.BLOB);
+	        }
+
+	        cstmt.setInt(8, obj.getList().getId_list());
 
 	        cstmt.execute();
 	        cstmt.close();

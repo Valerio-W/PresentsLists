@@ -60,7 +60,7 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 			CallableStatement callableStatement = connect.prepareCall("{call Find_List(?, ?)}");
 			CallableStatement presents_callableStatement = connect.prepareCall("{call GetPresentsByListId(?, ?)}");
 			presents_callableStatement.setInt(1, id);
-			presents_callableStatement.registerOutParameter(2, Types.ARRAY, "PRESENTSTABLE");
+			presents_callableStatement.registerOutParameter(2, Types.ARRAY, "PRESENTS_TABLE");
 
 	        callableStatement.setInt(1, id);
 	        callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
