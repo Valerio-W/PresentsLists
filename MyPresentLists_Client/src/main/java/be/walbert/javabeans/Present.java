@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.walbert.DAO.DAO;
 import be.walbert.DAO.PresentDAO;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_present")
 public class Present implements Serializable{
 
 	/*Attributs*/
@@ -20,7 +23,6 @@ public class Present implements Serializable{
 	private String state;
 	private String link;
 	private byte[] image;
-	@JsonBackReference
 	private Presents_List list;
 	private ArrayList<Multiple_Payment> payments;
 	private static final DAO<Present> present_DAO = new PresentDAO();

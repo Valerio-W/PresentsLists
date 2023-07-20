@@ -20,7 +20,7 @@ public class PresentDAO extends DAO<Present>{
 	        // Send POST request with JSON
 			String json = objectMapper.writeValueAsString(obj);
 	        ClientResponse res = this.ressource
-	                .path("present")
+	                .path("present/create")
 	                .accept(MediaType.APPLICATION_JSON)
 	                .type(MediaType.APPLICATION_JSON)
 	                .post(ClientResponse.class, json);
