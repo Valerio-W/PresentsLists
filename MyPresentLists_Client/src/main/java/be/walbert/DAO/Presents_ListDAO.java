@@ -1,5 +1,6 @@
 package be.walbert.DAO;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -112,8 +113,8 @@ public class Presents_ListDAO extends DAO <Presents_List>{
 	                int presentId = presentObject.getInt("id_present");
 	                String name = presentObject.getString("name");
 	                String description = presentObject.getString("description");
-	                double averagePrice = presentObject.getDouble("average_price");
-	                int priority = presentObject.getInt("priority");
+	                BigDecimal averagePriceBigDecimal = presentObject.getBigDecimal("average_price");	                int priority = presentObject.getInt("priority");
+	                double averagePrice = averagePriceBigDecimal.doubleValue();
 	                String statePresent = presentObject.getString("state");
 	                String link = null;
 	                if (!presentObject.isNull("link")) {
