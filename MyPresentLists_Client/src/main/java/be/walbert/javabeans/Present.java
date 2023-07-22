@@ -182,5 +182,12 @@ public class Present implements Serializable{
 	public boolean createPresent() {
 		return present_DAO.create(this);
 	}
+	public boolean updatePresent() {
+		return present_DAO.update(this);
+	}
+
+	public static Present find(int id_present) {
+		return present_DAO.find(id_present);
+	}
 	
 }
