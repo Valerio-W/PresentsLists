@@ -21,7 +21,7 @@ public class Get_Details_of_PresentsList extends HttpServlet {
 	        Presents_List presents_list = new Presents_List();
 	        presents_list.setId_list(Integer.parseInt(request.getParameter("id")));
 	        
-	        presents_list = presents_list.find();
+	        presents_list = Presents_List.find(Integer.parseInt(request.getParameter("id")));
 	        presents_list.sortPresents_By_Priority();
 	        if(presents_list != null) {
 	        	 request.setAttribute("presents_list", presents_list);

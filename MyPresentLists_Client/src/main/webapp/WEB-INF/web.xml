@@ -19,6 +19,7 @@
   	<servlet-name>Get_Presents_List</servlet-name>
   	<servlet-name>Get_Details_of_PresentsList</servlet-name>
   	<servlet-name>CreatePresent</servlet-name>
+  	<servlet-name>UpdatePresent</servlet-name>
   	
   </filter-mapping>
   <filter-mapping>
@@ -84,6 +85,11 @@
   	<servlet-name>CreatePresent</servlet-name>
   	<servlet-class>be.walbert.servlets.CreatePresent</servlet-class>
   </servlet>
+  
+  <servlet>
+  	<servlet-name>UpdatePresent</servlet-name>
+  	<servlet-class>be.walbert.servlets.UpdatePresent</servlet-class>
+  </servlet>
     
   <!-- SERVLETS MAPPINGS -->
   <servlet-mapping>
@@ -118,5 +124,9 @@
   <servlet-mapping>
   	<servlet-name>CreatePresent</servlet-name>
   	<url-pattern>/CreatePresent</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UpdatePresent</servlet-name>
+  	<url-pattern>/UpdatePresent</url-pattern>
   </servlet-mapping>
 </web-app>

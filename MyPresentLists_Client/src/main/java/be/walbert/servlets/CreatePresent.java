@@ -119,7 +119,7 @@ public class CreatePresent extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/CreatePresent.jsp").forward(request, response);
             }		
         } else {
-            response.getWriter().append("Invalid or missing session attribute: id");
+            request.getRequestDispatcher("/WEB-INF/Error.jsp").forward(request, response);
         }
     }
 
