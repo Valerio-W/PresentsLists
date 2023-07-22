@@ -93,8 +93,8 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	                int presentId = presentId_decimal.intValue();
 	                String name = (String)attributes[1];
 	                String description = (String)attributes[2];
-	                BigDecimal average_price_decimal = (BigDecimal)attributes[3];
-	                int average_price = average_price_decimal.intValue();
+	                BigDecimal average_price_decimal = (BigDecimal) attributes[3];
+	                double average_price = average_price_decimal.doubleValue();
 	                BigDecimal priority_decimal = (BigDecimal)attributes[4];
 	                int priority = priority_decimal.intValue();
 	                String presentState = (String)attributes[5];
