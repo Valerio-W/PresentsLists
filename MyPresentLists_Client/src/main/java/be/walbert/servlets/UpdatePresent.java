@@ -44,14 +44,21 @@ public class UpdatePresent extends HttpServlet {
 	        Present present = new Present();
 	        present.setId_present(id_present);
 	        present = Present.find(present.getId_present());
-	        newSession.setAttribute("present", present);
+	        if(present.getState().equalsIgnoreCase("ordered")) {
+	        	newSession.setAttribute("present", present);
 	            
-	        RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/UpdatePresent.jsp");
-	        dispatcher.forward(request, response);
+		        RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/UpdatePresent.jsp");
+		        dispatcher.forward(request, response);
+	        }
+	        else{
+	        	 RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/Error.jsp");
+			     dispatcher.forward(request, response);
+	        }
+	        
 	      } else { 
 	        RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/Error.jsp");
 	        dispatcher.forward(request, response);
-	        }
+	      }
 	}
 
 	
