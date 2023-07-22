@@ -65,7 +65,8 @@
                     <% if (present.getImage() != null) { %>
                         <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(present.getImage()) %>" alt="Present Image" />
                     <% } %>
-                </td>
+                	</td>
+                	<td><a href="UpdatePresent?id_present=<%= present.getId_present()%>">Modify</a></td>
 		         </tr>
 		    <% } %>
 		</table>
