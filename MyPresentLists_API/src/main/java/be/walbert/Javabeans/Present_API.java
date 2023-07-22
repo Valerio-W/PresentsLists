@@ -138,4 +138,12 @@ public class Present_API implements Serializable{
 	public boolean create() {
 		return Present_DAO.create(this);
 	}
+	
+	public boolean update() {
+		return Present_DAO.update(this);
+	}
+
+	public static Present_API find(int id_present) {
+		return Present_DAO.find(id_present);
+	}
 }
