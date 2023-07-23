@@ -20,7 +20,7 @@
   	<servlet-name>Get_Details_of_PresentsList</servlet-name>
   	<servlet-name>CreatePresent</servlet-name>
   	<servlet-name>UpdatePresent</servlet-name>
-  	
+  	<servlet-name>UpdatePresentsList</servlet-name>
   </filter-mapping>
   <filter-mapping>
   	<filter-name>AlreadyAuthenticateFilter</filter-name>
@@ -90,6 +90,11 @@
   	<servlet-name>UpdatePresent</servlet-name>
   	<servlet-class>be.walbert.servlets.UpdatePresent</servlet-class>
   </servlet>
+  
+  <servlet>
+  	<servlet-name>UpdatePresentsList</servlet-name>
+  	<servlet-class>be.walbert.servlets.UpdatePresentsList</servlet-class>
+  </servlet>
     
   <!-- SERVLETS MAPPINGS -->
   <servlet-mapping>
@@ -128,5 +133,9 @@
   <servlet-mapping>
   	<servlet-name>UpdatePresent</servlet-name>
   	<url-pattern>/UpdatePresent</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UpdatePresentsList</servlet-name>
+  	<url-pattern>/UpdatePresentsList</url-pattern>
   </servlet-mapping>
 </web-app>
