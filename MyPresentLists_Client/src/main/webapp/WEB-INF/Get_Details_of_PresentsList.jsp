@@ -32,13 +32,19 @@
 		<p>Occasion: <%= presents_list.getOccasion() %></p>
 		<p>Status: <%= presents_list.isState() %></p>
 		<p>Owner: <%= presents_list.getOwner().getPseudo() %></p>
+		
+		<% if (!presents_list.isState()) { %>
+		    <p><a href="UpdatePresentsList?id=<%= presents_list.getId_list() %>">Update limit_date</a></p>
+		<% } %>
+		
 		<a href="CreatePresent?id=<%= presents_list.getId_list() %>">Add present</a>
 		<h2>Guests:</h2>
 		<ul>
 		    <% for (Users guest : presents_list.getGuests()) { %>
-				<li><%= guest.getPseudo() %> - <%= guest.getPseudo() %> €</li>
+		        <li><%= guest.getPseudo() %></li>
 		    <% } %>
 		</ul>
+
 		
 		<h2>Presents:</h2>
 		<table>

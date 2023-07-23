@@ -38,5 +38,11 @@
 		    request.getSession().removeAttribute("alreadyConnected");
 		  }
 		%>
+		<%
+		  if ((String) request.getSession().getAttribute("confirmUpdatedList") != null) {
+		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirmUpdatedList") + "</div>");
+		    request.getSession().removeAttribute("confirmUpdatedList");
+		  }
+		%>
 	</body>
 </html>
