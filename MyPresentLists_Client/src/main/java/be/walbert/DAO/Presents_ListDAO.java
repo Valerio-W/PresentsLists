@@ -129,6 +129,21 @@ public class Presents_ListDAO extends DAO <Presents_List>{
 	                presentsList.addPresent(present);
 	            }
 
+	            JSONArray guestsArray = json.getJSONArray("guests");
+
+	            for (int i = 0; i < guestsArray.length(); i++) {
+	                JSONObject guestObject = guestsArray.getJSONObject(i);
+
+	                int id_guest = guestObject.getInt("id_users");
+	                String pseudo_guest = guestObject.getString("pseudo");
+	                String password_guest = guestObject.getString("password");
+	                String email_guest = guestObject.getString("email");
+
+	                Users new_guest = new Users(id_guest,pseudo_guest,password_guest,email_guest);
+	                presentsList.addGuest(new_guest);
+	            }
+
+	            
 	            return presentsList;
 	        }
 	    } catch (Exception e) {
