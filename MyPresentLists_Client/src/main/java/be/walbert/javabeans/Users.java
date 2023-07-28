@@ -136,4 +136,9 @@ public class Users implements Serializable{
 	public boolean checkAccount() {
 		return ((UsersDAO) userDAO).checkAccount(this);
 	}
+
+	public Users isUsersExist() {
+		UsersDAO userDAO = new UsersDAO();
+		return userDAO.isUsersExist(this);
+	}
 }
