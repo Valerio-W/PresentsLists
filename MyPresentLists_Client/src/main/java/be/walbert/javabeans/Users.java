@@ -25,7 +25,8 @@ public class Users implements Serializable{
 	private ArrayList<Presents_List> lists;
 	private ArrayList<Message> messages;
 	private ArrayList<Multiple_Payment> payments;
-	
+	private ArrayList<Presents_List> guests_lists;
+
 	/*Constructors*/
 	public Users() {
 		lists = new ArrayList<>();
@@ -39,6 +40,7 @@ public class Users implements Serializable{
 		lists = new ArrayList<>();
 		messages = new ArrayList<>();
 		payments = new ArrayList<>();
+		guests_lists = new ArrayList<>();
 	}
 	
 	public Users(String pseudo, String password) {
@@ -47,6 +49,7 @@ public class Users implements Serializable{
 		lists = new ArrayList<>();
 		messages = new ArrayList<>();
 		payments = new ArrayList<>();
+		guests_lists = new ArrayList<>();
 	}
 	
 	/*Getters/Setters*/
@@ -105,10 +108,24 @@ public class Users implements Serializable{
 	public void setPayments(ArrayList<Multiple_Payment> payments) {
 		this.payments = payments;
 	}
+	
+	public ArrayList<Presents_List> getGuests_lists() {
+		return guests_lists;
+	}
 
+	public void setGuests_lists(ArrayList<Presents_List> guests_lists) {
+		this.guests_lists = guests_lists;
+	}
+	
 	/*Methods*/
 	public void addList(Presents_List newList) {
 		lists.add(newList);
+	}
+	public void addGuestList(Presents_List newGuestList) {
+		lists.add(newGuestList);
+	}
+	public void removeGuestList(Presents_List newGuestList) {
+		lists.remove(newGuestList);
 	}
 	public void addMessage(Message newMessage) {
 		messages.add(newMessage);
@@ -137,8 +154,8 @@ public class Users implements Serializable{
 		return ((UsersDAO) userDAO).checkAccount(this);
 	}
 
-	public Users isUsersExist() {
+	public Users find() {
 		UsersDAO userDAO = new UsersDAO();
-		return userDAO.isUsersExist(this);
+		return userDAO.find(this);
 	}
 }

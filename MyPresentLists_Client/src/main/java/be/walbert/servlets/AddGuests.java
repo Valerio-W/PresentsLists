@@ -43,8 +43,8 @@ public class AddGuests extends HttpServlet {
 			Presents_List list = (Presents_List) session.getAttribute("list");
 			Users users_existing = new Users();
 			users_existing.setPseudo(request.getParameter("pseudo"));
-			if(users_existing.isUsersExist() != null) {
-				list.addGuest(users_existing.isUsersExist());
+			if(users_existing.find() != null) {
+				list.addGuest(users_existing.find());
 				if(list.update_PresentsList()) {
 					request.getSession().setAttribute("guestAdded", "Great, the user has been invited as guest ! "
 							+ "There is the link to access to your presents list : "+ 

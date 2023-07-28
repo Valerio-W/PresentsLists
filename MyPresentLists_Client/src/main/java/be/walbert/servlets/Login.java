@@ -36,7 +36,6 @@ public class Login extends HttpServlet {
 	    if(user==null) {
 	        request.getSession().setAttribute("userNotFound", "Sorry, no account found.");
 	        response.sendRedirect(request.getContextPath() + "/Login");
-
 	    }
 	    else {
 	    	request.getSession().setAttribute("user", user);

@@ -22,8 +22,8 @@
     </head>
 	<body class="Pages">
 		<%
-    ArrayList<Presents_List> presentsLists = (ArrayList<Presents_List>) request.getAttribute("presentsLists");
-%>
+    		ArrayList<Presents_List> presentsLists = (ArrayList<Presents_List>) request.getAttribute("presentsLists");
+		%>
 <div>
     <% if (presentsLists != null && !presentsLists.isEmpty()) { %>
         <h1>Here are your present lists:</h1>
