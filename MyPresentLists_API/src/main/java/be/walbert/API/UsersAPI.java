@@ -104,7 +104,7 @@ public class UsersAPI {
                     .build();
         }
         else {
-            return Response.status(Status.OK).entity(u).build();
+            return Response.status(Status.OK).entity(u.isUsersExist()).build();
         }
 	}
 }

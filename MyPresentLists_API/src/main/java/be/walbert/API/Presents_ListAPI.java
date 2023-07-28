@@ -147,8 +147,23 @@ public class Presents_ListAPI {
 	        JSONObject userObject = jsonObject.getJSONObject("owner");
 	        Users_API user = new Users_API();
 	        user.setId(userObject.getInt("id_users"));
-	        
+	       
 	        Presents_List_API presentsList = new Presents_List_API(idList, limitDate, occasion, state, user);
+
+    	    JSONArray guestsArray = jsonObject.getJSONArray("guests");
+    	    
+    	    for (int i = 0; i < guestsArray.length(); i++) {
+    	        JSONObject guestsObject = guestsArray.getJSONObject(i);
+
+    	        int id_guest = guestsObject.getInt("id_users");
+    	        String pseudo =guestsObject.getString("pseudo");
+    	        String password = guestsObject.getString("password");
+    	        String email=guestsObject.getString("email");
+    	         
+    	        Users_API new_guest = new Users_API(id_guest, pseudo, password, email);
+    	        presentsList.addGuest(new_guest);
+     	    }
+	        
 	        if (!presentsList.update()) {
 	            return Response.status(Status.SERVICE_UNAVAILABLE).build();
 	        } else {
@@ -158,7 +173,6 @@ public class Presents_ListAPI {
 	        return Response.status(Status.BAD_REQUEST).build();
 	    }
 	}
-
 	
 	
 }
