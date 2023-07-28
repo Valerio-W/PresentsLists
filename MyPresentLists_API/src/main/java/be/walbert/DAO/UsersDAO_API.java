@@ -156,7 +156,7 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	        }
 	        rs.close();
 	    } catch (SQLException e) {
-	        System.out.println("oracle error");
+	        e.printStackTrace();
 	    }
 		return null;
 	}
@@ -184,4 +184,33 @@ public class UsersDAO_API extends DAO<Users_API>  {
 		    }
 		return false;
 	}
+
+	public Users_API isUsersExist(Users_API users_API) {
+	    try {
+	        CallableStatement callableStatement = connect.prepareCall("{call isUsers_Exist(?, ?)}");
+
+	        callableStatement.setString(1, users_API.getPseudo());
+	        callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+
+	        callableStatement.execute();
+
+	        ResultSet resultSet = (ResultSet) callableStatement.getObject(2);
+
+	        if (resultSet.next()) {
+ 	            int id_users = resultSet.getInt("ID_USERS");
+	            String pseudo = resultSet.getString("PSEUDO");
+	            String password = resultSet.getString("PASSWORD");
+	            String email = resultSet.getString("EMAIL");
+
+	            Users_API existingUser = new Users_API(id_users, pseudo, password, email);
+	            return existingUser;
+	        } else {
+	            return null;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+
 }

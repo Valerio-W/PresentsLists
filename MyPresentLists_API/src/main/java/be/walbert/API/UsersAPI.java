@@ -86,4 +86,25 @@ public class UsersAPI {
 
         return Response.status(Status.OK).entity(user).build();
     }
+	
+	@Path("/isUsersExist")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response isUsersExist(@FormParam("pseudo") String pseudo) {
+		
+		if (pseudo == null) {
+            return Response.status(Status.BAD_REQUEST)
+                    .build();
+        }
+
+        Users_API u = new Users_API(0,pseudo,"","");
+
+        if (u.isUsersExist()==null) {
+            return Response.status(Status.UNAUTHORIZED)
+                    .build();
+        }
+        else {
+            return Response.status(Status.OK).entity(u).build();
+        }
+	}
 }
