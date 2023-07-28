@@ -85,24 +85,24 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	            Array array = presents_callableStatement.getArray(2);
 		        Object[] dataArray = (Object[]) array.getArray();
 		        
-		        for (Object data : dataArray) {
-		            Struct struct = (Struct) data;
-		            Object[] attributes = struct.getAttributes();
+		        for (Object dataPresents : dataArray) {
+		            Struct structPresents = (Struct) dataPresents;
+		            Object[] attributesPresents = structPresents.getAttributes();
 		            
-	                BigDecimal presentId_decimal = (BigDecimal)attributes[0];
+	                BigDecimal presentId_decimal = (BigDecimal)attributesPresents[0];
 	                int presentId = presentId_decimal.intValue();
-	                String name = (String)attributes[1];
-	                String description = (String)attributes[2];
-	                BigDecimal average_price_decimal = (BigDecimal) attributes[3];
+	                String name = (String)attributesPresents[1];
+	                String description = (String)attributesPresents[2];
+	                BigDecimal average_price_decimal = (BigDecimal) attributesPresents[3];
 	                double average_price = average_price_decimal.doubleValue();
-	                BigDecimal priority_decimal = (BigDecimal)attributes[4];
+	                BigDecimal priority_decimal = (BigDecimal)attributesPresents[4];
 	                int priority = priority_decimal.intValue();
-	                String presentState = (String)attributes[5];
+	                String presentState = (String)attributesPresents[5];
 	                String link=null;
-	                if((String)attributes[6]!=null) {
-	                	 link = (String)attributes[6];
+	                if((String)attributesPresents[6]!=null) {
+	                	 link = (String)attributesPresents[6];
 	                }
-	                Blob imageBlob = (Blob) attributes[7];
+	                Blob imageBlob = (Blob) attributesPresents[7];
 	                byte[] image = null;
 	                if(imageBlob != null) {
 	                	InputStream inputStream = imageBlob.getBinaryStream();
@@ -110,6 +110,23 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	                }
 	                Present_API present = new Present_API(presentId, name, description, average_price, priority, presentState, link, image, presentsList);
 	                presentsList.addPresent(present);
+	            }
+		        
+		        CallableStatement getGuestsStatement = connect.prepareCall("{call GetGuestsByListId(?, ?)}");
+	            getGuestsStatement.setInt(1, id);
+	            getGuestsStatement.registerOutParameter(2, OracleTypes.ARRAY, "GUESTS_TABLE");
+	            getGuestsStatement.execute();
+
+	            Array guestsArray = getGuestsStatement.getArray(2);
+	            Object[] guestsDataArray = (Object[]) guestsArray.getArray();
+
+	            for (Object dataGuests : guestsDataArray) {
+	                Struct structGuest = (Struct) dataGuests;
+	                Object[] attributesGuest = structGuest.getAttributes();
+
+	                int guestUserId = ((BigDecimal) attributesGuest[2]).intValue();
+	                Users_API newGuest = Users_API.find(guestUserId);
+	                presentsList.addGuest(newGuest);
 	            }
 	            
 	            return presentsList;
@@ -131,6 +148,26 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	        callableStatement.setInt(5, obj.getOwner().getId());
 
 	        callableStatement.execute();
+	        
+	        for (Users_API guest : obj.getGuests()) {
+	            // Check if guest is already in database
+	            CallableStatement checkGuestStatement = connect.prepareCall("{call guest_AlreadyExist(?, ?, ? )}");
+	            checkGuestStatement.setInt(1, obj.getId_list());
+	            checkGuestStatement.setInt(2, guest.getId());
+	            checkGuestStatement.registerOutParameter(3, Types.NUMERIC);
+
+	            checkGuestStatement.execute();
+
+	            int guestExists = checkGuestStatement.getInt(3);
+
+	            if (guestExists == 0) {
+	                CallableStatement insertGuestStatement = connect.prepareCall("{call Insert_Guest(?, ?)}");
+	                insertGuestStatement.setInt(1, obj.getId_list());
+	                insertGuestStatement.setInt(2, guest.getId());
+	                insertGuestStatement.execute();
+	            }
+	        }
+	        
 	        return true;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
