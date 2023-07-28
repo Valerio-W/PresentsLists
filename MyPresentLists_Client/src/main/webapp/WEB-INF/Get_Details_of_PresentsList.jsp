@@ -38,6 +38,8 @@
 		<% } %>
 		
 		<a href="CreatePresent?id=<%= presents_list.getId_list() %>">Add present</a>
+		<a href="AddGuests?id=<%= presents_list.getId_list() %>">Add guest</a>
+		
 		<h2>Guests:</h2>
 		<ul>
 		    <% for (Users guest : presents_list.getGuests()) { %>
