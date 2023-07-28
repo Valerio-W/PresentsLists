@@ -44,5 +44,11 @@
 		    request.getSession().removeAttribute("confirmUpdatedList");
 		  }
 		%>
+		<%
+		  if ((String) request.getSession().getAttribute("guestAdded") != null) {
+		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("guestAdded") + "</div>");
+		    request.getSession().removeAttribute("guestAdded");
+		  }
+		%>
 	</body>
 </html>
