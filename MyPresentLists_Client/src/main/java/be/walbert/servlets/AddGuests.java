@@ -46,7 +46,12 @@ public class AddGuests extends HttpServlet {
 			if(users_existing.isUsersExist() != null) {
 				list.addGuest(users_existing.isUsersExist());
 				if(list.update_PresentsList()) {
-					response.getWriter().append("Guest added !");
+					request.getSession().setAttribute("guestAdded", "Great, the user has been invited as guest ! "
+							+ "There is the link to access to your presents list : "+ 
+							"http://localhost:8080"+ request.getContextPath() + "/Get_Details_of_PresentsList"+"?id="+list.getId_list()
+							+"(If the user launches the program on a port other than 8080, he will have to modify the port number of the link).");
+					getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);
+
 				}
 				else {
 					getServletContext().getRequestDispatcher("/WEB-INF/Error.jsp").forward(request, response);
