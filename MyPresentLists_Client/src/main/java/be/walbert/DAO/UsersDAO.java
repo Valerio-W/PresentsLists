@@ -146,4 +146,32 @@ public class UsersDAO extends DAO<Users>{
 	    }
 	}
 
+	public Users isUsersExist(Users u) {
+		MultivaluedMap<String, String> paramsPost = new MultivaluedMapImpl();
+		paramsPost.add("pseudo", u.getPseudo());
+		
+		try {
+	        ClientResponse res = this.ressource
+	            .path("users/isUsersExist")
+	            .accept(MediaType.APPLICATION_JSON)
+	            .post(ClientResponse.class, paramsPost);
+
+	        if (res.getStatus() == 200) {	// User with pseudo found
+	        	String response = res.getEntity(String.class); 
+				JSONObject json = new JSONObject(response);
+				int id_users = json.getInt("id_users");
+				String password = json.getString("password");
+				String email = json.getString("email");
+				Users user_existing = new Users(id_users, u.getPseudo(), password, email); 
+				
+				return user_existing;
+	        } else {
+	        	return null;// User with pseudo not found
+	        }
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	        return null;
+	    }
+	}
+
 }
