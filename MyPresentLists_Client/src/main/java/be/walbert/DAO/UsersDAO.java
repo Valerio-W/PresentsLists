@@ -112,6 +112,17 @@ public class UsersDAO extends DAO<Users>{
 				    lists.add(presentsList);
 				}
 				user.setLists(lists);
+				
+				JSONArray listsGuestArray = json.getJSONArray("guests_lists");
+				ArrayList<Presents_List> guests = new ArrayList<>();
+				
+				for (int i = 0; i < listsGuestArray.length(); i++) {
+				    JSONObject listGuestObj = listsGuestArray.getJSONObject(i);
+				     
+				    Presents_List presentsList = Presents_List.find(listGuestObj.getInt("id_list"));
+				    guests.add(presentsList);
+				}
+				user.setGuests_lists(guests);
  				return user;
 			}
  			else {
@@ -146,7 +157,7 @@ public class UsersDAO extends DAO<Users>{
 	    }
 	}
 
-	public Users isUsersExist(Users u) {
+	public Users find(Users u) {
 		MultivaluedMap<String, String> paramsPost = new MultivaluedMapImpl();
 		paramsPost.add("pseudo", u.getPseudo());
 		
