@@ -148,9 +148,27 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	                user.addList(presentsList);
 	            }
 
+		        CallableStatement callableStatement_GuestsList = connect.prepareCall("{call GetGuestsListByUser(?, ?)}");
+
+		        callableStatement_GuestsList.setInt(1, users_id);
+		        callableStatement_GuestsList.registerOutParameter(2, OracleTypes.ARRAY, "GUESTS_TABLE");
+		        callableStatement_GuestsList.execute();
+		        
+		        Array arrayGuestList = callableStatement_GuestsList.getArray(2);
+	            Object[] dataArrayGuestList = (Object[]) arrayGuestList.getArray();
+
+	            for (Object dataGuestList : dataArrayGuestList) {
+	                Object[] attributesGuestList = ((Struct) dataGuestList).getAttributes();
+	                
+	                int id_list = ((BigDecimal) attributesGuestList[1]).intValue();
+	                
+	                Presents_List_API presentsList = Presents_List_API.find(id_list);
+	                user.addGuestList(presentsList);
+	            }
 	            rs.close();
 	            callableStatement_Users.close();
 	            callableStatement_PresentsList.close();
+	            callableStatement_GuestsList.close();
 	            
 	            return user;
 	        }

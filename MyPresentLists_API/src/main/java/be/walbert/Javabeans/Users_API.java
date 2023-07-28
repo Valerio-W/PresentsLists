@@ -25,7 +25,8 @@ public class Users_API implements Serializable {
 	private ArrayList<Presents_List_API> lists;
 	private ArrayList<Message_API> messages;
 	private ArrayList<Multiple_Payment_API> payments;
-	
+	private ArrayList<Presents_List_API> guests_lists;
+
 	private static final AbstractDAOFactory_API adf =  AbstractDAOFactory_API.getFactory();
 	private static final DAO<Users_API> UsersDAO = adf.getUserDAO_API();
 	
@@ -43,6 +44,17 @@ public class Users_API implements Serializable {
 		lists = new ArrayList<>();
 		messages = new ArrayList<>();
 		payments = new ArrayList<>();
+		guests_lists = new ArrayList<>();
+
+	}
+	
+	public Users_API(String pseudo, String password) {
+		this.pseudo = pseudo;
+		this.password = password;
+		lists = new ArrayList<>();
+		messages = new ArrayList<>();
+		payments = new ArrayList<>();
+		guests_lists = new ArrayList<>();
 	}
 	
 	/*Getters/Setters*/
@@ -101,9 +113,24 @@ public class Users_API implements Serializable {
 	public void setPayments(ArrayList<Multiple_Payment_API> payments) {
 		this.payments = payments;
 	}
+	
+	public ArrayList<Presents_List_API> getGuests_lists() {
+		return guests_lists;
+	}
+
+	public void setGuests_lists(ArrayList<Presents_List_API> guests_lists) {
+		this.guests_lists = guests_lists;
+	}
+	
 	/*Methods*/
 	public void addList(Presents_List_API newList) {
 		lists.add(newList);
+	}
+	public void addGuestList(Presents_List_API newGuestList) {
+		guests_lists.add(newGuestList);
+	}
+	public void removeGuestList(Presents_List_API newGuestList) {
+		guests_lists.remove(newGuestList);
 	}
 	public void addMessage(Message_API newMessage) {
 		messages.add(newMessage);
