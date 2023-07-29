@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import be.walbert.javabeans.Presents_List;
+import be.walbert.javabeans.Users;
 
 public class UpdatePresentsList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,10 +28,18 @@ public class UpdatePresentsList extends HttpServlet {
 	        
 	        presents_list = Presents_List.find(Integer.parseInt(request.getParameter("id")));
 	        presents_list.sortPresents_By_Priority();
+	        
 	        if(presents_list != null) {
-	        	 session.setAttribute("presents_list", presents_list);
-	             getServletContext().getRequestDispatcher("/WEB-INF/UpdatePresentsList.jsp").forward(request, response);
-	         }
+	        	Users user = (Users) session.getAttribute("user");
+	        	if(presents_list.getOwner().getId()== user.getId()) {
+	        		session.setAttribute("presents_list", presents_list);
+		             getServletContext().getRequestDispatcher("/WEB-INF/UpdatePresentsList.jsp").forward(request, response);
+	        	}
+	        	else {
+					request.getSession().setAttribute("errorNotOwnerofList", "Sorry, you can modify this list, you are not the owner!");
+					getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);
+	        	}
+	        }
 		} catch (Exception e) {
 			getServletContext().getRequestDispatcher("/WEB-INF/Error.jsp").forward(request, response);
 		}

@@ -20,18 +20,27 @@ public class AddGuests extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {	        
+		try {	      
+			HttpSession session = request.getSession(false); 
 	        Presents_List presents_list = new Presents_List();
 	        presents_list.setId_list(Integer.parseInt(request.getParameter("id")));
 	        
 	        presents_list = Presents_List.find(Integer.parseInt(request.getParameter("id")));
 
 	        if(presents_list != null) {
-	        	 // Create new session with id_list
-		        HttpSession newSession = request.getSession(true);
-	        	newSession.setAttribute("list", presents_list);
-	            getServletContext().getRequestDispatcher("/WEB-INF/AddGuest.jsp").forward(request, response);
-	         }
+	        	Users user = (Users) session.getAttribute("user");
+	        	if(presents_list.getOwner().getId()== user.getId()) {
+		        	 // Create new session with id_list
+			        HttpSession newSession = request.getSession(true);
+		        	newSession.setAttribute("list", presents_list);
+		            getServletContext().getRequestDispatcher("/WEB-INF/AddGuest.jsp").forward(request, response);
+		         }
+	        	else {
+					request.getSession().setAttribute("errorNotOwnerofList", "Sorry, you can modify this list, you are not the owner!");
+					getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);
+	        	}
+	        }
+	        
 		} catch (Exception e) {
 			getServletContext().getRequestDispatcher("/WEB-INF/Error.jsp").forward(request, response);
 		}

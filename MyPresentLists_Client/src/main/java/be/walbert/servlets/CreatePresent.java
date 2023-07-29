@@ -44,11 +44,27 @@ public class CreatePresent extends HttpServlet {
             HttpSession newSession = request.getSession(true);
             newSession.setAttribute("id", id);
             
-            RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/CreatePresent.jsp");
-            dispatcher.forward(request, response);
-        } else { 
-            RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/Error.jsp");
-            dispatcher.forward(request, response);
+	        Presents_List presents_list = new Presents_List();
+	        presents_list.setId_list(Integer.parseInt(request.getParameter("id")));
+	        
+	        presents_list = Presents_List.find(Integer.parseInt(request.getParameter("id")));
+
+	        if(presents_list != null) {
+	        	Users user = (Users) session.getAttribute("user");
+	        	if(presents_list.getOwner().getId()== user.getId()) {
+	        		RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/CreatePresent.jsp");
+	        		dispatcher.forward(request, response);
+	        	}
+	        	else {
+					request.getSession().setAttribute("errorNotOwnerofList", "Sorry, you can modify this list, you are not the owner!");
+					getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);
+	        	}
+	        
+	        } 
+	        else { 
+	        	RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/Error.jsp");
+	        	dispatcher.forward(request, response);
+	        }
         }
     }
 
