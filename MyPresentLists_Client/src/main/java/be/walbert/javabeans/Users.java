@@ -158,4 +158,5 @@ public class Users implements Serializable{
 		UsersDAO userDAO = new UsersDAO();
 		return userDAO.find(this);
 	}
+
 }

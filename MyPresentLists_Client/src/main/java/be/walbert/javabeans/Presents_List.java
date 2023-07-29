@@ -165,5 +165,20 @@ public class Presents_List implements Serializable{
 	    return presentsListDAO.findAll();  
 	}
 
+	public boolean isOwnerOrGuest(Users user) {
+        // Check if user is the owner
+        if (this.getOwner().getId() == user.getId()) {
+            return true;
+        }
 
+        // Check if user is a guest
+        for (Users guest : this.getGuests()) {
+            if (guest.getId() == user.getId()) {
+                return true;
+            }
+        }
+
+        // User is not owner and not a guest of the list
+        return false;
+    }
 }
