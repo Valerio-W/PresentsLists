@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList" %>
 <%@page import="be.walbert.javabeans.Presents_List" %>
+<%@page import="be.walbert.javabeans.Users" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -22,7 +23,9 @@
     </head>
 	<body class="Pages">
 		<%
-    		ArrayList<Presents_List> presentsLists = (ArrayList<Presents_List>) request.getAttribute("presentsLists");
+    		Users user = (Users) session.getAttribute("user");
+    		ArrayList<Presents_List> presentsLists = user.getLists();
+
 		%>
 <div>
     <% if (presentsLists != null && !presentsLists.isEmpty()) { %>

@@ -26,6 +26,7 @@
 		<h1>Details of the Presents List</h1>
 		<%
 		    Presents_List presents_list = (Presents_List) request.getAttribute("presents_list");
+			Users u = (Users) session.getAttribute("user");
 		%>
 	
 		<p>Limit Date: <%= presents_list.getLimit_date() %></p>
@@ -33,13 +34,13 @@
 		<p>Status: <%= presents_list.isState() %></p>
 		<p>Owner: <%= presents_list.getOwner().getPseudo() %></p>
 		
-		<% if (!presents_list.isState()) { %>
+		<% if (!presents_list.isState() && presents_list.getOwner().getId()== u.getId()) { %>
 		    <p><a href="UpdatePresentsList?id=<%= presents_list.getId_list() %>">Update limit_date</a></p>
 		<% } %>
-		
+		<% if(presents_list.getOwner().getId()== u.getId()){ %>
 		<a href="CreatePresent?id=<%= presents_list.getId_list() %>">Add present</a>
 		<a href="AddGuests?id=<%= presents_list.getId_list() %>">Add guest</a>
-		
+		<%} %>
 		<h2>Guests:</h2>
 		<ul>
 		    <% for (Users guest : presents_list.getGuests()) { %>
@@ -74,8 +75,11 @@
                         <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(present.getImage()) %>" alt="Present Image" />
                     <% } %>
                 	</td>
-                	<%if(present.getState().equalsIgnoreCase("ordered")){ %>
+                	<%if(present.getState().equalsIgnoreCase("ordered") && presents_list.getOwner().getId()== u.getId()){ %>
                 	<td><a href="UpdatePresent?id_present=<%= present.getId_present()%>">Modify</a></td>
+                	<%} %>
+                	<%if(presents_list.getOwner().getId() != u.getId()){ %>
+                	<td><a href="PayPresent?id_present=<%= present.getId_present()%>">Pay</a></td>
                 	<%} %>
 		         </tr>
 		    <% } %>
