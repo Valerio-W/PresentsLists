@@ -4,6 +4,7 @@ import java.util.Base64;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -70,5 +71,36 @@ public class MessageAPI {
 			e.printStackTrace();
 		}
 		return Response.status(Status.OK).entity(message).build();
+	}
+	
+	@Path("/update")
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+ 	public Response updatePresentsList(String json) {
+	    if (json == null) {
+	        return Response.status(Status.BAD_REQUEST).build();
+	    }
+
+	    try {
+	        JSONObject jsonObject = new JSONObject(json);
+	        
+	        int id_message = jsonObject.getInt("id_message");
+	        String content = jsonObject.getString("content");
+    	    boolean checked = jsonObject.getBoolean("checked"); 
+	        JSONObject userObject = jsonObject.getJSONObject("user");
+	        int id_users = userObject.getInt("id_users");
+    	    Users_API users = Users_API.find(id_users);
+    	    
+	        Message_API message = new Message_API(id_message, content, checked, users);
+
+	        if (!message.update()) {
+	            return Response.status(Status.SERVICE_UNAVAILABLE).build();
+	        } else {
+	            return Response.status(Status.OK).build();
+	        }
+	    }
+	    catch(Exception e) {
+	        return Response.status(Status.BAD_REQUEST).build();
+	    }
 	}
 }
