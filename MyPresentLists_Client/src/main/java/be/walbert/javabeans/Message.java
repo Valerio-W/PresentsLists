@@ -2,6 +2,10 @@ package be.walbert.javabeans;
 
 import java.io.Serializable;
 
+import be.walbert.DAO.DAO;
+import be.walbert.DAO.MessageDAO;
+import be.walbert.DAO.PresentDAO;
+
 public class Message implements Serializable{
 
 	/*Attributs*/
@@ -10,7 +14,8 @@ public class Message implements Serializable{
 	private String content;
 	private boolean checked;
 	private Users user;
-	
+	private static final DAO<Message> message_DAO = new MessageDAO();
+
 	/*Constructors*/
 	public Message() {
 	}
@@ -56,4 +61,15 @@ public class Message implements Serializable{
 	}
 	
 	/*Methods*/
+	public boolean create() {
+		return message_DAO.create(this);
+	}
+	
+	public boolean update() {
+		return message_DAO.update(this);
+	}
+
+	public static Message find(int id_message) {
+		return message_DAO.find(id_message);
+	}
 }

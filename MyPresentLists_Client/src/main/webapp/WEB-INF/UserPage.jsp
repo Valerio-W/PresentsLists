@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="be.walbert.javabeans.Users"  %>
+<%@ page import="be.walbert.javabeans.Message"  %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -27,7 +29,16 @@
 		<a href="CreatePresents_List">Create Presents List</a>
 		<a href="Get_Presents_List">My Presents Lists</a>
 		<a href="Get_Guest_Lists">My Guest Lists</a>
+		<a href="Get_Messages">My Messages</a>
 		
+		 <% for (Message message : u.getMessages()) { %>
+		 	<% if (message.isChecked()) { %>
+		 		<%= message.isChecked() %>
+		 		<% } else { %>
+		 			<strong><%= message.isChecked() %></strong>
+		 			<script>alert("Unchecked message found!");</script>
+		 		<% } %>
+            <% } %>
 		<% 
 		  if ((String) request.getSession().getAttribute("confirm_New_Presents_List") != null) {
 		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirm_New_Presents_List") + "</div>");

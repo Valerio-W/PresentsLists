@@ -23,6 +23,7 @@
   	<servlet-name>UpdatePresentsList</servlet-name>
   	<servlet-name>AddGuests</servlet-name>
   	<servlet-name>Get_Guest_Lists</servlet-name>
+  	<servlet-name>Get_Messages</servlet-name>
   </filter-mapping>
   <filter-mapping>
   	<filter-name>AlreadyAuthenticateFilter</filter-name>
@@ -107,6 +108,11 @@
   	<servlet-name>Get_Guest_Lists</servlet-name>
   	<servlet-class>be.walbert.servlets.Get_Guest_Lists</servlet-class>
   </servlet>
+  
+  <servlet>
+  	<servlet-name>Get_Messages</servlet-name>
+  	<servlet-class>be.walbert.servlets.Get_Messages</servlet-class>
+  </servlet>
     
   <!-- SERVLETS MAPPINGS -->
   <servlet-mapping>
@@ -154,9 +160,13 @@
   	<servlet-name>AddGuests</servlet-name>
   	<url-pattern>/AddGuests</url-pattern>
   </servlet-mapping>
-    <servlet-mapping>
+   <servlet-mapping>
   	<servlet-name>Get_Guest_Lists</servlet-name>
   	<url-pattern>/Get_Guest_Lists</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Get_Messages</servlet-name>
+  	<url-pattern>/Get_Messages</url-pattern>
   </servlet-mapping>
   
 </web-app>
