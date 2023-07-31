@@ -72,15 +72,22 @@ public class PresentAPI {
 	    try {
 	        JSONObject jsonObject = new JSONObject(json);
 
-    	    int id_present = jsonObject.getInt("id_present");
+	        int id_present = jsonObject.getInt("id_present");
 	        String name = jsonObject.getString("name");
-    	    String description = jsonObject.getString("description");
-    	    double average_price = jsonObject.getDouble("average_price");
-    	    int priority = jsonObject.getInt("priority");
-    	    String state = jsonObject.getString("state");
-    	    String link = jsonObject.getString("link");
-    	    String imageBase64 = jsonObject.getString("image");
-	    	byte[] image = Base64.getDecoder().decode(imageBase64);
+	        String description = jsonObject.getString("description");
+	        double average_price = jsonObject.getDouble("average_price");
+	        int priority = jsonObject.getInt("priority");
+	        String state = jsonObject.getString("state");
+	        String link = jsonObject.getString("link");
+
+	        JSONObject imageJson = jsonObject.optJSONObject("image");
+	        byte[] image = null;
+
+	        if (imageJson != null) {
+	            String imageBase64 = imageJson.getString("base64");
+	            image = Base64.getDecoder().decode(imageBase64);
+	        }
+
     	    
     	    JSONObject list_object = jsonObject.getJSONObject("list");
     	    Presents_List_API list = new Presents_List_API();
