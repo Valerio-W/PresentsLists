@@ -44,8 +44,24 @@ public class MessageDAO extends DAO<Message>{
 
 	@Override
 	public boolean update(Message obj) {
-		// TODO Auto-generated method stub
-		return false;
+		ObjectMapper objectMapper = new ObjectMapper();
+
+	    try {
+	        String json = objectMapper.writeValueAsString(obj);
+	        ClientResponse res = this.ressource
+	                .path("message/update")
+	                .accept(MediaType.APPLICATION_JSON)
+	                .type(MediaType.APPLICATION_JSON)
+	                .put(ClientResponse.class, json);
+
+	        if (res.getStatus() == 200) {     	
+	            return true;
+	        }
+	    } catch (Exception ex) {
+	        System.out.println(ex.getMessage());
+	        return false;
+	    }
+	    return false;
 	}
 
 	@Override
