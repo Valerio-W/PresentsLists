@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
+import be.walbert.javabeans.Message;
 import be.walbert.javabeans.Presents_List;
 import be.walbert.javabeans.Users;
 
@@ -123,6 +124,17 @@ public class UsersDAO extends DAO<Users>{
 				    guests.add(presentsList);
 				}
 				user.setGuests_lists(guests);
+				
+				JSONArray messagesArray = json.getJSONArray("messages");
+				ArrayList<Message> messages = new ArrayList<>();
+				
+				for (int i = 0; i < messagesArray.length(); i++) {
+				    JSONObject listMessagesObj = messagesArray.getJSONObject(i);
+				     
+				    Message message = Message.find(listMessagesObj.getInt("id_message"));
+				    messages.add(message);
+				}
+				user.setMessages(messages);
  				return user;
 			}
  			else {
