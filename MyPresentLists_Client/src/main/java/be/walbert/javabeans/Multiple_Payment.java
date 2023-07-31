@@ -2,6 +2,13 @@ package be.walbert.javabeans;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import be.walbert.DAO.DAO;
+import be.walbert.DAO.Multiple_PaymentDAO;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_payment")
 public class Multiple_Payment implements Serializable{
 
 	/*Attributs*/
@@ -10,6 +17,7 @@ public class Multiple_Payment implements Serializable{
 	private double price_paid;
 	private Present present;
 	private Users user;
+	private static final DAO<Multiple_Payment> multiple_payment_DAO = new Multiple_PaymentDAO();
 	
 	/*Constructors*/
 	public Multiple_Payment() {}
@@ -53,7 +61,16 @@ public class Multiple_Payment implements Serializable{
 	public void setUser(Users user) {
 		this.user = user;
 	}
-		
 	
 	/*Methods*/
+	public boolean createMultiplePayment() {
+		return multiple_payment_DAO.create(this);
+	}
+	public boolean updateMultiplePayment() {
+		return multiple_payment_DAO.update(this);
+	}
+
+	public static Multiple_Payment find(int id_multiple_payment) {
+		return multiple_payment_DAO.find(id_multiple_payment);
+	}
 }

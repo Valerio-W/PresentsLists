@@ -3,7 +3,6 @@ package be.walbert.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -190,4 +189,11 @@ public class Present implements Serializable{
 		return present_DAO.find(id_present);
 	}
 	
+	public double total_price_paid() {
+		double total=0;
+		for (Multiple_Payment multiple_payment : payments) {
+			total+= multiple_payment.getPrice_paid();
+		}
+		return total;
+	}
 }
