@@ -35,21 +35,25 @@
 		<thead>
 			<tr>
 				<th>Content</th>
-	            <th>Checked</th>
+	            <th>State</th>
 	        </tr>
 	    </thead>
 	    <tbody>
 	    	<% for (Message message : messages) { %>
 	   			<tr>
-	   				<td><%= message.getContent() %></td>
-	   				<td>
-	   					<% if (message.isChecked()) { %>
-	   						<strong><%= message.isChecked() %></strong>
-	   					<% } 
-	   					   else { %>
-	   					   	<%= message.isChecked() %>
-	                        <% } %>
-	                </td>
+	   				<% if (message.isChecked()) { %>
+	   				<td><strong><%= message.getContent() %></strong></td>
+	   				<td>New</td>
+	   				<% } 
+	   				else { %>
+					<td><%= message.getContent() %></td>
+					<td>Already read</td>	         
+					<% } %>
+					
+	                
+					<% if (message.isChecked()) { %>
+                    <td><a href="UpdateMessage?id=<%= message.getId_message() %>">Read</a></td>
+                	<% } %>            	
 	           	</tr>
 	            <% } %>
 	   	</tbody>

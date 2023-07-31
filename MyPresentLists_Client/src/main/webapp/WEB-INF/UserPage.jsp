@@ -31,14 +31,6 @@
 		<a href="Get_Guest_Lists">My Guest Lists</a>
 		<a href="Get_Messages">My Messages</a>
 		
-		 <% for (Message message : u.getMessages()) { %>
-		 	<% if (message.isChecked()) { %>
-		 		<%= message.isChecked() %>
-		 		<% } else { %>
-		 			<strong><%= message.isChecked() %></strong>
-		 			<script>alert("Unchecked message found!");</script>
-		 		<% } %>
-            <% } %>
 		<% 
 		  if ((String) request.getSession().getAttribute("confirm_New_Presents_List") != null) {
 		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirm_New_Presents_List") + "</div>");
