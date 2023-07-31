@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 
+import be.walbert.javabeans.Multiple_Payment;
 import be.walbert.javabeans.Present;
 import be.walbert.javabeans.Presents_List;
 import be.walbert.javabeans.Users;
@@ -45,7 +46,6 @@ public class PresentDAO extends DAO<Present>{
 
 	@Override
 	public boolean delete(Present obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -102,7 +102,20 @@ public class PresentDAO extends DAO<Present>{
 		      
 		        Presents_List list = Presents_List.find(id_list);
 		        Present present = new Present(presentId, name, description, averagePrice, priority, statePresent, link, image, list);
-		        
+
+		        JSONArray multiple_paymentsArray = json.getJSONArray("payments");
+
+	            for (int i = 0; i < multiple_paymentsArray.length(); i++) {
+	                JSONObject multiple_paymentObject = multiple_paymentsArray.getJSONObject(i);
+
+	                int id_multiple_payment = multiple_paymentObject.getInt("id_payment");
+	                double price_paid = multiple_paymentObject.getDouble("price_paid");
+	                
+	                JSONObject usersObject = multiple_paymentObject.getJSONObject("user");
+	                Users users = Users.find(usersObject.getInt("id_users"));
+	                Multiple_Payment new_mutliple_payment = new Multiple_Payment(id_multiple_payment,price_paid,present, users);
+	                present.addPayment(new_mutliple_payment);
+	            }
 		        return present;
 		     }
 		 } catch (Exception e) {

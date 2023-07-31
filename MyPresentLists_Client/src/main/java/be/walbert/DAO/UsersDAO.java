@@ -52,13 +52,32 @@ public class UsersDAO extends DAO<Users>{
 
 	@Override
 	public boolean update(Users obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Users find(int id) {
-		// TODO Auto-generated method stub
+		try {
+			 ClientResponse res = this.ressource
+		     .path("users/" + id)
+		     .accept(MediaType.APPLICATION_JSON)
+		     .get(ClientResponse.class);
+			 if (res.getStatus() == 200) {
+		    	String response = res.getEntity(String.class); //The response body is extracted as a String using getEntity(String.class)
+				JSONObject json = new JSONObject(response);
+					
+		        int id_users = json.getInt("id_users");
+		        String pseudo = json.getString("pseudo");
+		        String password = json.getString("password");
+		        String email = json.getString("email");
+		         
+		        Users users = new Users(id_users, pseudo, password, email);
+		        
+		        return users;
+			 }
+		} catch (Exception e) {
+		 e.printStackTrace();
+		}
 		return null;
 	}
 
