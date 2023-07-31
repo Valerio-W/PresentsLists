@@ -154,9 +154,14 @@ public class Users implements Serializable{
 		return ((UsersDAO) userDAO).checkAccount(this);
 	}
 
-	public Users find() {
+	public Users findWithPseudo() {
 		UsersDAO userDAO = new UsersDAO();
 		return userDAO.find(this);
 	}
+	
+	public static Users find(int id_users) {
+		return userDAO.find(id_users);
+	}
+	
 
 }
