@@ -13,6 +13,7 @@ import java.sql.Types;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import be.walbert.Javabeans.Message_API;
 import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
 import oracle.jdbc.OracleTypes;
@@ -115,7 +116,7 @@ public class UsersDAO_API extends DAO<Users_API>  {
 
 			CallableStatement callableStatement_Users = connect.prepareCall("{call Get_User(?, ?, ?)}");
 	        CallableStatement callableStatement_PresentsList = connect.prepareCall("{call GetListsByUser(?, ?)}");
-	        
+
 	        callableStatement_Users.setString(1, pseudo);
 	        callableStatement_Users.setString(2, password);
 	        callableStatement_Users.registerOutParameter(3, OracleTypes.CURSOR);
@@ -165,10 +166,32 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	                Presents_List_API presentsList = Presents_List_API.find(id_list);
 	                user.addGuestList(presentsList);
 	            }
+	            
+		        CallableStatement callableStatement_Message = connect.prepareCall("{call GetMessagesByUser(?, ?)}");
+		        callableStatement_Message.setInt(1, users_id);
+		        callableStatement_Message.registerOutParameter(2, OracleTypes.ARRAY, "MESSAGE_TABLE");
+		        callableStatement_Message.execute();
+		        
+		        
+		        Array arrayMessages = callableStatement_Message.getArray(2);
+	            Object[] dataArrayMessages = (Object[]) arrayMessages.getArray();
+
+	            for (Object dataMessage : dataArrayMessages) {
+	                Object[] attributesMessages = ((Struct) dataMessage).getAttributes();
+	                
+	                int id_message = ((BigDecimal) attributesMessages[0]).intValue();
+	                
+	                Message_API message = Message_API.find(id_message);
+	                user.addMessage(message);
+	            }
+		        
+		        
+		        
 	            rs.close();
 	            callableStatement_Users.close();
 	            callableStatement_PresentsList.close();
 	            callableStatement_GuestsList.close();
+	            callableStatement_Message.close();
 	            
 	            return user;
 	        }
