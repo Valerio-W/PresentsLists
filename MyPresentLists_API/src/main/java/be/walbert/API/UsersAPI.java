@@ -2,13 +2,16 @@ package be.walbert.API;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
 
 @Path("/users")
@@ -106,5 +109,22 @@ public class UsersAPI {
         else {
             return Response.status(Status.OK).entity(u.isUsersExist()).build();
         }
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response find_Users(@PathParam("id") int id_users) {
+		Users_API users = new Users_API();
+		try {
+			users = Users_API.find(id_users);
+			if(users == null) {
+				return Response.status(Status.SERVICE_UNAVAILABLE).build();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(Status.OK).entity(users).build();
 	}
 }

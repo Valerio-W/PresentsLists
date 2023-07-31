@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import be.walbert.Connection.ProjectConnection;
 import be.walbert.Javabeans.Message_API;
+import be.walbert.Javabeans.Multiple_Payment_API;
 import be.walbert.Javabeans.Present_API;
 import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
@@ -32,5 +33,10 @@ public class DAOFactory_API extends AbstractDAOFactory_API{
 	@Override
 	public DAO<Message_API> getMessageDAO_API() {
 		return new MessageDAO_API(conn);
+	}
+
+	@Override
+	public DAO<Multiple_Payment_API> getMultiple_PaymentDAO_API() {
+		return new Multiple_PaymentDAO_API(conn);
 	}
 }

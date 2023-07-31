@@ -1,18 +1,22 @@
 package be.walbert.DAO;
 
 import java.io.ByteArrayInputStream;
+import java.math.BigDecimal;
 import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Struct;
 import java.util.ArrayList;
-import java.util.Base64;
 
+import be.walbert.Javabeans.Multiple_Payment_API;
 import be.walbert.Javabeans.Present_API;
 import be.walbert.Javabeans.Presents_List_API;
+import be.walbert.Javabeans.Users_API;
+import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.OracleTypes;
+import oracle.sql.ARRAY;
 
 public class PresentDAO_API extends DAO<Present_API> {
 
@@ -84,6 +88,31 @@ public class PresentDAO_API extends DAO<Present_API> {
 
 	            Presents_List_API presents_list = Presents_List_API.find(idList);
 	            Present_API present = new Present_API(idPresent, name, description, average_price, priority, statePresent, link, image, presents_list);
+	            
+	            CallableStatement callableStatementMultiplePayment = connect.prepareCall("{call GetMultiplePaymentByPresent(?, ?)}");
+	            callableStatementMultiplePayment.setInt(1, idPresent);
+	            callableStatementMultiplePayment.registerOutParameter(2, OracleTypes.ARRAY, "MULTIPLE_PAYMENTTABLE");
+	            callableStatementMultiplePayment.execute();
+
+	            Array arrayMultiplePayment = callableStatementMultiplePayment.getArray(2);
+		        Object[] dataArrayMultiplePayment = (Object[]) arrayMultiplePayment.getArray();
+		        if (arrayMultiplePayment != null) {
+	                for (Object dataMultiplePayment : dataArrayMultiplePayment) {
+	                	Struct structPresents = (Struct) dataMultiplePayment;
+			            Object[] attributesPresents = structPresents.getAttributes();
+			            
+		                BigDecimal multiple_payment_id_decimal = (BigDecimal)attributesPresents[0];
+		                int multiple_payment_id = multiple_payment_id_decimal.intValue(); 
+		                BigDecimal price_paid_decimal = (BigDecimal)attributesPresents[1];
+		                double price_paid = price_paid_decimal.doubleValue(); 
+		                BigDecimal id_users_decimal = (BigDecimal)attributesPresents[3];
+		                int id_users = id_users_decimal.intValue(); 
+		                Users_API users = Users_API.find(id_users);
+			            Multiple_Payment_API multiple_payment = new Multiple_Payment_API(multiple_payment_id, price_paid, present, users);
+			            present.addPayment(multiple_payment);
+	                }
+	            }
+	            
 	            return present;
 	        }
             return null;
@@ -134,13 +163,11 @@ public class PresentDAO_API extends DAO<Present_API> {
 
 	@Override
 	public boolean delete(Present_API obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public ArrayList<Present_API> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
