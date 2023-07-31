@@ -50,6 +50,12 @@
 		  }
 		%>
 		<%
+		  if ((String) request.getSession().getAttribute("multiple_paymentAdded") != null) {
+		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("multiple_paymentAdded") + "</div>");
+		    request.getSession().removeAttribute("multiple_paymentAdded");
+		  }
+		%>
+		<%
 		  if ((String) request.getSession().getAttribute("alreadyConnected") != null) {
 		    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("alreadyConnected") + "</div>");
 		    request.getSession().removeAttribute("alreadyConnected");
