@@ -3,6 +3,7 @@ package be.walbert.DAO;
 import java.sql.Connection;
 
 import be.walbert.Connection.ProjectConnection;
+import be.walbert.Javabeans.Message_API;
 import be.walbert.Javabeans.Present_API;
 import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
@@ -26,5 +27,10 @@ public class DAOFactory_API extends AbstractDAOFactory_API{
 	@Override
 	public DAO<Present_API> getPresentDAO_API() {
 		return new PresentDAO_API(conn);
+	}
+	
+	@Override
+	public DAO<Message_API> getMessageDAO_API() {
+		return new MessageDAO_API(conn);
 	}
 }

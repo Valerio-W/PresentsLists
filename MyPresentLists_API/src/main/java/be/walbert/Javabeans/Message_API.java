@@ -2,6 +2,13 @@ package be.walbert.Javabeans;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import be.walbert.DAO.AbstractDAOFactory_API;
+import be.walbert.DAO.DAO;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_message")
 public class Message_API implements Serializable{
 
 	/*Attributs*/
@@ -10,6 +17,8 @@ public class Message_API implements Serializable{
 	private String content;
 	private boolean checked;
 	private Users_API user;
+	private static final AbstractDAOFactory_API adf =  AbstractDAOFactory_API.getFactory();
+	private static final DAO<Message_API> Message_DAO = adf.getMessageDAO_API();
 	
 	/*Constructors*/
 	public Message_API() {
@@ -56,4 +65,15 @@ public class Message_API implements Serializable{
 	}
 	
 	/*Methods*/
+	public boolean create() {
+		return Message_DAO.create(this);
+	}
+	
+	public boolean update() {
+		return Message_DAO.update(this);
+	}
+
+	public static Message_API find(int id_message) {
+		return Message_DAO.find(id_message);
+	}
 }
