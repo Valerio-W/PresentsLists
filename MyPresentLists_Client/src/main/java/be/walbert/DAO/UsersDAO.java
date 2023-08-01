@@ -1,8 +1,10 @@
 package be.walbert.DAO;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -14,6 +16,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import be.walbert.javabeans.Message;
+import be.walbert.javabeans.Present;
 import be.walbert.javabeans.Presents_List;
 import be.walbert.javabeans.Users;
 
@@ -46,7 +49,6 @@ public class UsersDAO extends DAO<Users>{
 
 	@Override
 	public boolean delete(Users obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -73,6 +75,31 @@ public class UsersDAO extends DAO<Users>{
 		         
 		        Users users = new Users(id_users, pseudo, password, email);
 		        
+		        JSONArray listsArray = json.getJSONArray("lists");
+				if(listsArray.length()>0) {
+					ArrayList<Presents_List> lists = new ArrayList<>();
+					
+					for (int i = 0; i < listsArray.length(); i++) {
+					    JSONObject listObj = listsArray.getJSONObject(i);
+					    //Extracting attribute values ​​from the "list" and creating a Presents_List object
+					    int id_list = listObj.getInt("id_list");
+					    JSONObject object_limit_date = listObj.getJSONObject("limit_date");
+
+					    int year = object_limit_date.getInt("year");
+					    String monthString = object_limit_date.getString("month");
+
+					    // Convert month to int
+					    int month = Month.valueOf(monthString.toUpperCase()).getValue();
+					    int dayOfMonth = object_limit_date.getInt("dayOfMonth");
+
+					    LocalDate limit_date = LocalDate.of(year, month, dayOfMonth);
+				        String occasion = listObj.getString("occasion");
+					    boolean state = listObj.getBoolean("state");
+					    Presents_List presentsList = new Presents_List(id_list, limit_date, occasion, state, users);
+					    lists.add(presentsList);
+					}
+					users.setLists(lists);
+				}
 		        return users;
 			 }
 		} catch (Exception e) {
@@ -109,51 +136,86 @@ public class UsersDAO extends DAO<Users>{
 				user = new Users(id_users, pseudo, password, email);
 
 				JSONArray listsArray = json.getJSONArray("lists");
-				ArrayList<Presents_List> lists = new ArrayList<>();
-				for (int i = 0; i < listsArray.length(); i++) {
-				    JSONObject listObj = listsArray.getJSONObject(i);
-				    //Extracting attribute values ​​from the "list" and creating a Presents_List object
-				    int id_list = listObj.getInt("id_list");
-				    JSONObject object_limit_date = listObj.getJSONObject("limit_date");
+				if(listsArray.length()>0) {
+					ArrayList<Presents_List> lists = new ArrayList<>();
+					
+					for (int i = 0; i < listsArray.length(); i++) {
+					    JSONObject listObj = listsArray.getJSONObject(i);
+					    //Extracting attribute values ​​from the "list" and creating a Presents_List object
+					    int id_list = listObj.getInt("id_list");
+					    JSONObject object_limit_date = listObj.getJSONObject("limit_date");
 
-				    int year = object_limit_date.getInt("year");
-				    String monthString = object_limit_date.getString("month");
+					    int year = object_limit_date.getInt("year");
+					    String monthString = object_limit_date.getString("month");
 
-				    // Convert month to int
-				    int month = Month.valueOf(monthString.toUpperCase()).getValue();
-				    int dayOfMonth = object_limit_date.getInt("dayOfMonth");
+					    // Convert month to int
+					    int month = Month.valueOf(monthString.toUpperCase()).getValue();
+					    int dayOfMonth = object_limit_date.getInt("dayOfMonth");
 
-				    LocalDate limit_date = LocalDate.of(year, month, dayOfMonth);
-			        String occasion = listObj.getString("occasion");
-				    boolean state = listObj.getBoolean("state");
-				    
-				    //Creating the Presents_List object and adding it to "lists"
-				    Presents_List presentsList = new Presents_List(id_list, limit_date, occasion, state, user);
-				    lists.add(presentsList);
+					    LocalDate limit_date = LocalDate.of(year, month, dayOfMonth);
+				        String occasion = listObj.getString("occasion");
+					    boolean state = listObj.getBoolean("state");
+					    
+					    //Creating the Presents_List object and adding it to "lists"
+					    Presents_List presentsList = new Presents_List(id_list, limit_date, occasion, state, user);
+					    
+					    JSONArray presentsArray = listObj.getJSONArray("presents");
+
+			            for (int j = 0; j < presentsArray.length(); j++) {
+			                JSONObject presentObject = presentsArray.getJSONObject(j);
+
+			                int presentId = presentObject.getInt("id_present");
+			                String name = presentObject.getString("name");
+			                String description = presentObject.getString("description");
+			                BigDecimal averagePriceBigDecimal = presentObject.getBigDecimal("average_price");	    
+			                int priority = presentObject.getInt("priority");
+			                double averagePrice = averagePriceBigDecimal.doubleValue();
+			                String statePresent = presentObject.getString("state");
+			                String link = null;
+			                if (!presentObject.isNull("link")) {
+			                    link = presentObject.getString("link");
+			                }
+			                byte[] image= null;
+			                if (!presentObject.isNull("image")) {
+			                	image = Base64.getDecoder().decode(presentObject.getString("image"));
+			                }
+
+			                Present present = new Present(presentId, name, description, averagePrice, priority, statePresent, link, image,presentsList);
+			                presentsList.addPresent(present);
+			            }
+					    lists.add(presentsList);
+					}
+					user.setLists(lists);
 				}
-				user.setLists(lists);
+				
 				
 				JSONArray listsGuestArray = json.getJSONArray("guests_lists");
-				ArrayList<Presents_List> guests = new ArrayList<>();
-				
-				for (int i = 0; i < listsGuestArray.length(); i++) {
-				    JSONObject listGuestObj = listsGuestArray.getJSONObject(i);
-				     
-				    Presents_List presentsList = Presents_List.find(listGuestObj.getInt("id_list"));
-				    guests.add(presentsList);
+				if(listsGuestArray.length()>0) {
+					ArrayList<Presents_List> guests = new ArrayList<>();
+					
+					for (int i = 0; i < listsGuestArray.length(); i++) {
+					    JSONObject listGuestObj = listsGuestArray.getJSONObject(i);
+					     
+					    Presents_List presentsList = Presents_List.find(listGuestObj.getInt("id_list"));
+					    guests.add(presentsList);
+					}
+					user.setGuests_lists(guests);
 				}
-				user.setGuests_lists(guests);
+				
 				
 				JSONArray messagesArray = json.getJSONArray("messages");
-				ArrayList<Message> messages = new ArrayList<>();
-				
-				for (int i = 0; i < messagesArray.length(); i++) {
-				    JSONObject listMessagesObj = messagesArray.getJSONObject(i);
-				     
-				    Message message = Message.find(listMessagesObj.getInt("id_message"));
-				    messages.add(message);
+				if(messagesArray.length()>0) {
+					ArrayList<Message> messages = new ArrayList<>();
+					
+					for (int i = 0; i < messagesArray.length(); i++) {
+					    JSONObject listMessagesObj = messagesArray.getJSONObject(i);
+					     
+					    Message message = Message.find(listMessagesObj.getInt("id_message"));
+					    messages.add(message);
+					}
+					user.setMessages(messages);
 				}
-				user.setMessages(messages);
+				
  				return user;
 			}
  			else {

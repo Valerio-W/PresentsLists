@@ -74,7 +74,6 @@ public class OfferPresent extends HttpServlet {
 	 	            } else if (offerOrPayment.equals("payment")) {
 	 	            	if(request.getParameter("price_paid")!= null && !request.getParameter("price_paid").isEmpty()) {
 	 	            		double price_paid = Double.parseDouble(request.getParameter("price_paid"));
-	 	                	double total = present.total_price_paid();
 	 	            		if(present.total_price_paid()!= present.getAverage_price()) {
 		 	                	if(price_paid>0 && present.getAverage_price()>= price_paid && present.total_price_paid()+price_paid<=present.getAverage_price()) {
 		 	                		Multiple_Payment multiple_Payment = new Multiple_Payment(0,price_paid,currentPresent,currentUser);
