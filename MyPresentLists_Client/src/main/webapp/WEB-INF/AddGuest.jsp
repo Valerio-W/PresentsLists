@@ -18,26 +18,29 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="./css/styles.css" rel="stylesheet" />
 </head>
-	<body class="Pages">
-		<h1>Add Guests on Presents List</h1>
-		<form class="Form" action="AddGuests" method="POST">
-	 	<div class="row align-items-stretch mb-5">     
-        	<h3>New Guest</h3>
-        	<div class="col-md-6"> 
-           		<div class="form-group">
-                	<!-- Name input-->
-                	<input name= "pseudo" class="form-control" id="pseudo" type="text" placeholder="Pseudo *" required="required" />
-                </div> 
-        	</div>                       
-        </div>
-        <!-- Submit Button-->
-		<button class="btn btn-primary btn-xl text-uppercase" id="submit" name="submit" type="submit">Add</button>
-     </form>
-       <%
-		  if ((String) request.getSession().getAttribute("errorUsersNotFound") != null) {
-		    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("errorUsersNotFound") + "</div>");
-		    request.getSession().removeAttribute("errorUsersNotFound");
-		  }
-	 %>
+	<body>
+		<%@ include file="Navigation.jsp" %>
+		<div class="Pages">
+			<h1>Add Guests on Presents List</h1>
+			<form class="Form" action="AddGuests" method="POST">
+		 	<div class="row align-items-stretch mb-5">     
+	        	<h3>New Guest</h3>
+	        	<div class="col-md-6"> 
+	           		<div class="form-group">
+	                	<!-- Name input-->
+	                	<input name= "pseudo" class="form-control" id="pseudo" type="text" placeholder="Pseudo *" required="required" />
+	                </div> 
+	        	</div>                       
+	        </div>
+	        <!-- Submit Button-->
+			<button class="btn btn-primary btn-xl text-uppercase" id="submit" name="submit" type="submit">Add</button>
+	     </form>
+	       <%
+			  if ((String) request.getSession().getAttribute("errorUsersNotFound") != null) {
+			    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("errorUsersNotFound") + "</div>");
+			    request.getSession().removeAttribute("errorUsersNotFound");
+			  }
+		 %>
+		 </div>
 	</body>
 </html>

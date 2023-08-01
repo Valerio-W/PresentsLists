@@ -19,53 +19,56 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="./css/styles.css" rel="stylesheet" />
     </head>
-	<body class="Pages">
-	<% Present present = (Present) request.getAttribute("present"); %>
-    <h1>Present Informations :</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Average Price</th>
-                <th>Priority</th>
-                <th>State</th>
-                <th>Link</th>
-                <th>Image</th>
-            </tr>
-        </thead>
-        <tr>
-            <td><%= present.getName() %></td>
-            <td><%= present.getDescription() %></td>
-            <td><%= present.getAverage_price() %> €</td>
-            <td><%= present.getPriority() %></td>
-            <td><%= present.getState() %></td>
-            <td><%= present.getLink() %></td>
-            <% if (present.getImage() != null) { %>
-                <td><img src="data:image/jpeg;base64,<%= java.util.Base64.getEncoder().encodeToString(present.getImage()) %>" alt="Present Image" /></td>
-            <% } else { %>
-                <td>No Image</td>
-            <% } %>
-        </tr>
-    </table>
-    <h2>Payments :</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Payment ID</th>
-                <th>Price Paid</th>
-                <th>User ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% for (Multiple_Payment payment : present.getPayments()) { %>
-                <tr>
-                    <td><%= payment.getId_payment() %></td>
-                    <td><%= payment.getPrice_paid() %> €</td>
-                    <td><%= payment.getUser().getPseudo() %></td>
-                </tr>
-            <% } %>
-        </tbody>
-    </table>
+	<body>
+		<%@ include file="Navigation.jsp" %>
+		<div class="Pages">
+		<% Present present = (Present) request.getAttribute("present"); %>
+	    <h1>Present Informations :</h1>
+	    <table>
+	        <thead>
+	            <tr>
+	                <th>Name</th>
+	                <th>Description</th>
+	                <th>Average Price</th>
+	                <th>Priority</th>
+	                <th>State</th>
+	                <th>Link</th>
+	                <th>Image</th>
+	            </tr>
+	        </thead>
+	        <tr>
+	            <td><%= present.getName() %></td>
+	            <td><%= present.getDescription() %></td>
+	            <td><%= present.getAverage_price() %> €</td>
+	            <td><%= present.getPriority() %></td>
+	            <td><%= present.getState() %></td>
+	            <td><%= present.getLink() %></td>
+	            <% if (present.getImage() != null) { %>
+	                <td><img src="data:image/jpeg;base64,<%= java.util.Base64.getEncoder().encodeToString(present.getImage()) %>" alt="Present Image" /></td>
+	            <% } else { %>
+	                <td>No Image</td>
+	            <% } %>
+	        </tr>
+	    </table>
+	    <h2>Payments :</h2>
+	    <table>
+	        <thead>
+	            <tr>
+	                <th>Payment ID</th>
+	                <th>Price Paid</th>
+	                <th>User ID</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <% for (Multiple_Payment payment : present.getPayments()) { %>
+	                <tr>
+	                    <td><%= payment.getId_payment() %></td>
+	                    <td><%= payment.getPrice_paid() %> €</td>
+	                    <td><%= payment.getUser().getPseudo() %></td>
+	                </tr>
+	            <% } %>
+	        </tbody>
+	    </table>
+    </div>
 </body>
 </html>

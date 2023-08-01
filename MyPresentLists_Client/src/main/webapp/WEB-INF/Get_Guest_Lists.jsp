@@ -23,7 +23,9 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="./css/styles.css" rel="stylesheet" />
     </head>
-	<body class="Pages">
+	<body>
+		<%@ include file="Navigation.jsp" %>
+		<div class="Pages">
 		<%
      		Users user = (Users) session.getAttribute("user");
         	ArrayList<Presents_List> presentsLists = user.getGuests_lists();
@@ -60,5 +62,6 @@
 				    <% } else { %>
 				        <h2>Sorry, you don't have a guests list yet</h2>
 				    <% } %>
+			</div>
 	</body>
 </html>

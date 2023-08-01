@@ -23,44 +23,46 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="./css/styles.css" rel="stylesheet" />
     </head>
-	<body class="Pages">
-	<%
-    Users user = (Users) session.getAttribute("user");
-    ArrayList<Message> messages = user.getMessages();
-
-    if (user != null && messages != null && !messages.isEmpty()) {
-	%>
-	<h1>Here are your messages:</h1>
-	<table>
-		<thead>
-			<tr>
-				<th>Content</th>
-	            <th>State</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	    	<% for (Message message : messages) { %>
-	   			<tr>
-	   				<% if (message.isChecked()) { %>
-	   				<td><strong><%= message.getContent() %></strong></td>
-	   				<td>New</td>
-	   				<% } 
-	   				else { %>
-					<td><%= message.getContent() %></td>
-					<td>Already read</td>	         
-					<% } %>
-					
-	                
-					<% if (message.isChecked()) { %>
-                    <td><a href="UpdateMessage?id=<%= message.getId_message() %>">Read</a></td>
-                	<% } %>            	
-	           	</tr>
-	            <% } %>
-	   	</tbody>
-	</table>
-	<% } else { %>
-	    <h2>Sorry, you don't have messages yet</h2>
-	<% } %>
-
+	<body>
+		<%@ include file="Navigation.jsp" %>
+		<div class="Pages">
+			<%
+		    Users user = (Users) session.getAttribute("user");
+		    ArrayList<Message> messages = user.getMessages();
+		
+		    if (user != null && messages != null && !messages.isEmpty()) {
+			%>
+			<h1>Here are your messages:</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Content</th>
+			            <th>State</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			    	<% for (Message message : messages) { %>
+			   			<tr>
+			   				<% if (message.isChecked()) { %>
+			   				<td><strong><%= message.getContent() %></strong></td>
+			   				<td>New</td>
+			   				<% } 
+			   				else { %>
+							<td><%= message.getContent() %></td>
+							<td>Already read</td>	         
+							<% } %>
+							
+			                
+							<% if (message.isChecked()) { %>
+		                    <td><a href="UpdateMessage?id=<%= message.getId_message() %>">Read</a></td>
+		                	<% } %>            	
+			           	</tr>
+			            <% } %>
+			   	</tbody>
+			</table>
+			<% } else { %>
+			    <h2>Sorry, you don't have messages yet</h2>
+			<% } %>
+		</div>
 	</body>
 </html>

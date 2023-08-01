@@ -22,56 +22,59 @@
         <link href="./css/styles.css" rel="stylesheet" />
     </head>
 	<body>
-		<%
-			Users u = (Users) session.getAttribute("user");
-		%>
-		<h1>Welcome on your page <%=u.getPseudo() %></h1>
-		<a href="CreatePresents_List">Create Presents List</a>
-		<a href="Get_Presents_List">My Presents Lists</a>
-		<a href="Get_Guest_Lists">My Guest Lists</a>
-		<a href="Get_Messages">My Messages</a>
-		
-		<% 
-		  if ((String) request.getSession().getAttribute("confirm_New_Presents_List") != null) {
-		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirm_New_Presents_List") + "</div>");
-		    request.getSession().removeAttribute("confirm_New_Presents_List");
-		  }
-		%>
-		<%
-		  if ((String) request.getSession().getAttribute("confirmUpdatedList") != null) {
-		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirmUpdatedList") + "</div>");
-		    request.getSession().removeAttribute("confirmUpdatedList");
-		  }
-		%>
-		<%
-		  if ((String) request.getSession().getAttribute("guestAdded") != null) {
-		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("guestAdded") + "</div>");
-		    request.getSession().removeAttribute("guestAdded");
-		  }
-		%>
-		<%
-		  if ((String) request.getSession().getAttribute("multiple_paymentAdded") != null) {
-		    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("multiple_paymentAdded") + "</div>");
-		    request.getSession().removeAttribute("multiple_paymentAdded");
-		  }
-		%>
-		<%
-		  if ((String) request.getSession().getAttribute("alreadyConnected") != null) {
-		    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("alreadyConnected") + "</div>");
-		    request.getSession().removeAttribute("alreadyConnected");
-		  }
-		%>
-		<%
-		  if ((String) request.getSession().getAttribute("errorNotOwnerofList") != null) {
-		    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("errorNotOwnerofList") + "</div>");
-		    request.getSession().removeAttribute("errorNotOwnerofList");
-		  }
-		%>
-		<%
-		  if ((String) request.getSession().getAttribute("errorNotAllow") != null) {
-		    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("errorNotAllow") + "</div>");
-		    request.getSession().removeAttribute("errorNotAllow");
-		  }
-		%>
+	    <%@ include file="Navigation.jsp" %>
+		<div class="Pages">
+			<%
+				Users u = (Users) session.getAttribute("user");
+			%>
+				<h1>Welcome on your page <%=u.getPseudo() %></h1>
+				<a href="CreatePresents_List">Create Presents List</a>
+				<a href="Get_Presents_List">My Presents Lists</a>
+				<a href="Get_Guest_Lists">My Guest Lists</a>
+				<a href="Get_Messages">My Messages</a>
+				
+				<% 
+				  if ((String) request.getSession().getAttribute("confirm_New_Presents_List") != null) {
+				    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirm_New_Presents_List") + "</div>");
+				    request.getSession().removeAttribute("confirm_New_Presents_List");
+				  }
+				%>
+				<%
+				  if ((String) request.getSession().getAttribute("confirmUpdatedList") != null) {
+				    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirmUpdatedList") + "</div>");
+				    request.getSession().removeAttribute("confirmUpdatedList");
+				  }
+				%>
+				<%
+				  if ((String) request.getSession().getAttribute("guestAdded") != null) {
+				    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("guestAdded") + "</div>");
+				    request.getSession().removeAttribute("guestAdded");
+				  }
+				%>
+				<%
+				  if ((String) request.getSession().getAttribute("multiple_paymentAdded") != null) {
+				    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("multiple_paymentAdded") + "</div>");
+				    request.getSession().removeAttribute("multiple_paymentAdded");
+				  }
+				%>
+				<%
+				  if ((String) request.getSession().getAttribute("alreadyConnected") != null) {
+				    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("alreadyConnected") + "</div>");
+				    request.getSession().removeAttribute("alreadyConnected");
+				  }
+				%>
+				<%
+				  if ((String) request.getSession().getAttribute("errorNotOwnerofList") != null) {
+				    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("errorNotOwnerofList") + "</div>");
+				    request.getSession().removeAttribute("errorNotOwnerofList");
+				  }
+				%>
+				<%
+				  if ((String) request.getSession().getAttribute("errorNotAllow") != null) {
+				    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("errorNotAllow") + "</div>");
+				    request.getSession().removeAttribute("errorNotAllow");
+				  }
+				%>
+		</div>
 	</body>
 </html>

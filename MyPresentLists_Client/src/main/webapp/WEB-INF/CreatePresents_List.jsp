@@ -23,70 +23,73 @@
 	<meta charset="UTF-8">
 	<title>Create Presents List</title>
 	</head>
-	<body class="Pages">
-		<h1>Create a new Presents List !</h1>
-		<form class="Form" action="CreatePresents_List" method="POST" enctype="multipart/form-data"><!-- to allow the sending of files. -->
-	 	<div class="row align-items-stretch mb-5">
-        	<div class="col-md-6">
-        	<h3>New List</h3>
-           		<div class="form-group">
-                <!-- limit_date input-->
-                   	<input name= "limit_date" class="form-control" id="limit_date" type="date" placeholder="Limit Date *" required="required" />
-                </div>
-                <div class="form-group mb-md-0">
-	            <!-- occasion input-->
-	            	<input name="occasion" class="form-control" id="occasion" type="text" placeholder="Occasion *" required="required" />
-             	</div>  
-        	</div>         
-        	<h3>First Present</h3>
-        	<div class="col-md-6"><!-- First present to add -->
-           		<div class="form-group">
-                	<!-- Name input-->
-                	<input name= "name" class="form-control" id="name" type="text" placeholder="Name *" required="required" />
-                </div>
-                <div class="form-group mb-md-0">
-	                <!-- Description input-->
-	                <input name="description" class="form-control" id="description" type="text" placeholder="Description *" required="required" />
-             	</div>  
-             	<div class="form-group mb-md-0">
-	                <!-- Average Price input-->
-	                <input name="average_price" class="form-control" id="average_price" type="number" step="0.01" placeholder="Average Price*" required="required" />
-             	</div> 
-             	<div class="form-group mb-md-0">
-	                <!-- Priority input -->
-				    <select name="priority" class="form-control" id="priority" required="required">
-				        <option value="" disabled selected>Priority *</option>
-				        <% for(int i=1;i<11;i++)
-							out.println("<option value=\"" + i +"\">"+i+ "</option>");
-				        %>
-				    </select>
-             	</div> 
-             	<div class="form-group mb-md-0">
-	                <!-- Link input-->
-	                <input name="link" class="form-control" id="link" type="text" placeholder="Link *" />
-             	</div> 
-             	<div class="form-group mb-md-0">
-				    <!-- Image input -->
-				    <input name="image" class="form-control" id="image" type="file" accept="image/*"/>
-				</div>
-        	</div>                       
-        </div>
-        <!-- Submit Button-->
-		<button class="btn btn-primary btn-xl text-uppercase" id="submit" name="submit" type="submit">Create</button>
-     </form>
-      <%-- Show error message --%>
-		<%
-			ArrayList<String> errors = (ArrayList<String>)request.getAttribute("errors");
-		%>
-		<div id="Errors">
-			<ul>
-				<% if(errors != null){
-					for(String error : errors){
-						out.println("<li class=\"ErrorMessage\">" + error + "</li>");
+	<body>
+		<%@ include file="Navigation.jsp" %>
+		<div class="Pages">
+			<h1>Create a new Presents List !</h1>
+			<form class="Form" action="CreatePresents_List" method="POST" enctype="multipart/form-data"><!-- to allow the sending of files. -->
+		 	<div class="row align-items-stretch mb-5">
+	        	<div class="col-md-6">
+	        	<h3>New List</h3>
+	           		<div class="form-group">
+	                <!-- limit_date input-->
+	                   	<input name= "limit_date" class="form-control" id="limit_date" type="date" placeholder="Limit Date *" required="required" />
+	                </div>
+	                <div class="form-group mb-md-0">
+		            <!-- occasion input-->
+		            	<input name="occasion" class="form-control" id="occasion" type="text" placeholder="Occasion *" required="required" />
+	             	</div>  
+	        	</div>         
+	        	<h3>First Present</h3>
+	        	<div class="col-md-6"><!-- First present to add -->
+	           		<div class="form-group">
+	                	<!-- Name input-->
+	                	<input name= "name" class="form-control" id="name" type="text" placeholder="Name *" required="required" />
+	                </div>
+	                <div class="form-group mb-md-0">
+		                <!-- Description input-->
+		                <input name="description" class="form-control" id="description" type="text" placeholder="Description *" required="required" />
+	             	</div>  
+	             	<div class="form-group mb-md-0">
+		                <!-- Average Price input-->
+		                <input name="average_price" class="form-control" id="average_price" type="number" step="0.01" placeholder="Average Price*" required="required" />
+	             	</div> 
+	             	<div class="form-group mb-md-0">
+		                <!-- Priority input -->
+					    <select name="priority" class="form-control" id="priority" required="required">
+					        <option value="" disabled selected>Priority *</option>
+					        <% for(int i=1;i<11;i++)
+								out.println("<option value=\"" + i +"\">"+i+ "</option>");
+					        %>
+					    </select>
+	             	</div> 
+	             	<div class="form-group mb-md-0">
+		                <!-- Link input-->
+		                <input name="link" class="form-control" id="link" type="text" placeholder="Link *" />
+	             	</div> 
+	             	<div class="form-group mb-md-0">
+					    <!-- Image input -->
+					    <input name="image" class="form-control" id="image" type="file" accept="image/*"/>
+					</div>
+	        	</div>                       
+	        </div>
+	        <!-- Submit Button-->
+			<button class="btn btn-primary btn-xl text-uppercase" id="submit" name="submit" type="submit">Create</button>
+	     </form>
+	      <%-- Show error message --%>
+			<%
+				ArrayList<String> errors = (ArrayList<String>)request.getAttribute("errors");
+			%>
+			<div id="Errors">
+				<ul>
+					<% if(errors != null){
+						for(String error : errors){
+							out.println("<li class=\"ErrorMessage\">" + error + "</li>");
+						}
 					}
-				}
-				%>
-			</ul>
+					%>
+				</ul>
+			</div>
 		</div>
 	</body>
 </html>
