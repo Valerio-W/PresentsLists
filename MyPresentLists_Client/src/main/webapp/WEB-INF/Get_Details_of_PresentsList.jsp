@@ -25,7 +25,7 @@
 	<body class="Pages">
 		<h1>Details of the Presents List</h1>
 		<%
-		    Presents_List presents_list = (Presents_List) request.getAttribute("presents_list");
+		    Presents_List presents_list = (Presents_List) session.getAttribute("presents_list");
 			Users u = (Users) session.getAttribute("user");
 		%>
 	
@@ -34,6 +34,14 @@
 		<p>Status: <%= presents_list.isState() %></p>
 		<p>Owner: <%= presents_list.getOwner().getPseudo() %></p>
 		
+	<% if (presents_list.getOwner().getId() == u.getId()) { %>
+	    <p>
+	        <a href="UpdatePresentsList?id=<%= presents_list.getId_list() %>&action=<%= presents_list.isState() ? "disable" : "enable" %>">
+	            <%= presents_list.isState() ? "Disable List" : "Enable List" %>
+	        </a>
+	    </p>
+	<% } %>
+
 		<% if (!presents_list.isState() && presents_list.getOwner().getId()== u.getId()) { %>
 		    <p><a href="UpdatePresentsList?id=<%= presents_list.getId_list() %>">Update limit_date</a></p>
 		<% } %>
@@ -78,14 +86,20 @@
                 	<%if(present.getState().equalsIgnoreCase("ordered") && presents_list.getOwner().getId()== u.getId()){ %>
                 	<td><a href="UpdatePresent?id_present=<%= present.getId_present()%>">Modify</a></td>
                 	<%} %>
-                	<%if(present.getState().equalsIgnoreCase("ordered") && presents_list.getOwner().getId() != u.getId()){ %>
+                	<%if(present.getState().equalsIgnoreCase("ordered") && presents_list.getOwner().getId() != u.getId() && presents_list.isState()){ %>
                 	<td><a href="OfferPresent?id_present=<%= present.getId_present()%>">Offer</a></td>
                 	<%} %>
-                	<%if((present.getState().equalsIgnoreCase("reserved") || present.getState().equalsIgnoreCase("fully paid")) && presents_list.getOwner().getId() != u.getId()){ %>
+                	<%if((present.getState().equalsIgnoreCase("reserved") || present.getState().equalsIgnoreCase("fully paid")) && presents_list.isOwnerOrGuest(u)){ %>
                 	<td><a href="Get_Details_of_Present?id_present=<%= present.getId_present()%>">Details</a></td>
                 	<%} %>
 		         </tr>
 		    <% } %>
 		</table>
+		<%
+		  if ((String) request.getSession().getAttribute("error_list_disable") != null) {
+		    out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("error_list_disable") + "</div>");
+		    request.getSession().removeAttribute("error_list_disable");
+		  }
+		%>
 	</body>
 </html>

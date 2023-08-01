@@ -154,10 +154,6 @@ public class Presents_List implements Serializable{
 	    if (limit_date.isBefore(today)) {
 	        this.setState(false);
 	    }
-	    else {
-	    	this.setState(true);
-	    }
-	    
 	}
 
 	public static ArrayList<Presents_List> findAllLists() {
