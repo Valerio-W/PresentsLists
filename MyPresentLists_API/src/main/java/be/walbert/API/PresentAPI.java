@@ -78,7 +78,10 @@ public class PresentAPI {
 	        double average_price = jsonObject.getDouble("average_price");
 	        int priority = jsonObject.getInt("priority");
 	        String state = jsonObject.getString("state");
-	        String link = jsonObject.getString("link");
+	        String link = null;
+	        if(jsonObject.optJSONObject("link")!=null) {
+		        link = jsonObject.getString("link");
+	        }
 
 	        JSONObject imageJson = jsonObject.optJSONObject("image");
 	        byte[] image = null;
