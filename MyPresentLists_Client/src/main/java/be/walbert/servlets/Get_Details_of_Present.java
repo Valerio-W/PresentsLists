@@ -27,7 +27,7 @@ public class Get_Details_of_Present extends HttpServlet {
 	        
 	        present = Present.find(Integer.parseInt(request.getParameter("id_present")));
 	        if(present!= null) {
-	        	 if(present.getList().getOwner().getId()== user.getId() || present.getList().isOwnerOrGuest(user)) {
+	        	 if(present.getList().isOwnerOrGuest(user)) {
 	        		 request.setAttribute("present", present);
 		             getServletContext().getRequestDispatcher("/WEB-INF/Get_Details_of_Present.jsp").forward(request, response);
 	        	 }

@@ -29,7 +29,7 @@ public class Get_Details_of_PresentsList extends HttpServlet {
 	        presents_list.sortPresents_By_Priority();
 	        if(presents_list != null) {
 	        	 if(presents_list.isOwnerOrGuest(user)) {
-	        		 request.setAttribute("presents_list", presents_list);
+	        		 session.setAttribute("presents_list", presents_list);
 		             getServletContext().getRequestDispatcher("/WEB-INF/Get_Details_of_PresentsList.jsp").forward(request, response);
 	        	 }
 	        	 else {
