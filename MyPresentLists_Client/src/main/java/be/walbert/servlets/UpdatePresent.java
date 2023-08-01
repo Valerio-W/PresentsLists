@@ -17,6 +17,7 @@ import javax.servlet.http.Part;
 
 import be.walbert.javabeans.Present;
 import be.walbert.javabeans.Presents_List;
+import be.walbert.javabeans.Users;
 
 @MultipartConfig
 public class UpdatePresent extends HttpServlet {
@@ -34,21 +35,27 @@ public class UpdatePresent extends HttpServlet {
 	            
 	        // Check if id is already in session
 	        HttpSession session = request.getSession(false);
+			Users user = (Users) session.getAttribute("user");
+
 	        if (session != null && session.getAttribute("id_present") != null) {
 	        // Remove "id" attribute from session
 	            session.removeAttribute("id_present");
 	        }
 	            
-	        // Create new session with id_list
-	        HttpSession newSession = request.getSession(true);
 	        Present present = new Present();
 	        present.setId_present(id_present);
 	        present = Present.find(present.getId_present());
-	        if(present.getState().equalsIgnoreCase("ordered")) {
-	        	newSession.setAttribute("present", present);
-	            
-		        RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/UpdatePresent.jsp");
-		        dispatcher.forward(request, response);
+	        if(present.getState().equalsIgnoreCase("ordered") && present.getList().getOwner().getId()== user.getId()) {
+	        	if(present.getList().isState()) {
+		        	session.setAttribute("present", present);
+			        RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/UpdatePresent.jsp");
+			        dispatcher.forward(request, response);
+	        	}
+	        	else {
+
+				    request.getSession().setAttribute("error_list_disable", "Sorry, you can modify this present because the presents list is disable.");
+				    getServletContext().getRequestDispatcher("/WEB-INF/Get_Details_of_PresentsList.jsp").forward(request, response);	        	}
+
 	        }
 	        else{
 	        	 RequestDispatcher dispatcher = context.getRequestDispatcher("/WEB-INF/Error.jsp");

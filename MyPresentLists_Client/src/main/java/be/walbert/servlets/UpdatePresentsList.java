@@ -20,30 +20,44 @@ public class UpdatePresentsList extends HttpServlet {
         super();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    try {   
-	    	HttpSession session = request.getSession(false);
-	    	Presents_List presents_list = new Presents_List();
-	        presents_list.setId_list(Integer.parseInt(request.getParameter("id")));
-	        
-	        presents_list = Presents_List.find(Integer.parseInt(request.getParameter("id")));
-	        presents_list.sortPresents_By_Priority();
-	        
-	        if(presents_list != null) {
-	        	Users user = (Users) session.getAttribute("user");
-	        	if(presents_list.getOwner().getId()== user.getId()) {
-	        		session.setAttribute("presents_list", presents_list);
-		             getServletContext().getRequestDispatcher("/WEB-INF/UpdatePresentsList.jsp").forward(request, response);
-	        	}
-	        	else {
-					request.getSession().setAttribute("errorNotOwnerofList", "Sorry, you can modify this list, you are not the owner!");
-					getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);
-	        	}
-	        }
-		} catch (Exception e) {
-			getServletContext().getRequestDispatcher("/WEB-INF/Error.jsp").forward(request, response);
-		}
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {   
+            HttpSession session = request.getSession(false);
+
+            String action = request.getParameter("action");
+            if (action != null && (action.equals("disable") || action.equals("enable"))) {
+                int id_presentsList = Integer.parseInt(request.getParameter("id"));
+                Presents_List presents_list = Presents_List.find(id_presentsList);
+
+                if (presents_list != null) {
+                    boolean currentState = presents_list.isState();
+                    presents_list.setState(!currentState);
+                    if (presents_list.update_PresentsList()) {
+                        response.sendRedirect(request.getContextPath() + "/Get_Details_of_PresentsList?id=" + presents_list.getId_list());
+                    }
+                }
+            } else if (request.getParameter("id") != null) {
+                Presents_List presents_list = new Presents_List();
+                presents_list.setId_list(Integer.parseInt(request.getParameter("id")));
+                presents_list = Presents_List.find(Integer.parseInt(request.getParameter("id")));
+                presents_list.sortPresents_By_Priority();
+
+                if (presents_list != null) {
+                    Users user = (Users) session.getAttribute("user");
+                    if (presents_list.getOwner().getId() == user.getId()) {
+                        session.setAttribute("presents_list", presents_list);
+                        getServletContext().getRequestDispatcher("/WEB-INF/UpdatePresentsList.jsp").forward(request, response);
+                    } else {
+                        request.getSession().setAttribute("errorNotOwnerofList", "Sorry, you can't modify this list, you are not the owner!");
+                        getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            getServletContext().getRequestDispatcher("/WEB-INF/Error.jsp").forward(request, response);
+        }
+    }
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {

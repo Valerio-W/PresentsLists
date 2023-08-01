@@ -28,9 +28,12 @@ public class OfferPresent extends HttpServlet {
 	 			 Users currentUser = (Users) session.getAttribute("user"); 
 	 			 Present present = Present.find(Integer.parseInt(request.getParameter("id_present")));
 	 			 
-	 			 if(currentUser != null && present != null) {
+	 			 if(currentUser != null && present != null && present.getList().isState()) {
 	 				 session.setAttribute("present", present);
 	 				 getServletContext().getRequestDispatcher("/WEB-INF/OfferPresent.jsp").forward(request, response);
+	 			 }
+	 			 else {
+	 		 		getServletContext().getRequestDispatcher("/WEB-INF/Error.jsp").forward(request, response);
 	 			 }
 	 		 }
 	 	}catch (Exception e) {
