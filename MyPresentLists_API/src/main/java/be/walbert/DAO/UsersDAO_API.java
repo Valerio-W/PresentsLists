@@ -1,7 +1,10 @@
 package be.walbert.DAO;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Array;
+import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import be.walbert.Javabeans.Message_API;
+import be.walbert.Javabeans.Present_API;
 import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
 import oracle.jdbc.OracleTypes;
@@ -47,12 +51,13 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	public Users_API find(int id) {
 		 try {
 			 	CallableStatement callableStatement = connect.prepareCall("{call Find_User(?, ?)}");
+                CallableStatement callableStatement_PresentsList = connect.prepareCall("{call GetListsByUser(?, ?)}");
 	            callableStatement.setInt(1, id);
 	            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
 	            callableStatement.execute();
 
 	            ResultSet resultSet = (ResultSet) callableStatement.getObject(2);
-
+               
 	            if (resultSet.next()) {
 	                int id_users = resultSet.getInt("ID_USERS");
 	                String pseudo = resultSet.getString("PSEUDO");
@@ -60,6 +65,25 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	                String email = resultSet.getString("EMAIL");
 
 	                Users_API user = new Users_API(id_users, pseudo, password, email);
+	                callableStatement_PresentsList.setInt(1, id_users);
+		            callableStatement_PresentsList.registerOutParameter(2, OracleTypes.ARRAY, "LISTTABLE");
+		            callableStatement_PresentsList.execute();
+		            
+		            Array array = callableStatement_PresentsList.getArray(2);
+		            Object[] dataArray = (Object[]) array.getArray();
+
+		            for (Object data : dataArray) {
+		                Object[] attributes = ((Struct) data).getAttributes();
+		                
+		                int id_list = ((BigDecimal) attributes[0]).intValue();
+		                LocalDate limit_date = ((Timestamp) attributes[1]).toLocalDateTime().toLocalDate();
+		                String occasion = (String) attributes[2];
+		                int state = ((BigDecimal) attributes[3]).intValue();
+		                
+		                boolean stateValue = (state == 1);
+		                Presents_List_API presentsList = new Presents_List_API(id_list, limit_date, occasion, stateValue, user);
+		                user.addList(presentsList);
+		            }
 	                return user;
 	            }
 
@@ -146,6 +170,40 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	                
 	                boolean stateValue = (state == 1);
 	                Presents_List_API presentsList = new Presents_List_API(id_list, limit_date, occasion, stateValue, user);
+	    	       
+	                CallableStatement callableStatement_Presents = connect.prepareCall("{call GetPresentsByListId(?, ?)}");
+	                callableStatement_Presents.setInt(1, id_list);
+	                callableStatement_Presents.registerOutParameter(2, OracleTypes.ARRAY, "PRESENTS_TABLE");
+	                callableStatement_Presents.execute();
+	    	        
+	                Array arrayPresents = callableStatement_Presents.getArray(2);
+		            Object[] dataArrayPresents = (Object[]) arrayPresents.getArray();
+		            
+		            for (Object dataPresents : dataArrayPresents) {
+		                Object[] attributesPresents = ((Struct) dataPresents).getAttributes();
+		                BigDecimal presentId_decimal = (BigDecimal)attributesPresents[0];
+		                int presentId = presentId_decimal.intValue();
+		                String name = (String)attributesPresents[1];
+		                String description = (String)attributesPresents[2];
+		                BigDecimal average_price_decimal = (BigDecimal) attributesPresents[3];
+		                double average_price = average_price_decimal.doubleValue();
+		                BigDecimal priority_decimal = (BigDecimal)attributesPresents[4];
+		                int priority = priority_decimal.intValue();
+		                String presentState = (String)attributesPresents[5];
+		                String link=null;
+		                if((String)attributesPresents[6]!=null) {
+		                	 link = (String)attributesPresents[6];
+		                }
+		                Blob imageBlob = (Blob) attributesPresents[7];
+		                byte[] image = null;
+		                if(imageBlob != null) {
+		                	InputStream inputStream = imageBlob.getBinaryStream();
+			                image = inputStream.readAllBytes();
+		                }
+		                Present_API present = new Present_API(presentId, name, description, average_price, priority, presentState, link, image, presentsList);
+		                presentsList.addPresent(present);
+		            
+		            }
 	                user.addList(presentsList);
 	            }
 
@@ -185,8 +243,6 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	                user.addMessage(message);
 	            }
 		        
-		        
-		        
 	            rs.close();
 	            callableStatement_Users.close();
 	            callableStatement_PresentsList.close();
@@ -198,7 +254,9 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	        rs.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }
+	    } catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
