@@ -3,14 +3,14 @@
   <display-name>MyPresentLists_Client</display-name>
   
    <!-- FILTERS DECLARATIONS -->
-	<filter>
+ 	<filter>
 		<filter-name>AuthenticateFilter</filter-name>
 		<filter-class>be.walbert.Filters.AuthenticateFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>AlreadyAuthenticateFilter</filter-name>
 		<filter-class>be.walbert.Filters.AlreadyAuthenticateFilter</filter-class>
-	</filter>
+	</filter> 
   <!-- FILTERS MAPPINGS -->
   <filter-mapping>
   	<filter-name>AuthenticateFilter</filter-name>
@@ -27,13 +27,14 @@
   	<servlet-name>UpdateMessage</servlet-name>
   	<servlet-name>OfferPresent</servlet-name>
   	<servlet-name>Get_Details_of_Present</servlet-name>
+  	<servlet-name>Logout</servlet-name>
   </filter-mapping>
   <filter-mapping>
   	<filter-name>AlreadyAuthenticateFilter</filter-name>
   	<servlet-name>HomePage</servlet-name>
   	<servlet-name>Login</servlet-name>
   	<servlet-name>Signin</servlet-name>
-  </filter-mapping>
+  </filter-mapping> 
   
     <!-- WELCOME PAGE -->
   <welcome-file-list>
@@ -41,10 +42,10 @@
   </welcome-file-list>
   
     <!-- ERROR(S) PAGE(S) -->
-  <error-page>
+   <error-page>
    	<error-code>404</error-code>
 	<location>/WEB-INF/Error.jsp</location>
-  </error-page>
+  </error-page> 
   
    <!-- SESSION CONFIG -->
   <session-config>
@@ -131,6 +132,11 @@
   	<servlet-name>Get_Details_of_Present</servlet-name>
   	<servlet-class>be.walbert.servlets.Get_Details_of_Present</servlet-class>
   </servlet>
+  
+  <servlet>
+  	<servlet-name>Logout</servlet-name>
+  	<servlet-class>be.walbert.servlets.Logout</servlet-class>
+  </servlet>
     
   <!-- SERVLETS MAPPINGS -->
   <servlet-mapping>
@@ -197,5 +203,9 @@
   <servlet-mapping>
   	<servlet-name>Get_Details_of_Present</servlet-name>
   	<url-pattern>/Get_Details_of_Present</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Logout</servlet-name>
+  	<url-pattern>/Logout</url-pattern>
   </servlet-mapping>
 </web-app>
