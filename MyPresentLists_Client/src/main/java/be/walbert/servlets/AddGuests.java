@@ -53,9 +53,9 @@ public class AddGuests extends HttpServlet {
 			Presents_List list = (Presents_List) session.getAttribute("list");
 			Users users_existing = new Users();
 			users_existing.setPseudo(request.getParameter("pseudo"));
-			if(users_existing.findWithPseudo() != null) {
-				list.addGuest(users_existing.findWithPseudo());
-				Message newMessage = new Message(0, "You have been invited to the list of "+list.getOwner().getPseudo(), true, users_existing.findWithPseudo());
+			if(users_existing.findExistingUsers() != null) {
+				list.addGuest(users_existing.findExistingUsers());
+				Message newMessage = new Message(0, "You have been invited to the list of "+list.getOwner().getPseudo(), true, users_existing.findExistingUsers());
 				if(newMessage.create()) {
 					if(list.update_PresentsList()) {
 						request.getSession().setAttribute("guestAdded", "Great, the user has been invited as guest ! "

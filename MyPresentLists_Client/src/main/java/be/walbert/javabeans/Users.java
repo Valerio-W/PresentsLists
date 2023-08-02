@@ -150,11 +150,8 @@ public class Users implements Serializable{
 		
 	}
 
-	public boolean checkAccount() {
-		return ((UsersDAO) userDAO).checkAccount(this);
-	}
 
-	public Users findWithPseudo() {
+	public Users findExistingUsers() {
 		UsersDAO userDAO = new UsersDAO();
 		return userDAO.find(this);
 	}

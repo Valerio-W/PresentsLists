@@ -45,7 +45,7 @@ public class Signin extends HttpServlet {
 
             Users u = new Users(0, pseudo, password, email);
 
-            if (!u.checkAccount()) {//Check if pseudo or email are already taken
+            if (u.findExistingUsers()!=null) {//Check if pseudo or email are already taken
                 errors.add("Sorry, email or pseudo not available.");
             }
         }
