@@ -79,18 +79,16 @@ public class PresentAPI {
 	        int priority = jsonObject.getInt("priority");
 	        String state = jsonObject.getString("state");
 	        String link = null;
-	        if(jsonObject.optJSONObject("link")!=null) {
+	        if(jsonObject.optString("link")!=null) {
 		        link = jsonObject.getString("link");
 	        }
 
-	        JSONObject imageJson = jsonObject.optJSONObject("image");
 	        byte[] image = null;
 
-	        if (imageJson != null) {
-	            String imageBase64 = imageJson.getString("base64");
+	        if (jsonObject.has("image")) {
+	            String imageBase64 = jsonObject.getString("image");
 	            image = Base64.getDecoder().decode(imageBase64);
 	        }
-
     	    
     	    JSONObject list_object = jsonObject.getJSONObject("list");
     	    Presents_List_API list = new Presents_List_API();

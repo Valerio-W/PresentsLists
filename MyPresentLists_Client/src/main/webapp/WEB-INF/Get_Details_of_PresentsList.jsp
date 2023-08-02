@@ -81,10 +81,12 @@
 			            <td><%= present.getState() %></td>
 			            <td><%= present.getLink() %></td>
 			            <td>
-	                    <% if (present.getImage() != null) { %>
-	                        <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(present.getImage()) %>" alt="Present Image" />
-	                    <% } %>
-	                	</td>
+	                   <% if (present.getImage() != null) { %>
+						    <div style="width: 200px; height: 200px;">
+						        <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(present.getImage()) %>" alt="Present Image" style="max-width: 100%; max-height: 100%;" />
+						    </div>
+						<% } %>
+
 	                	<%if(present.getState().equalsIgnoreCase("ordered") && presents_list.getOwner().getId()== u.getId()){ %>
 	                	<td><a href="UpdatePresent?id_present=<%= present.getId_present()%>">Modify</a></td>
 	                	<%} %>
