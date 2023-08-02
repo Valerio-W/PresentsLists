@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.Base64;
 
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import be.walbert.javabeans.Present;
 import be.walbert.javabeans.Presents_List;
@@ -48,7 +46,6 @@ public class Presents_ListDAO extends DAO <Presents_List>{
 
 	@Override
 	public boolean delete(Presents_List obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 
 import be.walbert.javabeans.Multiple_Payment;
-import be.walbert.javabeans.Present;
 
 public class Multiple_PaymentDAO extends DAO<Multiple_Payment>{
 
@@ -38,7 +37,6 @@ public class Multiple_PaymentDAO extends DAO<Multiple_Payment>{
 
 	@Override
 	public boolean delete(Multiple_Payment obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -66,13 +64,11 @@ public class Multiple_PaymentDAO extends DAO<Multiple_Payment>{
 
 	@Override
 	public Multiple_Payment find(int id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ArrayList<Multiple_Payment> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

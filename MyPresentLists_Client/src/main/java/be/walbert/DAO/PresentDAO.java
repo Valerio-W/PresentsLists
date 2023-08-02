@@ -1,7 +1,5 @@
 package be.walbert.DAO;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -126,7 +124,6 @@ public class PresentDAO extends DAO<Present>{
 
 	@Override
 	public ArrayList<Present> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -20,17 +20,27 @@ public abstract class DAO<T> {
 	protected WebResource ressource;
 	protected ObjectMapper mapper;
 
+	/**
+     * DAO class constructor.
+     * It initializes HTTP client, web resource and ObjectMapper object to communicate with remote API.
+     */
     public DAO() {
 		ClientConfig config = new DefaultClientConfig();
 		client = Client.create(config);
 		ressource = client.resource(getBaseURI());
 		mapper = new ObjectMapper();
     }
-    
+    /**
+     * Private method that returns the base URI of the remote API. Return The base URI of the remote API.
+     */
+
 	private static URI getBaseURI() {
 		return UriBuilder.fromUri(baseUrl).build();
 	}
 
+	/**
+     * Private method that returns the base URI of the remote API.Return The base URI of the remote API.
+     */
 	protected WebResource getRessource() {
 	    return ressource;
 	}

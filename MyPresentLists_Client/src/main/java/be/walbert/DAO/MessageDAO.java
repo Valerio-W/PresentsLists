@@ -38,7 +38,6 @@ public class MessageDAO extends DAO<Message>{
 
 	@Override
 	public boolean delete(Message obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -99,7 +98,6 @@ public class MessageDAO extends DAO<Message>{
 
 	@Override
 	public ArrayList<Message> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
