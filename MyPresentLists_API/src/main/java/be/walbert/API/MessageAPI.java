@@ -1,7 +1,5 @@
 package be.walbert.API;
 
-import java.util.Base64;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -15,8 +13,6 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONObject;
 
 import be.walbert.Javabeans.Message_API;
-import be.walbert.Javabeans.Present_API;
-import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
 
 @Path("/message")
@@ -51,32 +47,30 @@ public class MessageAPI {
 	        }
 			
 		} catch (Exception ex) {
-	        return Response.status(Status.BAD_REQUEST).build();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	    }	    
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response find_Message(@PathParam("id") int id_message) {
-		Message_API message = new Message_API();
+	public Response findMessage(@PathParam("id") int id_message) {
 		try {
-			message = Message_API.find(id_message);
-
+			Message_API message = Message_API.find(id_message);
 			if (message == null) {
-				return Response.status(Status.SERVICE_UNAVAILABLE).build();
+				return Response.status(Status.BAD_REQUEST).build();
+			} else {
+				return Response.status(Status.OK).entity(message).build();
 			}
-
 		} catch (Exception e) {
-			e.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
-		return Response.status(Status.OK).entity(message).build();
 	}
-	
+	 
 	@Path("/update")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
- 	public Response updatePresentsList(String json) {
+ 	public Response update_Message(String json) {
 	    if (json == null) {
 	        return Response.status(Status.BAD_REQUEST).build();
 	    }
@@ -100,7 +94,7 @@ public class MessageAPI {
 	        }
 	    }
 	    catch(Exception e) {
-	        return Response.status(Status.BAD_REQUEST).build();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	    }
 	}
 }

@@ -9,7 +9,6 @@ import javax.ws.rs.core.Response.Status;
 
 import org.json.JSONObject;
 
-import be.walbert.Javabeans.Message_API;
 import be.walbert.Javabeans.Multiple_Payment_API;
 import be.walbert.Javabeans.Present_API;
 import be.walbert.Javabeans.Users_API;
@@ -28,7 +27,6 @@ public class Multiple_PaymentAPI {
 	    try {
 	    	 JSONObject jsonObject = new JSONObject(json);
 	    	 double price_paid = jsonObject.getDouble("price_paid");	    	 
-	    	    
 	    	 JSONObject user_object = jsonObject.getJSONObject("user");
 	    	 int id_users = user_object.getInt("id_users");
 	    	 
@@ -37,8 +35,7 @@ public class Multiple_PaymentAPI {
 	    	 JSONObject present_object = jsonObject.getJSONObject("present");
 	    	 int id_present = present_object.getInt("id_present");
 	    	 
-	    	 Present_API present = Present_API.find(id_present);
-	    	 
+	    	 Present_API present = Present_API.find(id_present);	    	 
 	    	 Multiple_Payment_API multiple_payment = new Multiple_Payment_API(0,price_paid, present, users);
 	    	    
 	        if (!multiple_payment.create()) {
@@ -50,7 +47,7 @@ public class Multiple_PaymentAPI {
 	        }
 			
 		} catch (Exception ex) {
-	        return Response.status(Status.BAD_REQUEST).build();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	    }	    
 	}
 	

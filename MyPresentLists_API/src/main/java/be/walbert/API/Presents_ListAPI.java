@@ -35,52 +35,46 @@ public class Presents_ListAPI {
 
 	    try {
 	    	 JSONObject jsonObject = new JSONObject(json);
+	    	 String occasion = jsonObject.getString("occasion");
+	    	 boolean state = jsonObject.getBoolean("state");
+	    	 JSONObject limitDateObject = jsonObject.getJSONObject("limit_date");
+	    	 int year = limitDateObject.getInt("year");
+	    	 String monthString = limitDateObject.getString("month");
+	    	 int day = limitDateObject.getInt("dayOfMonth");
+	    	 Month month = Month.valueOf(monthString.toUpperCase());  
+	    	 LocalDate limitDate = LocalDate.of(year, month, day);
+	    	 
+	    	 JSONObject userObject = jsonObject.getJSONObject("owner");
+	    	 Users_API user = new Users_API();
+	    	 user.setId(userObject.getInt("id_users"));
+	    	 
+	    	 Presents_List_API presents_list = new Presents_List_API(0, limitDate, occasion, state, user);
+	    	 Present_API first_present = new Present_API();
+	    	 JSONArray presentsArray = jsonObject.getJSONArray("presents");
+	    	 for (int i = 0; i < presentsArray.length(); i++) {
+	    		 JSONObject presentObject = presentsArray.getJSONObject(i);
+	    	     String name = presentObject.getString("name");
+	    	     String description = presentObject.getString("description");
+	    	     double average_price = presentObject.getDouble("average_price");
+	    	     int priority = presentObject.getInt("priority");
+	    	     String statePresent = presentObject.getString("state");
+	    	     String link = presentObject.getString("link"); 
+	    	     String imageBase64 = presentObject.getString("image");
+	    	     byte[] image = Base64.getDecoder().decode(imageBase64);
 
-	    	    String occasion = jsonObject.getString("occasion");
-	    	    boolean state = jsonObject.getBoolean("state");
-	    	    JSONObject limitDateObject = jsonObject.getJSONObject("limit_date");
-	    	    int year = limitDateObject.getInt("year");
-	    	    String monthString = limitDateObject.getString("month");
-	    	    int day = limitDateObject.getInt("dayOfMonth");
-	    	    
-	    	    Month month = Month.valueOf(monthString.toUpperCase());  
-	    	    LocalDate limitDate = LocalDate.of(year, month, day);
-	    	    
-	    	    JSONObject userObject = jsonObject.getJSONObject("owner");
-	    	    Users_API user = new Users_API();
-	    	    user.setId(userObject.getInt("id_users"));
-	    	    
-	    	    Presents_List_API presents_list = new Presents_List_API(0, limitDate, occasion, state, user);
-	    	    
-	    	    
-	    	    Present_API first_present = new Present_API();
-	    	    JSONArray presentsArray = jsonObject.getJSONArray("presents");
-
-	    	    for (int i = 0; i < presentsArray.length(); i++) {
-	    	        JSONObject presentObject = presentsArray.getJSONObject(i);
-
-	    	        String name = presentObject.getString("name");
-	    	        String description = presentObject.getString("description");
-	    	        double average_price = presentObject.getDouble("average_price");
-	    	        int priority = presentObject.getInt("priority");
-	    	        String statePresent = presentObject.getString("state");
-	    	    	String link = presentObject.getString("link"); 
-	    	    	String imageBase64 = presentObject.getString("image");
-	    	    	byte[] image = Base64.getDecoder().decode(imageBase64);
-
-
-		    	    first_present = new Present_API(0, name, description, average_price, priority, statePresent, link, image, presents_list);
-	    	    }
-	    	    presents_list.addPresent(first_present);
-	    	    if (!presents_list.create()) {
-	    	    	return Response.status(Status.SERVICE_UNAVAILABLE).build();
-	    	    } else {
-	    	    	return Response.status(Status.CREATED)
-	                    .header("Location", "/MyPresentLists_API/api/presents_list/" + presents_list.getId_list())
+		    	 first_present = new Present_API(0, name, description, average_price, priority, statePresent, link, image, presents_list);
+	    	 }
+	    	 
+	    	 presents_list.addPresent(first_present);
+	    	 if (!presents_list.create()) {
+	    		 return Response.status(Status.SERVICE_UNAVAILABLE).build();
+	    	 } else {
+	    		 return Response.status(Status.CREATED)
+	    				.header("Location", "/MyPresentLists_API/api/presents_list/" + presents_list.getId_list())
 	                    .build();
 	        }
 	    } catch (Exception ex) {
-	        return Response.status(Status.BAD_REQUEST).build();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	    }
 	}
 	
@@ -98,7 +92,7 @@ public class Presents_ListAPI {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 		return Response.status(Status.OK).entity(presents_list).build();
 	}
@@ -117,7 +111,7 @@ public class Presents_ListAPI {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 		return Response.status(Status.OK).entity(allLists).build();
 	}
@@ -140,7 +134,6 @@ public class Presents_ListAPI {
 	        int year = limitDateObject.getInt("year");
 	        String monthString = limitDateObject.getString("month");
 	        int day = limitDateObject.getInt("dayOfMonth");
-	        
 	        Month month = Month.valueOf(monthString.toUpperCase());  
 	        LocalDate limitDate = LocalDate.of(year, month, day);
 	        
@@ -170,7 +163,7 @@ public class Presents_ListAPI {
 	            return Response.status(Status.OK).build();
 	        }
 	    } catch (Exception ex) {
-	        return Response.status(Status.BAD_REQUEST).build();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	    }
 	}
 	

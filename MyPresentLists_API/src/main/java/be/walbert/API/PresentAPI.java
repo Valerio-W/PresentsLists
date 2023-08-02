@@ -1,7 +1,5 @@
 package be.walbert.API;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.Base64;
 
 import javax.ws.rs.GET;
@@ -18,7 +16,6 @@ import org.json.JSONObject;
 
 import be.walbert.Javabeans.Present_API;
 import be.walbert.Javabeans.Presents_List_API;
-import be.walbert.Javabeans.Users_API;
 
 @Path("/present")
 public class PresentAPI {
@@ -33,23 +30,22 @@ public class PresentAPI {
 
 	    try {
 	    	 JSONObject jsonObject = new JSONObject(json);
-
-	    	    String name = jsonObject.getString("name");
-	    	    String description = jsonObject.getString("description");
-	    	    double average_price = jsonObject.getDouble("average_price");
-	    	    int priority = jsonObject.getInt("priority");
-	    	    String state = jsonObject.getString("state");
-	    	    String link = jsonObject.getString("link");
-	    	    String imageBase64 = jsonObject.getString("image");
-    	    	byte[] image = Base64.getDecoder().decode(imageBase64);
+	    	 String name = jsonObject.getString("name");
+	    	 String description = jsonObject.getString("description");
+	    	 double average_price = jsonObject.getDouble("average_price");
+	    	 int priority = jsonObject.getInt("priority");
+	    	 String state = jsonObject.getString("state");
+	    	 String link = jsonObject.getString("link");
+	    	 String imageBase64 = jsonObject.getString("image");
+	    	 byte[] image = Base64.getDecoder().decode(imageBase64);
 	    	    
-	    	    JSONObject list_object = jsonObject.getJSONObject("list");
-	    	    Presents_List_API list = new Presents_List_API();
-	    	    list.setId_list(list_object.getInt("id_list"));
+	    	 JSONObject list_object = jsonObject.getJSONObject("list");
+	    	 Presents_List_API list = new Presents_List_API();
+	    	 list.setId_list(list_object.getInt("id_list"));
 	    	    
-	    	    Present_API present = new Present_API(0,name,description, average_price,priority , state, link, image, list);
-	    	    
-	        if (!present.create()) {
+	    	 Present_API present = new Present_API(0,name,description, average_price,priority , state, link, image, list);
+	    	 
+	    	 if (!present.create()) {
 	            return Response.status(Status.SERVICE_UNAVAILABLE).build();
 	        } else {
 	            return Response.status(Status.CREATED)
@@ -57,7 +53,7 @@ public class PresentAPI {
 	                    .build();
 	        }
 	    } catch (Exception ex) {
-	        return Response.status(Status.BAD_REQUEST).build();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	    }
 	}
 	
@@ -71,7 +67,6 @@ public class PresentAPI {
 
 	    try {
 	        JSONObject jsonObject = new JSONObject(json);
-
 	        int id_present = jsonObject.getInt("id_present");
 	        String name = jsonObject.getString("name");
 	        String description = jsonObject.getString("description");
@@ -82,9 +77,7 @@ public class PresentAPI {
 	        if(jsonObject.optString("link")!=null) {
 		        link = jsonObject.getString("link");
 	        }
-
 	        byte[] image = null;
-
 	        if (jsonObject.has("image")) {
 	            String imageBase64 = jsonObject.getString("image");
 	            image = Base64.getDecoder().decode(imageBase64);
@@ -102,7 +95,7 @@ public class PresentAPI {
 	            return Response.status(Status.OK).build();
 	        }
 	    } catch (Exception ex) {
-	        return Response.status(Status.BAD_REQUEST).build();
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	    }
 	}
 	
