@@ -7,7 +7,6 @@ import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Struct;
@@ -260,40 +259,18 @@ public class UsersDAO_API extends DAO<Users_API>  {
 		return null;
 	}
 
-	public boolean checkAccount(Users_API users_API) {
-		try {
-
-			CallableStatement callableStatement = connect.prepareCall("{call Check_Email(?,?,?)}");
-		       			
-		    callableStatement.setString(1, users_API.getPseudo());
-		    callableStatement.setString(2, users_API.getEmail());
-		    callableStatement.registerOutParameter(3, Types.NUMERIC);
-
-		    callableStatement.execute();
-
-		    int result = callableStatement.getInt(3);
-
-		    if (result == 1) {//If pseudo or email already taken
-		    	return true;
-		      } else {
-		    	return false;
-		      }
-		    } catch (SQLException e) {
-		      e.printStackTrace();
-		    }
-		return false;
-	}
 
 	public Users_API isUsersExist(Users_API users_API) {
 	    try {
-	        CallableStatement callableStatement = connect.prepareCall("{call isUsers_Exist(?, ?)}");
+	        CallableStatement callableStatement = connect.prepareCall("{call isUsers_Exist(?,?,?)}");
 
 	        callableStatement.setString(1, users_API.getPseudo());
-	        callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+	        callableStatement.setString(2, users_API.getEmail());
+	        callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
 
 	        callableStatement.execute();
 
-	        ResultSet resultSet = (ResultSet) callableStatement.getObject(2);
+	        ResultSet resultSet = (ResultSet) callableStatement.getObject(3);
 
 	        if (resultSet.next()) {
  	            int id_users = resultSet.getInt("ID_USERS");

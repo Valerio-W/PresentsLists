@@ -59,7 +59,7 @@ public class UsersAPI {
 
         Users_API u = new Users_API(0,pseudo,"",email);
 
-        if (u.checkAccount()) {
+        if (u.isUsersExist()==null) {
             return Response.status(Status.UNAUTHORIZED)
                     .build();
         }

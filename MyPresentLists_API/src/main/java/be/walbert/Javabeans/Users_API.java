@@ -153,11 +153,6 @@ public class Users_API implements Serializable {
 		return UsersDAO.create(this);
 	}
 
-	public boolean checkAccount() {
-		UsersDAO_API userdao = (UsersDAO_API) adf.getUserDAO_API();
-		return userdao.checkAccount(this);
-	}
-
 	public Users_API isUsersExist() {
 		UsersDAO_API userdao = (UsersDAO_API) adf.getUserDAO_API();
 		return userdao.isUsersExist(this);
