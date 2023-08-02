@@ -21,12 +21,10 @@ public class MessageDAO_API extends DAO<Message_API> {
 	    try {
 
 	        CallableStatement callableStatement = connect.prepareCall("{call Insert_Message(?, ?, ?)}");
-
 	        callableStatement.setString(1, obj.getContent());
 	        callableStatement.setInt(2, 1);
 	        callableStatement.setInt(3, obj.getUser().getId());
 	        callableStatement.execute();
-
 	        callableStatement.close();
 
 	        return true;
@@ -35,7 +33,6 @@ public class MessageDAO_API extends DAO<Message_API> {
 	        return false;
 	    }
 	}
-
 
 	@Override
 	public Message_API find(int id) {
@@ -64,17 +61,14 @@ public class MessageDAO_API extends DAO<Message_API> {
 	    return null;
 	}
 
-
 	@Override
 	public boolean update(Message_API obj) {
 	    try {
 	        CallableStatement callableStatement = connect.prepareCall("{call Update_Message(?, ?, ?)}");
-	        
 	        callableStatement.setInt(1, obj.getId_message());  
 	        callableStatement.setString(2, obj.getContent());  
 	        callableStatement.setInt(3, obj.isChecked() ? 1 : 0); 	        
 	        callableStatement.execute();
-	        
 	        callableStatement.close();
 	        
 	        return true;  
@@ -83,7 +77,6 @@ public class MessageDAO_API extends DAO<Message_API> {
 	        return false;  
 	    }
 	}
-
 
 	@Override
 	public boolean delete(Message_API obj) {

@@ -2,10 +2,11 @@ package be.walbert.DAO;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import be.walbert.Javabeans.Multiple_Payment_API;
-import be.walbert.Javabeans.Present_API;
+import oracle.jdbc.OracleTypes;
 
 public class Multiple_PaymentDAO_API extends DAO<Multiple_Payment_API> {
 
@@ -32,29 +33,48 @@ public class Multiple_PaymentDAO_API extends DAO<Multiple_Payment_API> {
 
 	@Override
 	public boolean update(Multiple_Payment_API obj) {
-		try {
-			
-		} catch (Exception e) {
-		}
 		return false;
 	}
 
 	@Override
 	public boolean delete(Multiple_Payment_API obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Multiple_Payment_API find(int id) {
-		// TODO Auto-generated method stub
+		try {
+			CallableStatement callableStatement = connect.prepareCall("{call Find_Multiple_Payment(?, ?)}");
+
+	        callableStatement.setInt(1, id);
+	        callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+
+	        callableStatement.execute();
+
+	        ResultSet resultSet = (ResultSet) callableStatement.getObject(2);
+
+	        if (resultSet.next()) {
+
+	            int id_payment = resultSet.getInt("ID_PAYMENT");
+	            double price_paid = resultSet.getDouble("PRICE_PAID");
+	            int id_present = resultSet.getInt("ID_PRESENT");
+	            int id_users = resultSet.getInt("ID_USERS");
+	            PresentDAO_API presentdao = new PresentDAO_API(connect);
+	            UsersDAO_API usersdao = new UsersDAO_API(connect);
+	            Multiple_Payment_API multiple_payment = new Multiple_Payment_API(id_payment, price_paid,presentdao.find(id_present),usersdao.find(id_users));
+ 	            
+	            return multiple_payment;
+	        }
+            return null;
+
+		} catch (Exception e) {
+	        e.printStackTrace();
+ 		}
 		return null;
 	}
 
 	@Override
 	public ArrayList<Multiple_Payment_API> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
