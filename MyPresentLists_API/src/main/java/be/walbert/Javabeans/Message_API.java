@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_message")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_message")// Annotation indicating the use of an identifier generator to handle circular references during JSON serialization.
 public class Message_API implements Serializable{
 
 	/*Attributs*/

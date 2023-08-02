@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -12,7 +11,7 @@ import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
 import be.walbert.DAO.UsersDAO_API;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_users")// Annotation indicating the use of an identifier generator to handle circular references during JSON serialization
 public class Users_API implements Serializable {
 
 	/*Attributs*/
@@ -129,21 +128,10 @@ public class Users_API implements Serializable {
 	public void addGuestList(Presents_List_API newGuestList) {
 		guests_lists.add(newGuestList);
 	}
-	public void removeGuestList(Presents_List_API newGuestList) {
-		guests_lists.remove(newGuestList);
-	}
 	public void addMessage(Message_API newMessage) {
 		messages.add(newMessage);
 	}
-	public void removeMessage(Message_API newMessage) {
-		messages.remove(newMessage);
-	}
-	public void addPayment(Multiple_Payment_API newPayment) {
-		payments.add(newPayment);
-	}
-	public void removePayment(Multiple_Payment_API newPayment) {
-		payments.remove(newPayment);
-	}
+
 	public static Users_API login (String pseudo, String password) {
 		UsersDAO_API userdao = (UsersDAO_API) adf.getUserDAO_API();
 		return userdao.GetUser(pseudo, password);

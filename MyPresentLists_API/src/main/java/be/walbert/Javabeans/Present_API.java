@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_present")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_present")// Annotation indicating the use of an identifier generator to handle circular references during JSON serialization
 public class Present_API implements Serializable{
 
 	/*Attributs*/
@@ -130,9 +130,6 @@ public class Present_API implements Serializable{
 	/*Methods*/
 	public void addPayment(Multiple_Payment_API newpayment) {
 		payments.add(newpayment);
-	}
-	public void removePayment(Multiple_Payment_API newpayment) {
-		payments.remove(newpayment);
 	}
 	
 	public boolean create() {

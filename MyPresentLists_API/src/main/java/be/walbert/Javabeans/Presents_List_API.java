@@ -4,14 +4,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.walbert.DAO.AbstractDAOFactory_API;
 import be.walbert.DAO.DAO;
-import be.walbert.DAO.Presents_ListDAO_API;
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_list")
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_list")// Annotation indicating the use of an identifier generator to handle circular references during JSON serialization
 public class Presents_List_API implements Serializable{
 
 	/*Attributs*/
@@ -106,9 +105,6 @@ public class Presents_List_API implements Serializable{
 	}
 	public void addPresent(Present_API newpresent) {
 		presents.add(newpresent);
-	}
-	public void removePresent(Present_API newpresent) {
-		presents.remove(newpresent);
 	}
 	
 	public boolean create() {
