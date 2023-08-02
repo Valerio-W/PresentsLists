@@ -39,6 +39,7 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	        
 		    callableStatement.execute();
 		    
+		    callableStatement.close();
 	        return true;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -83,6 +84,11 @@ public class UsersDAO_API extends DAO<Users_API>  {
 		                Presents_List_API presentsList = new Presents_List_API(id_list, limit_date, occasion, stateValue, user);
 		                user.addList(presentsList);
 		            }
+		            
+		            callableStatement.close();
+		            callableStatement_PresentsList.close();
+		            resultSet.close();
+		            
 	                return user;
 	            }
 
@@ -127,6 +133,7 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	            Users_API user = new Users_API(id_users, pseudo, password, email);
 	            users.add(user);
 	        }
+	        callableStatement.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }

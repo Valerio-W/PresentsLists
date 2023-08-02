@@ -50,10 +50,11 @@ public class AddGuests extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false); 
 		if (session != null && session.getAttribute("list") != null) {
+			Users current_user = (Users) session.getAttribute("user");
 			Presents_List list = (Presents_List) session.getAttribute("list");
 			Users users_existing = new Users();
 			users_existing.setPseudo(request.getParameter("pseudo"));
-			if(users_existing.findExistingUsers() != null) {
+			if(users_existing.findExistingUsers() != null && !users_existing.getPseudo().equals(current_user.getPseudo())) {
 				list.addGuest(users_existing.findExistingUsers());
 				Message newMessage = new Message(0, "You have been invited to the list of "+list.getOwner().getPseudo(), true, users_existing.findExistingUsers());
 				if(newMessage.create()) {

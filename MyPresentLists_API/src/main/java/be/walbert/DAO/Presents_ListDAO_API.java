@@ -128,6 +128,10 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	                Users_API newGuest = Users_API.find(guestUserId);
 	                presentsList.addGuest(newGuest);
 	            }
+	            resultSet.close();
+	            callableStatement.close();
+	            presents_callableStatement.close();
+	            getGuestsStatement.close();
 	            
 	            return presentsList;
 	        }
@@ -166,6 +170,8 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 	                insertGuestStatement.setInt(2, guest.getId());
 	                insertGuestStatement.execute();
 	            }
+	            
+	            callableStatement.close();
 	        }
 	        
 	        return true;

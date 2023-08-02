@@ -81,11 +81,11 @@ public class OfferPresent extends HttpServlet {
 		 		 	                	present = Present.find(present.getId_present());
 		 	                			if(present.getAverage_price()==present.total_price_paid()) {
 		 	                				present.setState("fully paid");
-		 	                				if(present.updatePresent()) {
-		 	                					request.getSession().setAttribute("multiple_paymentAdded", "Great, your multiple_payment has been created for the present !");
-				 		 	                	getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);		 		 	              
-		 	                				}
 		 	                			} 
+		 	                			if(present.updatePresent()) {
+	 	                					request.getSession().setAttribute("multiple_paymentAdded", "Great, your multiple_payment has been created for the present !");
+			 		 	                	getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);		 		 	              
+	 	                				}
 		 	                		}
 		 	 	                } 
 		 	 	                else {

@@ -63,6 +63,7 @@ public class Multiple_PaymentDAO_API extends DAO<Multiple_Payment_API> {
 	            UsersDAO_API usersdao = new UsersDAO_API(connect);
 	            Multiple_Payment_API multiple_payment = new Multiple_Payment_API(id_payment, price_paid,presentdao.find(id_present),usersdao.find(id_users));
  	            
+	            resultSet.close();
 	            return multiple_payment;
 	        }
             return null;

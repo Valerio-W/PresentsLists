@@ -54,7 +54,6 @@
 	    <table>
 	        <thead>
 	            <tr>
-	                <th>Payment ID</th>
 	                <th>Price Paid</th>
 	                <th>User ID</th>
 	            </tr>
@@ -62,7 +61,6 @@
 	        <tbody>
 	            <% for (Multiple_Payment payment : present.getPayments()) { %>
 	                <tr>
-	                    <td><%= payment.getId_payment() %></td>
 	                    <td><%= payment.getPrice_paid() %> €</td>
 	                    <td><%= payment.getUser().getPseudo() %></td>
 	                </tr>

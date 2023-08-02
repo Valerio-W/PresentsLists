@@ -53,7 +53,8 @@ public class MessageDAO_API extends DAO<Message_API> {
 	            Users_API user = Users_API.find(userId);
  	            Message_API message = new Message_API(messageId, content, checked, user);
 
-	            return message;
+ 	           resultSet.close();
+	           return message;
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();

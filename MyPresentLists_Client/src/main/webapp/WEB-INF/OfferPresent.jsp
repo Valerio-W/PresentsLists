@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@page import="be.walbert.javabeans.Users" %>
 <%@page import="be.walbert.javabeans.Present" %>
+<%@page import="be.walbert.javabeans.Multiple_Payment" %>
 <%@page import="java.util.Base64" %>
     
 <!DOCTYPE html>
@@ -54,7 +55,23 @@
 				    </tr>
 				</table>
 		    <% }%>
-		
+			 <h2>Payments :</h2>
+		    <table>
+		        <thead>
+		            <tr>
+		                <th>Price Paid</th>
+		                <th>User ID</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <% for (Multiple_Payment payment : present.getPayments()) { %>
+		                <tr>
+		                    <td><%= payment.getPrice_paid() %> €</td>
+		                    <td><%= payment.getUser().getPseudo() %></td>
+		                </tr>
+		            <% } %>
+		        </tbody>
+		    </table>
 		    <% if (present != null) { %>
 		        <h2>You have two options:</h2>/
 		       <form action="OfferPresent" method="post">

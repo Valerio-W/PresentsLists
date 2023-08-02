@@ -110,7 +110,7 @@ public class PresentDAO_API extends DAO<Present_API> {
 			            present.addPayment(multiple_payment);
 	                }
 	            }
-	            
+		        resultSet.close();
 	            return present;
 	        }
             return null;
