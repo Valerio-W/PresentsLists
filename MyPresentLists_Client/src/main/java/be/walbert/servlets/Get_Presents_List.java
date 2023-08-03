@@ -22,7 +22,7 @@ public class Get_Presents_List extends HttpServlet {
 			if(session != null) {
 				Users currentUser = (Users) session.getAttribute("user");
 				if(currentUser != null) {
-					session.setAttribute("user", Users.find(currentUser.getId()));
+					session.setAttribute("user", Users.login(currentUser.getPseudo(), currentUser.getPassword()));
 					getServletContext().getRequestDispatcher("/WEB-INF/Get_Presents_List.jsp").forward(request, response);
 				}
 			}

@@ -31,7 +31,7 @@ public class UpdateMessage extends HttpServlet {
                     if(message_Updated.getUser().getId()== currentUser.getId()) {
                     	message_Updated.setChecked(false);
                         if(message_Updated.update()) {
-                 			getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);
+                 			getServletContext().getRequestDispatcher("/WEB-INF/Get_Messages.jsp").forward(request, response);
                         }
                     }
                     else {

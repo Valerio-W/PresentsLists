@@ -23,6 +23,7 @@ public class Get_Messages extends HttpServlet {
 			if(session != null) {
 				Users currentUser = (Users) session.getAttribute("user");
 				if(currentUser != null) {
+					session.setAttribute("user", Users.login(currentUser.getPseudo(), currentUser.getPassword()));
 					getServletContext().getRequestDispatcher("/WEB-INF/Get_Messages.jsp").forward(request, response);
 				}
 			}
