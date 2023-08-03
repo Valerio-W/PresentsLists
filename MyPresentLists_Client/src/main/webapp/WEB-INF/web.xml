@@ -11,13 +11,16 @@
 		<filter-name>AlreadyAuthenticateFilter</filter-name>
 		<filter-class>be.walbert.Filters.AlreadyAuthenticateFilter</filter-class>
 	</filter> 
+	<filter>
+		<filter-name>UnregisteredUsersFilter</filter-name>
+		<filter-class>be.walbert.Filters.UnregisteredUsersFilter</filter-class>
+	</filter> 
   <!-- FILTERS MAPPINGS -->
   <filter-mapping>
   	<filter-name>AuthenticateFilter</filter-name>
   	<servlet-name>UserPage</servlet-name>
   	<servlet-name>CreatePresents_List</servlet-name>
   	<servlet-name>Get_Presents_List</servlet-name>
-  	<servlet-name>Get_Details_of_PresentsList</servlet-name>
   	<servlet-name>CreatePresent</servlet-name>
   	<servlet-name>UpdatePresent</servlet-name>
   	<servlet-name>UpdatePresentsList</servlet-name>
@@ -35,7 +38,10 @@
   	<servlet-name>Login</servlet-name>
   	<servlet-name>Signin</servlet-name>
   </filter-mapping> 
-  
+  <filter-mapping>
+  	<filter-name>UnregisteredUsersFilter</filter-name>
+  	<servlet-name>Get_Details_of_PresentsList</servlet-name>
+  </filter-mapping> 
     <!-- WELCOME PAGE -->
   <welcome-file-list>
     <welcome-file>HomePage</welcome-file>
