@@ -7,7 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import be.walbert.javabeans.Presents_List;
 import be.walbert.javabeans.Users;
 
 public class Signin extends HttpServlet {
@@ -50,20 +52,22 @@ public class Signin extends HttpServlet {
             }
         }
 
-        if (errors.isEmpty()) {//If errors is empty (no errors)
+        if (errors.isEmpty()) { // If errors is empty (no errors)
             Users u = new Users(0, pseudo, password, email);
-            if (u.Signin()) {
-                request.getSession().setAttribute("confirmAccount", "Great, your account has just been created");
-                response.sendRedirect(request.getContextPath() + "/HomePage");
-            } else {
-            	getServletContext().getRequestDispatcher("/WEB-INF/Errors.jsp").forward(request, response);
-			    return;
-            }
-        }
 
-        if (!errors.isEmpty()) {
-            request.setAttribute("errors", errors);
-            request.getRequestDispatcher("/WEB-INF/Signin.jsp").forward(request, response);
-        }
+            if (u.Signin()) {
+            	 HttpSession session = request.getSession(false);
+            	 Integer id = (Integer) session.getAttribute("id"); // Cast the attribute to Integer
+
+            	if (id != null) {
+            	    session.setAttribute("id_guest_list", id);
+            	}
+            	request.getSession().setAttribute("confirmAccount", "Great, your account has just been created");
+                response.sendRedirect(request.getContextPath() + "/HomePage");
+            }
+         } else {
+            	request.setAttribute("errors", errors);
+                request.getRequestDispatcher("/WEB-INF/Signin.jsp").forward(request, response);
+         }
     }
 }

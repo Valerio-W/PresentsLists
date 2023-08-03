@@ -55,14 +55,11 @@ public class AddGuests extends HttpServlet {
 			Users users_existing = new Users();
 			users_existing.setPseudo(request.getParameter("pseudo"));
 			if(users_existing.findExistingUsers() != null && !users_existing.getPseudo().equals(current_user.getPseudo())) {
-				list.addGuest(users_existing.findExistingUsers());
+				list.getGuests().add(users_existing.findExistingUsers());
 				Message newMessage = new Message(0, "You have been invited to the list of "+list.getOwner().getPseudo(), true, users_existing.findExistingUsers());
 				if(newMessage.create()) {
 					if(list.update_PresentsList()) {
-						request.getSession().setAttribute("guestAdded", "Great, the user has been invited as guest ! "
-								+ "There is the link to access to your presents list : "+ 
-								"http://localhost:8080"+ request.getContextPath() + "/Get_Details_of_PresentsList"+"?id="+list.getId_list()
-								+"(If the user launches the program on a port other than 8080, he will have to modify the port number of the link).");
+						request.getSession().setAttribute("guestAdded", "Great, the user has been invited as guest !");
 						getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);
 					}
 					else {

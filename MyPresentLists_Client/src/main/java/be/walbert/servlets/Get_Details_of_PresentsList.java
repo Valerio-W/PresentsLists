@@ -29,6 +29,9 @@ public class Get_Details_of_PresentsList extends HttpServlet {
 	        presents_list.sortPresents_By_Priority();
 	        if(presents_list != null) {
 	        	 if(presents_list.isOwnerOrGuest(user)) {
+	        		 request.getSession().setAttribute("link_for_guest", "There is the link to access to your presents list : "+ 
+								"http://localhost:8080"+ request.getContextPath() + "/Get_Details_of_PresentsList"+"?id="+presents_list.getId_list()
+								+"(If the user launches the program on a port other than 8080, he will have to modify the port number of the link).");	        		 
 	        		 session.setAttribute("presents_list", presents_list);
 		             getServletContext().getRequestDispatcher("/WEB-INF/Get_Details_of_PresentsList.jsp").forward(request, response);
 	        	 }

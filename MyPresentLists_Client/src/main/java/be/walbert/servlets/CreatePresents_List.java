@@ -91,7 +91,7 @@ public class CreatePresents_List extends HttpServlet {
      		present = new Present(0,name, description, average_price, priority, "ordered", link,image, new_list);
     		 
     		//Add present to the Presents_List object
-    		new_list.addPresent(present);
+    		new_list.getPresents().add(present);
     		if(new_list.createPresents_List()) {
                 request.getSession().setAttribute("confirm_New_Presents_List", "Great, your new list has just been created");
                 response.sendRedirect(request.getContextPath() + "/UserPage");

@@ -23,6 +23,7 @@ public class Get_Guest_Lists extends HttpServlet {
 				Users currentUser = (Users) session.getAttribute("user"); 
 				if(currentUser != null) {
 					request.setAttribute("presentsLists", currentUser.getLists());
+					session.setAttribute("user", Users.login(currentUser.getPseudo(), currentUser.getPassword()));
 					getServletContext().getRequestDispatcher("/WEB-INF/Get_Guest_Lists.jsp").forward(request, response);
 				}
 			}
