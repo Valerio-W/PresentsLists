@@ -112,7 +112,7 @@ public class PresentDAO extends DAO<Present>{
 	                JSONObject usersObject = multiple_paymentObject.getJSONObject("user");
 	                Users users = Users.find(usersObject.getInt("id_users"));
 	                Multiple_Payment new_mutliple_payment = new Multiple_Payment(id_multiple_payment,price_paid,present, users);
-	                present.addPayment(new_mutliple_payment);
+	                present.getPayments().add(new_mutliple_payment);
 	            }
 		        return present;
 		     }

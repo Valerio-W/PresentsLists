@@ -180,7 +180,7 @@ public class UsersDAO extends DAO<Users>{
 			                }
 
 			                Present present = new Present(presentId, name, description, averagePrice, priority, statePresent, link, image,presentsList);
-			                presentsList.addPresent(present);
+			                presentsList.getPresents().add(present);
 			            }
 					    lists.add(presentsList);
 					}

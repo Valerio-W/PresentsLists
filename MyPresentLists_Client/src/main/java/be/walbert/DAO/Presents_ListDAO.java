@@ -136,9 +136,9 @@ public class Presents_ListDAO extends DAO <Presents_List>{
 		                JSONObject usersObject = multiple_paymentObject.getJSONObject("user");
 		                Users users = Users.find(usersObject.getInt("id_users"));
 		                Multiple_Payment new_mutliple_payment = new Multiple_Payment(id_multiple_payment,price_paid,present, users);
-		                present.addPayment(new_mutliple_payment);
+		                present.getPayments().add(new_mutliple_payment);
 		            }
-	                presentsList.addPresent(present);
+	                presentsList.getPresents().add(present);
 	            }
 
 	            JSONArray guestsArray = json.getJSONArray("guests");
@@ -152,7 +152,7 @@ public class Presents_ListDAO extends DAO <Presents_List>{
 	                String email_guest = guestObject.getString("email");
 
 	                Users new_guest = new Users(id_guest,pseudo_guest,password_guest,email_guest);
-	                presentsList.addGuest(new_guest);
+	                presentsList.getGuests().add(new_guest);
 	            }
 
 	            
