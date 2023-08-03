@@ -118,27 +118,6 @@ public class Users implements Serializable{
 	}
 	
 	/*Methods*/
-	public void addList(Presents_List newList) {
-		lists.add(newList);
-	}
-	public void addGuestList(Presents_List newGuestList) {
-		lists.add(newGuestList);
-	}
-	public void removeGuestList(Presents_List newGuestList) {
-		lists.remove(newGuestList);
-	}
-	public void addMessage(Message newMessage) {
-		messages.add(newMessage);
-	}
-	public void removeMessage(Message newMessage) {
-		messages.remove(newMessage);
-	}
-	public void addPayment(Multiple_Payment newPayment) {
-		payments.add(newPayment);
-	}
-	public void removePayment(Multiple_Payment newPayment) {
-		payments.remove(newPayment);
-	}
 	
 	public static Users login (String pseudo, String password) {
 		UsersDAO userDAO = new UsersDAO();
@@ -149,7 +128,6 @@ public class Users implements Serializable{
 		return userDAO.create(this);
 		
 	}
-
 
 	public Users findExistingUsers() {
 		UsersDAO userDAO = new UsersDAO();

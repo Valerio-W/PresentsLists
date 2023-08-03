@@ -128,10 +128,7 @@ public class Present_API implements Serializable{
 	}
 	
 	/*Methods*/
-	public void addPayment(Multiple_Payment_API newpayment) {
-		payments.add(newpayment);
-	}
-	
+
 	public boolean create() {
 		return Present_DAO.create(this);
 	}

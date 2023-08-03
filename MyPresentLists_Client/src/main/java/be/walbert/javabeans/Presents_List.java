@@ -103,16 +103,6 @@ public class Presents_List implements Serializable{
 	}
 
 	/*Methods*/
-	public void addGuest(Users newGuest) {
-		guests.add(newGuest);
-	}
-	public void addPresent(Present newpresent) {
-		presents.add(newpresent);
-	}
-	public void removePresent(Present newpresent) {
-		presents.remove(newpresent);
-	}
-	
 	//Sort the present list according to the priority of the Present objects
 	public void sortPresents_By_Priority() {
 	    int n = presents.size();

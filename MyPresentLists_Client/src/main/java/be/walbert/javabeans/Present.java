@@ -165,12 +165,6 @@ public class Present implements Serializable{
 	}
 	
 	/*Methods*/
-	public void addPayment(Multiple_Payment newpayment) {
-		payments.add(newpayment);
-	}
-	public void removePayment(Multiple_Payment newpayment) {
-		payments.remove(newpayment);
-	}
 	public boolean createPresent() {
 		return present_DAO.create(this);
 	}
