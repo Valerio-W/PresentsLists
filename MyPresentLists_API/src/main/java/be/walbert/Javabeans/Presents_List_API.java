@@ -100,12 +100,6 @@ public class Presents_List_API implements Serializable{
 	}
 
 	/*Methods*/
-	public void addGuest(Users_API newGuest) {
-		guests.add(newGuest);
-	}
-	public void addPresent(Present_API newpresent) {
-		presents.add(newpresent);
-	}
 	
 	public boolean create() {
 		return Presents_List_DAO.create(this);

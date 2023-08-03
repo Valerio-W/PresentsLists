@@ -65,7 +65,7 @@ public class Presents_ListAPI {
 		    	 first_present = new Present_API(0, name, description, average_price, priority, statePresent, link, image, presents_list);
 	    	 }
 	    	 
-	    	 presents_list.addPresent(first_present);
+	    	 presents_list.getPresents().add(first_present);
 	    	 if (!presents_list.create()) {
 	    		 return Response.status(Status.SERVICE_UNAVAILABLE).build();
 	    	 } else {
@@ -154,7 +154,7 @@ public class Presents_ListAPI {
     	        String email=guestsObject.getString("email");
     	         
     	        Users_API new_guest = new Users_API(id_guest, pseudo, password, email);
-    	        presentsList.addGuest(new_guest);
+    	        presentsList.getGuests().add(new_guest);
      	    }
 	        
 	        if (!presentsList.update()) {

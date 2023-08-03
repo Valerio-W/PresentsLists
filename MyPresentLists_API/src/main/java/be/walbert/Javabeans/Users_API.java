@@ -122,16 +122,6 @@ public class Users_API implements Serializable {
 	}
 	
 	/*Methods*/
-	public void addList(Presents_List_API newList) {
-		lists.add(newList);
-	}
-	public void addGuestList(Presents_List_API newGuestList) {
-		guests_lists.add(newGuestList);
-	}
-	public void addMessage(Message_API newMessage) {
-		messages.add(newMessage);
-	}
-
 	public static Users_API login (String pseudo, String password) {
 		UsersDAO_API userdao = (UsersDAO_API) adf.getUserDAO_API();
 		return userdao.GetUser(pseudo, password);

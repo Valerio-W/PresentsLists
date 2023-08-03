@@ -130,10 +130,10 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 			                int id_users_guest = id_users_decimal.intValue(); 
 			                Users_API users_guest = Users_API.find(id_users_guest);
 				            Multiple_Payment_API multiple_payment = new Multiple_Payment_API(multiple_payment_id, price_paid, present, users_guest);
-				            present.addPayment(multiple_payment);
+				            present.getPayments().add(multiple_payment);
 		                }
 		            }
-	                presentsList.addPresent(present);
+	                presentsList.getPresents().add(present);
 	            }
 		        
 		        CallableStatement getGuestsStatement = connect.prepareCall("{call GetGuestsByListId(?, ?)}");
@@ -150,7 +150,7 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 
 	                int guestUserId = ((BigDecimal) attributesGuest[2]).intValue();
 	                Users_API newGuest = Users_API.find(guestUserId);
-	                presentsList.addGuest(newGuest);
+	                presentsList.getGuests().add(newGuest);
 	            }
 	            resultSet.close();
 	            callableStatement.close();

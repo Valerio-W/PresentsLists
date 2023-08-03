@@ -107,7 +107,7 @@ public class PresentDAO_API extends DAO<Present_API> {
 		                int id_users = id_users_decimal.intValue(); 
 		                Users_API users = Users_API.find(id_users);
 			            Multiple_Payment_API multiple_payment = new Multiple_Payment_API(multiple_payment_id, price_paid, present, users);
-			            present.addPayment(multiple_payment);
+			            present.getPayments().add(multiple_payment);
 	                }
 	            }
 		        resultSet.close();
