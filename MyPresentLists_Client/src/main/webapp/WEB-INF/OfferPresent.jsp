@@ -4,7 +4,8 @@
 <%@page import="be.walbert.javabeans.Present" %>
 <%@page import="be.walbert.javabeans.Multiple_Payment" %>
 <%@page import="java.util.Base64" %>
-    
+<%@page import="java.util.ArrayList" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,8 +73,8 @@
 		            <% } %>
 		        </tbody>
 		    </table>
-		    <% if (present != null) { %>
-		        <h2>You have two options:</h2>/
+		    <% if (present != null && present.getState().equals("ordered") && present.getPayments().size()==0) { %>
+		        <h2>You have two options:</h2>
 		       <form action="OfferPresent" method="post">
 				    <label>
 				        <input type="radio" name="offerOrPayment" value="offer" required> Offer the present
@@ -87,37 +88,27 @@
 				    <input type="number" name="price_paid" step="0.01" id="price_paid"><br>
 				    <input type="submit" value="Submit">
 				</form>
-		    <% }%>    
-		    <%
-		    	if ((String) request.getSession().getAttribute("error_price_paid") != null) {
-				  out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("error_price_paid") + "</div>");
-				  request.getSession().removeAttribute("error_price_paid");
-				}
-			%>
-			<%
-		    	if ((String) request.getSession().getAttribute("error_present_already_fullpaid") != null) {
-				  out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("error_present_already_fullpaid") + "</div>");
-				  request.getSession().removeAttribute("error_present_already_fullpaid");
-				}
-			%>
-			<%
-		    	if ((String) request.getSession().getAttribute("already_reserved") != null) {
-				  out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("already_reserved") + "</div>");
-				  request.getSession().removeAttribute("already_reserved");
-				}
-			%>
-			<%
-		    	if ((String) request.getSession().getAttribute("error_already_multiple_payments") != null) {
-				  out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("error_already_multiple_payments") + "</div>");
-				  request.getSession().removeAttribute("error_already_multiple_payments");
-				}
-			%>
-			<%
-		    	if ((String) request.getSession().getAttribute("error_price_paid_empty") != null) {
-				  out.println("<div class=\"ErrorMessage\">" + (String) request.getSession().getAttribute("error_price_paid_empty") + "</div>");
-				  request.getSession().removeAttribute("error_price_paid_empty");
-				}
-			%>
+		    <% }else{%>   
+		     	<form action="OfferPresent" method="post">
+				    <label>
+				        <input type="radio" name="offerOrPayment" value="payment" required> Make multiple payment
+				    </label>
+				    <br>
+				    <label for="pricePaid">Indicate Price Paid:</label>
+				    <input type="number" name="price_paid" step="0.01" id="price_paid"><br>
+				    <input type="submit" value="Submit">
+				</form>
+		    <%} %> 
+		   <% ArrayList<String> errors = (ArrayList<String>) request.getAttribute("errors"); %>
+			<% if (errors != null && !errors.isEmpty()) { %>
+			    <div class="alert alert-danger" role="alert">
+			        <ul>
+			            <% for (String error : errors) { %>
+			                <li><%= error %></li>
+			            <% } %>
+			        </ul>
+			    </div>
+			<% } %>
 		</div>
 	</body>
 </html>

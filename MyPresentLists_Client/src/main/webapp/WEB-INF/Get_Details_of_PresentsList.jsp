@@ -87,13 +87,13 @@
 						    </div>
 						<% } %>
 
-	                	<%if(present.getState().equalsIgnoreCase("ordered") && presents_list.getOwner().getId()== u.getId()){ %>
+	                	<%if(present.getState().equalsIgnoreCase("ordered") && present.getPayments().size()==0 && presents_list.getOwner().getId()== u.getId()){ %>
 	                	<td><a href="UpdatePresent?id_present=<%= present.getId_present()%>">Modify</a></td>
 	                	<%} %>
 	                	<%if(present.getState().equalsIgnoreCase("ordered") && presents_list.getOwner().getId() != u.getId() && presents_list.isState()){ %>
 	                	<td><a href="OfferPresent?id_present=<%= present.getId_present()%>">Offer</a></td>
 	                	<%} %>
-	                	<%if((present.getState().equalsIgnoreCase("reserved") || present.getState().equalsIgnoreCase("fully paid")) && presents_list.isOwnerOrGuest(u)){ %>
+	                	<%if((present.getState().equalsIgnoreCase("reserved") || present.getPayments().size()>=0) && presents_list.isOwnerOrGuest(u)){ %>
 	                	<td><a href="Get_Details_of_Present?id_present=<%= present.getId_present()%>">Details</a></td>
 	                	<%} %>
 			         </tr>

@@ -50,23 +50,26 @@
 	            <% } %>
 	        </tr>
 	    </table>
-	    <h2>Payments :</h2>
-	    <table>
-	        <thead>
-	            <tr>
-	                <th>Price Paid</th>
-	                <th>User ID</th>
-	            </tr>
-	        </thead>
-	        <tbody>
-	            <% for (Multiple_Payment payment : present.getPayments()) { %>
-	                <tr>
-	                    <td><%= payment.getPrice_paid() %> €</td>
-	                    <td><%= payment.getUser().getPseudo() %></td>
-	                </tr>
-	            <% } %>
-	        </tbody>
-	    </table>
+		<% if (present.getPayments().size() > 0) { %>
+			<h2>Payments :</h2>
+		    <table>
+		        <thead>
+		            <tr>
+		                <th>Price Paid</th>
+		                <th>User</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <% for (Multiple_Payment payment : present.getPayments()) { %>
+		                <tr>
+		                    <td><%= payment.getPrice_paid() %> €</td>
+		                    <td><%= payment.getUser().getPseudo() %></td>
+		                </tr>
+		            <% } %>
+		        </tbody>
+		    </table>
+		<% } %>
+
     </div>
 </body>
 </html>
