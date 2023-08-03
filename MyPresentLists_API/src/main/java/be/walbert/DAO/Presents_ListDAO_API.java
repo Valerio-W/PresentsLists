@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import be.walbert.Javabeans.Presents_List_API;
 import be.walbert.Javabeans.Users_API;
+import be.walbert.Javabeans.Multiple_Payment_API;
 import be.walbert.Javabeans.Present_API;
 import oracle.jdbc.OracleTypes;
 
@@ -109,6 +110,29 @@ public class Presents_ListDAO_API extends DAO<Presents_List_API>{
 		                image = inputStream.readAllBytes();
 	                }
 	                Present_API present = new Present_API(presentId, name, description, average_price, priority, presentState, link, image, presentsList);
+	                CallableStatement callableStatementMultiplePayment = connect.prepareCall("{call GetMultiplePaymentByPresent(?, ?)}");
+		            callableStatementMultiplePayment.setInt(1, presentId);
+		            callableStatementMultiplePayment.registerOutParameter(2, OracleTypes.ARRAY, "MULTIPLE_PAYMENTTABLE");
+		            callableStatementMultiplePayment.execute();
+
+		            Array arrayMultiplePayment = callableStatementMultiplePayment.getArray(2);
+			        Object[] dataArrayMultiplePayment = (Object[]) arrayMultiplePayment.getArray();
+			        if (arrayMultiplePayment != null) {
+		                for (Object dataMultiplePayment : dataArrayMultiplePayment) {
+		                	Struct structPresentsMultiplePayment = (Struct) dataMultiplePayment;
+				            Object[] attributesMultiplePayment = structPresentsMultiplePayment.getAttributes();
+				            
+			                BigDecimal multiple_payment_id_decimal = (BigDecimal)attributesMultiplePayment[0];
+			                int multiple_payment_id = multiple_payment_id_decimal.intValue(); 
+			                BigDecimal price_paid_decimal = (BigDecimal)attributesMultiplePayment[1];
+			                double price_paid = price_paid_decimal.doubleValue(); 
+			                BigDecimal id_users_decimal = (BigDecimal)attributesMultiplePayment[3];
+			                int id_users_guest = id_users_decimal.intValue(); 
+			                Users_API users_guest = Users_API.find(id_users_guest);
+				            Multiple_Payment_API multiple_payment = new Multiple_Payment_API(multiple_payment_id, price_paid, present, users_guest);
+				            present.addPayment(multiple_payment);
+		                }
+		            }
 	                presentsList.addPresent(present);
 	            }
 		        

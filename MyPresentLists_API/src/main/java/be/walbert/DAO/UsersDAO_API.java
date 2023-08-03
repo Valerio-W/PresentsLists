@@ -28,6 +28,7 @@ public class UsersDAO_API extends DAO<Users_API>  {
 		super(conn);
 	}
 
+	/*CRUD methods*/
 	@Override
 	public boolean create(Users_API obj) {
 		try {
@@ -51,8 +52,7 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	public Users_API find(int id) {
 		 try {
 			 	CallableStatement callableStatement = connect.prepareCall("{call Find_User(?, ?)}");
-                CallableStatement callableStatement_PresentsList = connect.prepareCall("{call GetListsByUser(?, ?)}");
-	            callableStatement.setInt(1, id);
+ 	            callableStatement.setInt(1, id);
 	            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
 	            callableStatement.execute();
 
@@ -65,29 +65,9 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	                String email = resultSet.getString("EMAIL");
 
 	                Users_API user = new Users_API(id_users, pseudo, password, email);
-	                callableStatement_PresentsList.setInt(1, id_users);
-		            callableStatement_PresentsList.registerOutParameter(2, OracleTypes.ARRAY, "LISTTABLE");
-		            callableStatement_PresentsList.execute();
-		            
-		            Array array = callableStatement_PresentsList.getArray(2);
-		            Object[] dataArray = (Object[]) array.getArray();
-
-		            for (Object data : dataArray) {
-		                Object[] attributes = ((Struct) data).getAttributes();
-		                
-		                int id_list = ((BigDecimal) attributes[0]).intValue();
-		                LocalDate limit_date = ((Timestamp) attributes[1]).toLocalDateTime().toLocalDate();
-		                String occasion = (String) attributes[2];
-		                int state = ((BigDecimal) attributes[3]).intValue();
-		                
-		                boolean stateValue = (state == 1);
-		                Presents_List_API presentsList = new Presents_List_API(id_list, limit_date, occasion, stateValue, user);
-		                user.addList(presentsList);
-		            }
-		            
+	                
 		            callableStatement.close();
-		            callableStatement_PresentsList.close();
-		            resultSet.close();
+ 		            resultSet.close();
 		            
 	                return user;
 	            }
@@ -141,128 +121,164 @@ public class UsersDAO_API extends DAO<Users_API>  {
 	    return users;
 	}
 	
+	/*PRIVATES methods to call in CRUD methods*/
+	private Users_API getUserInfo(String pseudo, String password) throws SQLException {
+	    CallableStatement callableStatement = connect.prepareCall("{call Get_User(?, ?, ?)}");
+	    callableStatement.setString(1, pseudo);
+	    callableStatement.setString(2, password);
+	    callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
+	    callableStatement.execute();
+
+	    ResultSet rs = (ResultSet) callableStatement.getObject(3);
+
+	    if (rs.next()) {
+	        int users_id = rs.getInt("ID_USERS");
+	        String email = rs.getString("EMAIL");
+	        return new Users_API(users_id, pseudo, password, email);
+	    }
+
+	    rs.close();
+	    callableStatement.close();
+	    return null;
+	}
+
+	private ArrayList<Presents_List_API> getUserLists(Users_API users) throws SQLException, IOException {
+	    CallableStatement callableStatement = connect.prepareCall("{call GetListsByUser(?, ?)}");
+	    callableStatement.setInt(1, users.getId());
+	    callableStatement.registerOutParameter(2, OracleTypes.ARRAY, "LISTTABLE");
+	    callableStatement.execute();
+
+	    Array array = callableStatement.getArray(2);
+	    Object[] dataArray = (Object[]) array.getArray();
+
+	    ArrayList<Presents_List_API> userLists = new ArrayList<>();
+
+	    for (Object data : dataArray) {
+	        Object[] attributes = ((Struct) data).getAttributes();
+	        int id_list = ((BigDecimal) attributes[0]).intValue();
+	        LocalDate limit_date = ((Timestamp) attributes[1]).toLocalDateTime().toLocalDate();
+	        String occasion = (String) attributes[2];
+	        int state = ((BigDecimal) attributes[3]).intValue();
+	        boolean stateValue = (state == 1);
+
+	        Presents_List_API presentsList = new Presents_List_API(id_list, limit_date, occasion, stateValue, users);
+
+	        ArrayList<Present_API> presents = getPresentsByListId(presentsList);
+	        presentsList.setPresents(presents);
+
+	        userLists.add(presentsList);
+	    }
+
+	    callableStatement.close();
+	    return userLists;
+	}
+
+	private ArrayList<Present_API> getPresentsByListId(Presents_List_API list) throws SQLException, IOException {
+	    CallableStatement callableStatement = connect.prepareCall("{call GetPresentsByListId(?, ?)}");
+	    callableStatement.setInt(1, list.getId_list());
+	    callableStatement.registerOutParameter(2, OracleTypes.ARRAY, "PRESENTS_TABLE");
+	    callableStatement.execute();
+
+	    Array arrayPresents = callableStatement.getArray(2);
+	    Object[] dataArrayPresents = (Object[]) arrayPresents.getArray();
+
+	    ArrayList<Present_API> presents = new ArrayList<>();
+
+	    for (Object dataPresents : dataArrayPresents) {
+	        Object[] attributesPresents = ((Struct) dataPresents).getAttributes();
+	        int presentId = ((BigDecimal) attributesPresents[0]).intValue();
+	        String name = (String) attributesPresents[1];
+	        String description = (String) attributesPresents[2];
+	        BigDecimal average_price_decimal = (BigDecimal) attributesPresents[3];
+	        double average_price = average_price_decimal.doubleValue();
+	        BigDecimal priority_decimal = (BigDecimal) attributesPresents[4];
+	        int priority = priority_decimal.intValue();
+	        String presentState = (String) attributesPresents[5];
+	        String link = null;
+	        if ((String) attributesPresents[6] != null) {
+	            link = (String) attributesPresents[6];
+	        }
+	        Blob imageBlob = (Blob) attributesPresents[7];
+	        byte[] image = null;
+	        if (imageBlob != null) {
+	            InputStream inputStream = imageBlob.getBinaryStream();
+	            image = inputStream.readAllBytes();
+	        }
+
+	        Present_API present = new Present_API(presentId, name, description, average_price, priority, presentState, link, image, null);
+	        presents.add(present);
+	    }
+
+	    callableStatement.close();
+	    return presents;
+	}
+
+	private ArrayList<Presents_List_API> getGuestListsByUser(Users_API users) throws SQLException {
+	    CallableStatement callableStatement = connect.prepareCall("{call GetGuestsListByUser(?, ?)}");
+	    callableStatement.setInt(1, users.getId());
+	    callableStatement.registerOutParameter(2, OracleTypes.ARRAY, "GUESTS_TABLE");
+	    callableStatement.execute();
+
+	    Array arrayGuestList = callableStatement.getArray(2);
+	    Object[] dataArrayGuestList = (Object[]) arrayGuestList.getArray();
+
+	    ArrayList<Presents_List_API> guestsLists = new ArrayList<>();
+
+	    for (Object dataGuestList : dataArrayGuestList) {
+	        Object[] attributesGuestList = ((Struct) dataGuestList).getAttributes();
+	        int id_list = ((BigDecimal) attributesGuestList[1]).intValue();
+
+	        Presents_List_API presentsList = Presents_List_API.find(id_list);
+	        guestsLists.add(presentsList);
+	    }
+
+	    callableStatement.close();
+	    return guestsLists;
+	}
+
+	private ArrayList<Message_API> getMessagesByUser(Users_API users) throws SQLException {
+	    CallableStatement callableStatement = connect.prepareCall("{call GetMessagesByUser(?, ?)}");
+	    callableStatement.setInt(1, users.getId());
+	    callableStatement.registerOutParameter(2, OracleTypes.ARRAY, "MESSAGE_TABLE");
+	    callableStatement.execute();
+
+	    Array arrayMessages = callableStatement.getArray(2);
+	    Object[] dataArrayMessages = (Object[]) arrayMessages.getArray();
+
+	    ArrayList<Message_API> messages = new ArrayList<>();
+
+	    for (Object dataMessage : dataArrayMessages) {
+	        Object[] attributesMessages = ((Struct) dataMessage).getAttributes();
+	        int id_message = ((BigDecimal) attributesMessages[0]).intValue();
+
+	        Message_API message = Message_API.find(id_message);
+	        messages.add(message);
+	    }
+
+	    callableStatement.close();
+	    return messages;
+	}
+
+	/*OTHERS methods*/
 	public Users_API GetUser(String pseudo, String password) {
-		try {
+	    try {
+	        Users_API user = getUserInfo(pseudo, password);
 
-			CallableStatement callableStatement_Users = connect.prepareCall("{call Get_User(?, ?, ?)}");
-	        CallableStatement callableStatement_PresentsList = connect.prepareCall("{call GetListsByUser(?, ?)}");
+	        if (user != null) {
+	        	ArrayList<Presents_List_API> userLists = getUserLists(user);
+	            user.setLists(userLists);
 
-	        callableStatement_Users.setString(1, pseudo);
-	        callableStatement_Users.setString(2, password);
-	        callableStatement_Users.registerOutParameter(3, OracleTypes.CURSOR);
-	        callableStatement_Users.execute();
+	            ArrayList<Presents_List_API> userGuestLists = getGuestListsByUser(user);
+	            user.setGuests_lists(userGuestLists);
 
-	        ResultSet rs = (ResultSet) callableStatement_Users.getObject(3);
+	            ArrayList<Message_API> userMessages = getMessagesByUser(user);
+	            user.setMessages(userMessages);
 
-	        if (rs.next()) {
-	        	int users_id = rs.getInt("ID_USERS");
-	            String email = rs.getString("EMAIL");
-	            Users_API user = new Users_API(users_id, pseudo, password, email);
-	            
-	            callableStatement_PresentsList.setInt(1, users_id);
-	            callableStatement_PresentsList.registerOutParameter(2, OracleTypes.ARRAY, "LISTTABLE");
-	            callableStatement_PresentsList.execute();
-
-	            Array array = callableStatement_PresentsList.getArray(2);
-	            Object[] dataArray = (Object[]) array.getArray();
-
-	            for (Object data : dataArray) {
-	                Object[] attributes = ((Struct) data).getAttributes();
-	                
-	                int id_list = ((BigDecimal) attributes[0]).intValue();
-	                LocalDate limit_date = ((Timestamp) attributes[1]).toLocalDateTime().toLocalDate();
-	                String occasion = (String) attributes[2];
-	                int state = ((BigDecimal) attributes[3]).intValue();
-	                
-	                boolean stateValue = (state == 1);
-	                Presents_List_API presentsList = new Presents_List_API(id_list, limit_date, occasion, stateValue, user);
-	    	       
-	                CallableStatement callableStatement_Presents = connect.prepareCall("{call GetPresentsByListId(?, ?)}");
-	                callableStatement_Presents.setInt(1, id_list);
-	                callableStatement_Presents.registerOutParameter(2, OracleTypes.ARRAY, "PRESENTS_TABLE");
-	                callableStatement_Presents.execute();
-	    	        
-	                Array arrayPresents = callableStatement_Presents.getArray(2);
-		            Object[] dataArrayPresents = (Object[]) arrayPresents.getArray();
-		            
-		            for (Object dataPresents : dataArrayPresents) {
-		                Object[] attributesPresents = ((Struct) dataPresents).getAttributes();
-		                BigDecimal presentId_decimal = (BigDecimal)attributesPresents[0];
-		                int presentId = presentId_decimal.intValue();
-		                String name = (String)attributesPresents[1];
-		                String description = (String)attributesPresents[2];
-		                BigDecimal average_price_decimal = (BigDecimal) attributesPresents[3];
-		                double average_price = average_price_decimal.doubleValue();
-		                BigDecimal priority_decimal = (BigDecimal)attributesPresents[4];
-		                int priority = priority_decimal.intValue();
-		                String presentState = (String)attributesPresents[5];
-		                String link=null;
-		                if((String)attributesPresents[6]!=null) {
-		                	 link = (String)attributesPresents[6];
-		                }
-		                Blob imageBlob = (Blob) attributesPresents[7];
-		                byte[] image = null;
-		                if(imageBlob != null) {
-		                	InputStream inputStream = imageBlob.getBinaryStream();
-			                image = inputStream.readAllBytes();
-		                }
-		                Present_API present = new Present_API(presentId, name, description, average_price, priority, presentState, link, image, presentsList);
-		                presentsList.addPresent(present);
-		            
-		            }
-	                user.addList(presentsList);
-	            }
-
-		        CallableStatement callableStatement_GuestsList = connect.prepareCall("{call GetGuestsListByUser(?, ?)}");
-
-		        callableStatement_GuestsList.setInt(1, users_id);
-		        callableStatement_GuestsList.registerOutParameter(2, OracleTypes.ARRAY, "GUESTS_TABLE");
-		        callableStatement_GuestsList.execute();
-		        
-		        Array arrayGuestList = callableStatement_GuestsList.getArray(2);
-	            Object[] dataArrayGuestList = (Object[]) arrayGuestList.getArray();
-
-	            for (Object dataGuestList : dataArrayGuestList) {
-	                Object[] attributesGuestList = ((Struct) dataGuestList).getAttributes();
-	                
-	                int id_list = ((BigDecimal) attributesGuestList[1]).intValue();
-	                
-	                Presents_List_API presentsList = Presents_List_API.find(id_list);
-	                user.addGuestList(presentsList);
-	            }
-	            
-		        CallableStatement callableStatement_Message = connect.prepareCall("{call GetMessagesByUser(?, ?)}");
-		        callableStatement_Message.setInt(1, users_id);
-		        callableStatement_Message.registerOutParameter(2, OracleTypes.ARRAY, "MESSAGE_TABLE");
-		        callableStatement_Message.execute();
-		        
-		        
-		        Array arrayMessages = callableStatement_Message.getArray(2);
-	            Object[] dataArrayMessages = (Object[]) arrayMessages.getArray();
-
-	            for (Object dataMessage : dataArrayMessages) {
-	                Object[] attributesMessages = ((Struct) dataMessage).getAttributes();
-	                
-	                int id_message = ((BigDecimal) attributesMessages[0]).intValue();
-	                
-	                Message_API message = Message_API.find(id_message);
-	                user.addMessage(message);
-	            }
-		        
-	            rs.close();
-	            callableStatement_Users.close();
-	            callableStatement_PresentsList.close();
-	            callableStatement_GuestsList.close();
-	            callableStatement_Message.close();
-	            
 	            return user;
 	        }
-	        rs.close();
-	    } catch (SQLException e) {
+	    } catch (SQLException | IOException e) {
 	        e.printStackTrace();
-	    } catch (IOException e) {
-			e.printStackTrace();
-		}
+	    }
 		return null;
 	}
 
