@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 
+import be.walbert.javabeans.Multiple_Payment;
 import be.walbert.javabeans.Present;
 import be.walbert.javabeans.Presents_List;
 import be.walbert.javabeans.Users;
@@ -124,6 +125,19 @@ public class Presents_ListDAO extends DAO <Presents_List>{
 	                }
 
 	                Present present = new Present(presentId, name, description, averagePrice, priority, statePresent, link, image,presentsList);
+	                JSONArray multiple_paymentsArray = presentObject.getJSONArray("payments");
+
+		            for (int j = 0; j < multiple_paymentsArray.length(); j++) {
+		                JSONObject multiple_paymentObject = multiple_paymentsArray.getJSONObject(i);
+
+		                int id_multiple_payment = multiple_paymentObject.getInt("id_payment");
+		                double price_paid = multiple_paymentObject.getDouble("price_paid");
+		                
+		                JSONObject usersObject = multiple_paymentObject.getJSONObject("user");
+		                Users users = Users.find(usersObject.getInt("id_users"));
+		                Multiple_Payment new_mutliple_payment = new Multiple_Payment(id_multiple_payment,price_paid,present, users);
+		                present.addPayment(new_mutliple_payment);
+		            }
 	                presentsList.addPresent(present);
 	            }
 

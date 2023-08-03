@@ -171,13 +171,6 @@ public class Present implements Serializable{
 	public void removePayment(Multiple_Payment newpayment) {
 		payments.remove(newpayment);
 	}
-
-	@Override
-	public String toString() {
-		return "Present [id_present=" + id_present + ", name=" + name + ", description=" + description
-				+ ", average_prince=" + average_price + ", priority=" + priority + ", state=" + state + ", link="
-				+ link + ", image=" + image + ", list=" + list + ", payments=" + payments + "]";
-	}
 	public boolean createPresent() {
 		return present_DAO.create(this);
 	}
@@ -195,5 +188,13 @@ public class Present implements Serializable{
 			total+= multiple_payment.getPrice_paid();
 		}
 		return total;
+	}
+	public boolean userAlreadyinPayments(Users u) {
+	    for (Multiple_Payment payment : payments) {
+	        if (payment.getUser().getPseudo().equals(u.getPseudo())) {
+	            return true; 
+	        }
+	    }    
+	    return false;
 	}
 }
