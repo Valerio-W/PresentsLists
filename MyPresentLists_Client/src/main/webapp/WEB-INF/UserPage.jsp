@@ -28,10 +28,7 @@
 				Users u = (Users) session.getAttribute("user");
 			%>
 				<h1>Welcome on your page <%=u.getPseudo() %></h1>
-				<a href="CreatePresents_List">Create Presents List</a>
-				<a href="Get_Presents_List">My Presents Lists</a>
-				<a href="Get_Guest_Lists">My Guest Lists</a>
-				<a href="Get_Messages">My Messages</a>
+				
 				
 				<% 
 				  if ((String) request.getSession().getAttribute("confirm_New_Presents_List") != null) {
@@ -43,12 +40,6 @@
 				  if ((String) request.getSession().getAttribute("confirmUpdatedList") != null) {
 				    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("confirmUpdatedList") + "</div>");
 				    request.getSession().removeAttribute("confirmUpdatedList");
-				  }
-				%>
-				<%
-				  if ((String) request.getSession().getAttribute("guestAdded") != null) {
-				    out.println("<div class=\"ConfirmationMessage\">" + (String) request.getSession().getAttribute("guestAdded") + "</div>");
-				    request.getSession().removeAttribute("guestAdded");
 				  }
 				%>
 				<%

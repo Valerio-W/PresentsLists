@@ -42,7 +42,7 @@
 	            <td><%= present.getAverage_price() %> €</td>
 	            <td><%= present.getPriority() %></td>
 	            <td><%= present.getState() %></td>
-	            <td><%= present.getLink() %></td>
+				<td><a href="<%= present.getLink() %>"><%= present.getLink() %></a></td>
 	            <% if (present.getImage() != null) { %>
 	                <td><img src="data:image/jpeg;base64,<%= java.util.Base64.getEncoder().encodeToString(present.getImage()) %>" alt="Present Image" /></td>
 	            <% } else { %>

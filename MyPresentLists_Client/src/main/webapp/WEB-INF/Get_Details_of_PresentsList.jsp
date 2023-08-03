@@ -35,7 +35,10 @@
 			<p>Occasion: <%= presents_list.getOccasion() %></p>
 			<p>Status: <%= presents_list.isState() %></p>
 			<p>Owner: <%= presents_list.getOwner().getPseudo() %></p>
-			
+			<%if ((String) request.getSession().getAttribute("link_for_guest") != null) {
+				    out.println("<p>" + (String) request.getSession().getAttribute("link_for_guest") + "</p>");
+				  }
+				%>
 			<% if (presents_list.getOwner().getId() == u.getId()) { %>
 		    <p>
 		        <a href="UpdatePresentsList?id=<%= presents_list.getId_list() %>&action=<%= presents_list.isState() ? "disable" : "enable" %>">
@@ -79,7 +82,7 @@
 			            <td><%= present.getAverage_price() %> €</td>
 			            <td><%= present.getPriority() %></td>
 			            <td><%= present.getState() %></td>
-			            <td><%= present.getLink() %></td>
+						<td><a href="<%= present.getLink() %>"><%= present.getLink() %></a></td>
 			            <td>
 	                   <% if (present.getImage() != null) { %>
 						    <div style="width: 200px; height: 200px;">
