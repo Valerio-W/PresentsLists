@@ -35,7 +35,6 @@
 				        <table>
 				            <thead>
 				                <tr>
-				                    <th>ID</th>
 				                    <th>Limit Date</th>
 				                    <th>Occasion</th>
 				                    <th>State</th>
@@ -45,7 +44,6 @@
 				            <tbody>
 				               <% for (Presents_List list : presentsLists) { %>
 							    <tr>
-							        <td><%= list.getId_list() %></td>
 							        <td><%= list.getLimit_date() %></td>
 							        <td><%= list.getOccasion() %></td>
 							        <%if(list.isState())

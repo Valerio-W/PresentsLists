@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import be.walbert.javabeans.Message;
 import be.walbert.javabeans.Multiple_Payment;
 import be.walbert.javabeans.Present;
 import be.walbert.javabeans.Users;
@@ -87,8 +88,16 @@ public class OfferPresent extends HttpServlet {
 			 	                				present.setState("fully paid");
 			 	                			} 
 			 	                			if(present.updatePresent()) {
-		 	                					request.getSession().setAttribute("multiple_paymentAdded", "Great, your multiple_payment has been created for the present !");
-				 		 	                	getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);		 		 	              
+			 	                				for (Users user : present.getList().getGuests()) {
+			 	                					if(!user.getPseudo().equals(currentUser.getPseudo())) {
+			 	                						Message new_message = new Message(0, currentUser.getPseudo()+" made a multiple payment on a present list \""+present.getList().getOccasion()+"\" for the sum of "+price_paid+" euros", false, user);
+														new_message.create();
+			 	                					}												
+												}
+			 	                				if(present.getList().update_PresentsList()) { 	
+			 	                					request.getSession().setAttribute("multiple_paymentAdded", "Great, your multiple_payment has been created for the present !");
+					 		 	                	getServletContext().getRequestDispatcher("/WEB-INF/UserPage.jsp").forward(request, response);		
+			 	                				}	 		 	              
 		 	                				}
 			 	                		}
 			 	 	                } 

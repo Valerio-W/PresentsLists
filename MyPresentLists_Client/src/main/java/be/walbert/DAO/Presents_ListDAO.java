@@ -128,7 +128,7 @@ public class Presents_ListDAO extends DAO <Presents_List>{
 	                JSONArray multiple_paymentsArray = presentObject.getJSONArray("payments");
 
 		            for (int j = 0; j < multiple_paymentsArray.length(); j++) {
-		                JSONObject multiple_paymentObject = multiple_paymentsArray.getJSONObject(i);
+		                JSONObject multiple_paymentObject = multiple_paymentsArray.getJSONObject(j);
 
 		                int id_multiple_payment = multiple_paymentObject.getInt("id_payment");
 		                double price_paid = multiple_paymentObject.getDouble("price_paid");

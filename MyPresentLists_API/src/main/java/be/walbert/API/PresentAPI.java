@@ -78,10 +78,11 @@ public class PresentAPI {
 		        link = jsonObject.getString("link");
 	        }
 	        byte[] image = null;
-	        if (jsonObject.has("image")) {
+	        if (!jsonObject.isNull("image")) {
 	            String imageBase64 = jsonObject.getString("image");
 	            image = Base64.getDecoder().decode(imageBase64);
 	        }
+
     	    
     	    JSONObject list_object = jsonObject.getJSONObject("list");
     	    Presents_List_API list = new Presents_List_API();
